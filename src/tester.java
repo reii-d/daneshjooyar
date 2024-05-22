@@ -1,11 +1,10 @@
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
 
 public class tester{
     @Test
@@ -185,4 +184,3 @@ public class tester{
 
     }
 }
-
