@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="au.dius.pact.jvm.provider.junit5" type="repository">
+    <properties include-transitive-deps="false" maven-id="au.com.dius:pact-jvm-provider-junit5:4.0.10" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/au/com/dius/pact-jvm-provider-junit5/4.0.10/pact-jvm-provider-junit5-4.0.10.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/au/com/dius/pact-jvm-provider-junit5/4.0.10/pact-jvm-provider-junit5-4.0.10-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
