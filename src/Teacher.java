@@ -59,11 +59,11 @@ public class Teacher {
     public void manageStudentInCourse(Student student, Course course, boolean add){
         if (coursesTaught.contains(course)){
             if (add) {
-                course.getStudents().add(student);
+                course.addStudent(student);
                 course.setNumStudents(course.getNumStudents() + 1);
             }
             else {
-                course.getStudents().add(student);
+                course.removeStudent(student);
                 course.setNumStudents(course.getNumStudents() - 1);
             }
         }
