@@ -10,9 +10,9 @@ public class tester{
     @Test
     public void TestStudent() {
 
-        Course course1 = new Course("course 1" , 3,"111",new Teacher("teacher1" , "teacher1.1"));
-        Course course2 = new Course("course 2" , 4,"222",new Teacher("teacher2" , "teacher2.2"));
-        Course course3 = new Course("course 3" , 5,"333",new Teacher("teacher3" , "teacher3.3"));
+        Course course1 = new Course("course 1" , 3,"111",new Teacher("teacher1", "teacher1.1"));
+        Course course2 = new Course("course 2" , 4,"222",new Teacher("teacher2", "teacher2.2"));
+        Course course3 = new Course("course 3" , 5,"333",new Teacher("teacher3", "teacher3.3"));
 
         Student student1 = new Student("st1",402243108);
         Student student2 = new Student("st2",402243072);

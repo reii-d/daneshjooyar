@@ -1,8 +1,10 @@
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String mode;
         do {
@@ -14,7 +16,7 @@ public class Main {
                 case "1":
                     AdminAccess();
                     String adminChoice = scanner.nextLine();
-                    switch (adminChoice){
+                    switch (adminChoice) {
                         case "1":
                             //get access to teachers
                             break;
@@ -32,7 +34,7 @@ public class Main {
                 case "2":
                     TeacherAccess();
                     String teacherChoice = scanner.nextLine();
-                    switch (teacherChoice){
+                    switch (teacherChoice) {
                         case "1":
                             //get access to courses
                             break;
