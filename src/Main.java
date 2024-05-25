@@ -1,8 +1,12 @@
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+
+import javax.annotation.processing.Filer;
 
 public class Main {
     public static void clear() {
@@ -11,21 +15,22 @@ public class Main {
     }
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        String fileName = "students.txt";
-        File file = new File(fileName);
+        String studentFileName = "students.txt";
+        String teacherFileName = "teachers.txt";
+        File studentFile = new File(studentFileName);
         String mode;
-            menu();
-            mode = scanner.nextLine();
-            clear();
-            switch (mode) {
-                case "1":
-                    clear();
-                    AdminAccess();
-                    String adminChoice = scanner.nextLine();
-                    switch (adminChoice) {
-                        case "1":
-                            //get access to teachers
-                            break;
+        menu();
+        mode = scanner.nextLine();
+        clear();
+        switch (mode) {
+            case "1":
+                clear();
+                AdminAccess();
+                String adminChoice = scanner.nextLine();
+                switch (adminChoice) {
+                    case "1":
+                        //get access to teachers
+                        break;
                         case "2":
                             //get access to students
                             break;
@@ -39,37 +44,71 @@ public class Main {
                     break;
                 case "2":
                     clear();
-                    TeacherAccess();
-                    String teacherChoice = scanner.nextLine();
-                    switch (teacherChoice) {
-                        case "1":
-                            //get access to courses
-                            break;
-                        case "2":
-                            //get access to students
-                            break;
-                        default:
-                            System.out.println("Invalid");
-                            break;
+                    System.out.println("Enter your teacher ID: ");
+                    String teacherID = scanner.nextLine();
+                    boolean login = false;
+                    try (BufferedReader reader = new BufferedReader(new FileReader(teacherFileName))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            if (teacherID.equals(line)) {
+                                System.out.println("Welcome!");
+                                login = true;
+                                break;
+                            }
+                        }
+                        int attempts = 1;
+                        while (!login && attempts < 5) {
+                            System.err.println("Incorrect teacher ID. Please try again: ");
+                            teacherID = scanner.nextLine();
+                            try (BufferedReader readerRetry = new BufferedReader(new FileReader(teacherFileName))) {
+                                while ((line = readerRetry.readLine()) != null) {
+                                    if (teacherID.equals(line)) {
+                                        System.out.println("Welcome!");
+                                        login = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            attempts++;
+                        }
+                        if (!login){
+                            System.err.println("You cannot enter as teacher!");
+                        }
+                    } catch (IOException e){
+                        throw new IOException();
+                    }
+                    if (login) {
+                        TeacherAccess();
+                        String teacherChoice = scanner.nextLine();
+                        switch (teacherChoice) {
+                            case "1":
+                                //get access to courses
+                                break;
+                            case "2":
+                                //get access to students
+                                break;
+                            default:
+                                System.out.println("Invalid");
+                                break;
+                        }
                     }
                     break;
                 case "3":
                     clear();
                     System.out.print("\033[H\033[2J");
                     System.out.flush();
-                System.out.println("Choose an option: \n1. log in\n2. sign up");
+                    System.out.println("Choose an option: \n1. log in\n2. sign up");
                     int choice = scanner.nextInt();
                     if (choice == 1) {
-                        LoginSignUp.logIn(fileName);
+                        LoginSignUp.logIn(studentFileName);
                     } else if (choice == 2) {
-                        LoginSignUp.signUp(fileName, file);
+                        LoginSignUp.signUp(studentFileName, studentFile);
                     }
                     break;
                 case "4":
                     System.out.println("Goodbye!");
                     break;
                 default:
-                    System.out.println("Invalid. Please try again.");
                     break;
             }
     }
