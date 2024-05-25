@@ -1,32 +1,20 @@
-import org.junit.platform.engine.support.discovery.SelectorResolver;
-
 import java.io.*;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.ButtonGroup;
-
 public class LoginSignUp {
-    public static void main (String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        String fileName = "students.txt";
-        File file = new File(fileName);
-        System.out.println("Choose an option: \n1. log in\n2. sign up");
-        int choice = scanner.nextInt();
-        if (choice == 1) {
-            logIn(scanner, fileName);
-        } else if (choice == 2) {
-            signUp(scanner, fileName, file);
-        }
+    public static void clear() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
-    private static void signUp(Scanner scanner, String fileName, File file) {
+    public static void signUp(String fileName, File file) throws IOException {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your username/student id: ");
         String username = scanner.nextLine();
         System.out.println("Enter your password: ");
         String password = scanner.nextLine();
-        System.out.println("\033[H\033[2J");
-        System.out.flush();
+        clear();
         boolean isExist = false;
 
         if (!file.exists()) {
@@ -47,58 +35,56 @@ public class LoginSignUp {
             e.printStackTrace();
         }
         if (!isExist) {
-            Pattern pattern = Pattern.compile(username);
-            Matcher matcher = pattern.matcher(password);
-            if (matcher.find()) {
-                System.out.println("Invalid password, Password cannot contains the username.");
-            } else {
-                try (FileWriter fileWriter = new FileWriter(fileName, true)) {
-                    fileWriter.write(username + "," + password + "\n");
-                    System.out.println("you signed up!");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                while (password.length() < 8
+                        || password.contains(username) ||
+                        !password.matches(".*[a-z].*") ||
+                        !password.matches(".*[A-Z].*")){
+                    System.err.println("Invalid password!");
+                    password = scanner.nextLine();
                 }
+            try (FileWriter fileWriter = new FileWriter(fileName, true)) {
+                fileWriter.write(username + "," + password + "\n");
+                System.out.println("you signed up successfully!");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    private static void logIn(Scanner scanner, String fileName){
+    public static void logIn(String fileName) {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your username/student id: ");
         String username = scanner.nextLine();
         System.out.println("Enter your password: ");
         String password = scanner.nextLine();
-        System.out.println("\033[H\033[2J");
-        System.out.flush();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+        clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             String[] info;
+            boolean isExist = false;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (username.equals(info[0])){
-                    if (password.equals(info[1])){
+                if (username.equals(info[0])) {
+                    if (password.equals(info[1])) {
                         System.out.println("Welcome to Daneshjooyar!");
                         break;
-                    }
-                    else {
+                    } else {
                         System.out.println("Incorrect password. Try again...");
-                        do{
+                        do {
                             scanner.nextLine();
                         } while (password.equals(info[1]));
-                        System.out.println("\033[H\033[2J");
-                        System.out.flush();
+                        clear();
                         System.out.println("Welcome to Daneshjooyar!");
                     }
+                    isExist = true;
                     break;
                 }
-                else {
-                    System.out.println("You're not registered yet!");
-                }
             }
-        }
-        catch (IOException e){
+            if (!isExist){
+                System.out.println("You have not registered yet.");
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
-

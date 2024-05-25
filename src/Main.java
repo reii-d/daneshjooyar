@@ -1,19 +1,25 @@
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void clear() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
+        String fileName = "students.txt";
+        File file = new File(fileName);
         String mode;
-        do {
             menu();
             mode = scanner.nextLine();
-            System.out.println("\033[H\033[2J");
-            System.out.flush();
+            clear();
             switch (mode) {
                 case "1":
+                    clear();
                     AdminAccess();
                     String adminChoice = scanner.nextLine();
                     switch (adminChoice) {
@@ -32,6 +38,7 @@ public class Main {
                     }
                     break;
                 case "2":
+                    clear();
                     TeacherAccess();
                     String teacherChoice = scanner.nextLine();
                     switch (teacherChoice) {
@@ -47,12 +54,17 @@ public class Main {
                     }
                     break;
                 case "3":
-                    StudentAccess();
-                    String studentChoice = scanner.nextLine();
-                    /*if (studentChoice.equals("1")){
-                        Student student = new Student("r");
-                        student.prtRegisteredCourses();
-                    }*/
+                    clear();
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                System.out.println("Choose an option: \n1. log in\n2. sign up");
+                    int choice = scanner.nextInt();
+                    if (choice == 1) {
+                        LoginSignUp.logIn(fileName);
+                    } else if (choice == 2) {
+                        LoginSignUp.signUp(fileName, file);
+                    }
+                    break;
                 case "4":
                     System.out.println("Goodbye!");
                     break;
@@ -60,7 +72,6 @@ public class Main {
                     System.out.println("Invalid. Please try again.");
                     break;
             }
-        } while (!mode.equals("exit"));
     }
     public static void menu(){
         System.out.println("\nMenu: ");
@@ -83,12 +94,6 @@ public class Main {
                 access to?\s
                 1. Courses
                 2. Students
-                """);
-    }
-    public static void StudentAccess() {
-        System.out.println("""
-                access to?\s
-                1. Courses
                 """);
     }
 }
