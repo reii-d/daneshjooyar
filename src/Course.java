@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 
 public class Course {
@@ -26,6 +27,7 @@ public class Course {
         this.students = new ArrayList<>();
         this.assignments = new ArrayList<>();
         this.activeProjects = new ArrayList<>();
+
         this.numActiveProjects = 0;
     }
 

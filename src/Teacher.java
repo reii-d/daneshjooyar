@@ -32,6 +32,7 @@ public class Teacher {
         return coursesTaught;
     }
 
+
     //Setters
     public void setTeacherLastName(String teacherLastName) {
         this.teacherLastName = teacherLastName;
@@ -104,6 +105,21 @@ public class Teacher {
         }
         else {
             System.out.println("3.check");
+        }
+    }
+    public void definePractice(String practiceName, int deadline, Course course){
+        Assignment practice = new Assignment(practiceName, deadline);
+        practice.setAssignmentName(practiceName);
+        course.getPractices().add(practice);
+        course.setNumPractices(course.getNumPractices() + 1);
+    }
+    public void removePractice(String practiceName, Course course){
+        for (Assignment practice : course.getPractices()){
+            if (practice.getAssignmentName().equals(practiceName)){
+                course.getPractices().remove(practice);
+                course.setNumPractices(course.getNumPractices() - 1);
+                break;
+            }
         }
     }
 }
