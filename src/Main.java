@@ -1,8 +1,12 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
+
+import javax.imageio.IIOException;
 
 public class Main {
     public static void clear() {
@@ -11,9 +15,7 @@ public class Main {
     }
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        String studentFileName = "students.txt";
-        String teacherFileName = "teachers.txt"; //باید علاوه بر ایدی استاد اسم و فامیلش هم اضافه بشه. الان فقط ایدی داره. بعدش توی ورود استاد هم باید با اسپلیت ایدی رو از اسم و فامیل جدا کنیم.
-        File studentFile = new File(studentFileName);
+        Database database = Database.getInstance();
         String mode;
         mainMenu();
         mode = scanner.nextLine();
@@ -28,6 +30,7 @@ public class Main {
                     case "1":
                         System.out.println("1. Add Teacher\n2. Remove Teacher");
                         int teacherChoice = scanner.nextInt();
+                        scanner.nextLine();
                         if (teacherChoice == 1){
                             System.out.println("A new Teacher!\nFirst Name: ");
                             String firstName = scanner.nextLine();
@@ -35,18 +38,55 @@ public class Main {
                             String lastName = scanner.nextLine();
                             System.out.println("TeacherID: ");
                             String teacherId = scanner.nextLine();
-                            String newTeacher = firstName + lastName + ": " + teacherId;
-
+                            String newTeacher = firstName + " " + lastName + "," + teacherId + ",\n";
+                            try {
+                                FileWriter fileWriter = new FileWriter(database.teacherFileName, true);
+                                fileWriter.write(newTeacher);
+                                fileWriter.close();
+                            }
+                            catch (IOException e){
+                                e.printStackTrace();
+                            }
                         }
                         else if (teacherChoice == 2){
-
+                            System.out.println("Removing a Teacher!\nFirst Name: ");
+                            String firstName = scanner.nextLine();
+                            System.out.println("Last Name: ");
+                            String lastName = scanner.nextLine();
+                            System.out.println("TeacherID: ");
+                            String teacherId = scanner.nextLine();
+                            String teacherName = firstName + " " + lastName;
+                            try (BufferedReader reader = new BufferedReader(new FileReader(database.teacherFileName))){
+                                String line;
+                                String[] info;
+                                while ((line = reader.readLine()) != null){
+                                    FileWriter fileWriter = new FileWriter(database.tempFileName, true);
+                                    info = line.split(",");
+                                    if (!info[0].equals(teacherName) && !info[1].equals(teacherId)){
+                                        fileWriter.write(line + "\n");
+                                    }
+                                    fileWriter.close();
+                                }
+                                PrintWriter writer = new PrintWriter(database.teacherFileName);
+                                writer.println("");
+                                writer.close();
+                                BufferedReader reader1 = new BufferedReader(new FileReader(database.tempFileName));
+                                while ((line = reader1.readLine()) != null){
+                                    FileWriter fileWriter = new FileWriter(database.teacherFileName, true);
+                                    fileWriter.write(line + "\n");
+                                    fileWriter.close();
+                                }
+                            }
+                            catch (IIOException e){
+                                e.printStackTrace();
+                            }
                         }
                         break;
                     case "2":
-                        //get access to students
+                        //هر وقت بخش access to courses استاد رو کامل کردی همونو کپی کن اینجا!
                         break;
                     case "3":
-                        //get access to courses
+                        //هر وقت بخش access to students استاد رو کامل کردی همونو کپی کن اینجا!
                         break;
                     default:
                         System.out.println("Invalid");
@@ -61,11 +101,13 @@ public class Main {
                 System.out.println("Enter your teacher ID: ");
                 String teacherID = scanner.nextLine();
                 boolean login = false;
-                try (BufferedReader reader = new BufferedReader(new FileReader(teacherFileName))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(database.teacherFileName))) {
                     String line;
+                    String[] info;
                     while ((line = reader.readLine()) != null) {
-                        if (teacherID.equals(line)) {
-                            System.out.println("Welcome!");
+                        info = line.split(",");
+                        if (teacherID.equals(info[1])) {
+                            System.out.println("Welcome, " + info[0] + "!");
                             login = true;
                             break;
                         }
@@ -74,10 +116,12 @@ public class Main {
                     while (!login && attempts < 5) {
                         System.err.println("Incorrect teacher ID. Please try again: ");
                         teacherID = scanner.nextLine();
-                        try (BufferedReader readerRetry = new BufferedReader(new FileReader(teacherFileName))) {
+                        String[] info1;
+                        try (BufferedReader readerRetry = new BufferedReader(new FileReader(database.teacherFileName))) {
                             while ((line = readerRetry.readLine()) != null) {
-                                if (teacherID.equals(line)) {
-                                    System.out.println("Welcome!");
+                                info1 = line.split(",");
+                                if (teacherID.equals(info1[1])) {
+                                    System.out.println("Welcome, " + info1[0] + "");
                                     login = true;
                                     break;
                                 }
@@ -156,13 +200,45 @@ public class Main {
                             break;
                         case "2":
                             clear();
-                            System.out.println("1. Add Students to your course\n2. Remove Students from your course");
+                            System.out.println("1. Add Students to your course\n2. Remove Students from your course\n3. Update scores");
                             int studentChoice = scanner.nextInt();
+                            scanner.nextLine();
                             if (studentChoice == 1){
                                 //from courseTaught --> add student
                             }
                             else if (studentChoice == 2){
                                 //from courseTaught --> remove student
+                            }
+                            else if (studentChoice == 3) {
+                                scanner.nextLine();
+                                System.out.println("for which course: ");
+                                String courseName = scanner.nextLine();
+                                System.out.println("for who? Write the name of Student: ");
+                                String studentName = scanner.nextLine();
+                                System.out.println("Write the score: ");
+                                double score = scanner.nextDouble();
+                                try (BufferedReader reader = new BufferedReader(new FileReader(database.courseFileName))) {
+                                    String line;
+                                    String[] info;
+                                    boolean ok = false;
+                                    while ((line = reader.readLine()) != null) {
+                                        info = line.split(",");
+                                        if (info[0].equals(courseName) && info[3].equals(database.getTeacherName(teacherID))) {
+                                            database.addScoreToStudent(studentName, courseName, Double.toString(score));
+                                            ok = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!ok) {
+                                        System.out.println("You have not this course!");
+                                    }
+                                    if (ok) {
+                                        System.out.println("Score added successfully!");
+                                    }
+                                }
+                                catch (IOException e){
+                                    e.printStackTrace();
+                                }
                             }
                             break;
                         case "3":
@@ -190,9 +266,9 @@ public class Main {
                 System.out.println("Choose an option: \n1. log in\n2. sign up");
                 int choice = scanner.nextInt();
                 if (choice == 1) {
-                    LoginSignUp.logIn(studentFileName);
+                    LoginSignUp.logIn(database.studentFileName);
                 } else if (choice == 2) {
-                    LoginSignUp.signUp(studentFileName, studentFile);
+                    LoginSignUp.signUp(database.studentFileName, database.studentFile);
                 }
                 break;
             case "4":

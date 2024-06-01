@@ -1,7 +1,9 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Course {
+    Database database = Database.getInstance();
     private String courseName;
     private Teacher courseTeacher;
     private int courseUnits;
@@ -102,14 +104,10 @@ public class Course {
 
 
     //Methods
-    public void addStudent(Student student){
-        if (!getStudents().contains(student)){
-            students.add(student);
-            numStudents++;
-            if (!student.getRegisteredCourses().contains(this)){
-                student.addCourse(this);
-            }
-        }
+    public void addStudent(Student student) throws IOException {
+        String course = this.getCourseName();
+        String stu = student.getStudentName();
+        database.addSCourseToStudent(stu, course);
     }
     public void removeStudent(Student student){
         if (getStudents().contains(student)) {

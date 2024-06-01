@@ -43,7 +43,7 @@ public class LoginSignUp {
                     password = scanner.nextLine();
                 }
             try (FileWriter fileWriter = new FileWriter(fileName, true)) {
-                fileWriter.write(username + "," + password + "\n");
+                fileWriter.write(username + "," + password + ",\n");
                 System.out.println("you signed up successfully!");
             } catch (IOException e) {
                 e.printStackTrace();

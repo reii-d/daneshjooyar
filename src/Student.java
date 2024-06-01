@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -5,7 +6,7 @@ import java.util.Map;
 
 public class Student {
     private String studentName;
-    private int id;
+    private int userName;
     private int numRegisteredCourses;
     private ArrayList<Course> registeredCourses;
     private int numUnits;
@@ -15,9 +16,9 @@ public class Student {
 
 
     //Constructor
-    public Student(String studentName, int id){
+    public Student(String studentName, int userName){
         this.studentName = studentName;
-        this.id = id;
+        this.userName = userName;
         this.registeredCourses = new ArrayList<>();
         this.totalAverage = 0.0;
         this.courseGrades = new HashMap<>();
@@ -30,8 +31,8 @@ public class Student {
     public String getStudentName() {
         return studentName;
     }
-    public int getId(){
-        return id;
+    public int getUserName(){
+        return userName;
     }
     public int getNumRegisteredCourses(){
         return numRegisteredCourses;
@@ -72,7 +73,7 @@ public class Student {
 
 
     //Methods
-    public void addCourse(Course course){
+    public void addCourse(Course course) throws IOException {
         if (!getRegisteredCourses().contains(course)){
             registeredCourses.add(course);
             numUnits += course.getCourseUnits();

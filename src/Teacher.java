@@ -1,17 +1,19 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Teacher {
-    private String teacherFirstName;
+    private String teacherName;
     private String teacherLastName;
     private int numCoursesTaught;
     private ArrayList<Course> coursesTaught;
+    Database database = Database.getInstance();
 
 
     //Constructor
     public Teacher(String firstName, String lastName){
-        this.teacherFirstName = firstName;
+        this.teacherName = firstName;
         this.teacherLastName = lastName;
         this.numCoursesTaught = 0;
         this.coursesTaught = new ArrayList<>();
@@ -22,8 +24,8 @@ public class Teacher {
     public String getTeacherLastName() {
         return teacherLastName;
     }
-    public String getTeacherFirstName() {
-        return teacherFirstName;
+    public String getTeacherName() {
+        return teacherName;
     }
     public int getNumCoursesTaught() {
         return numCoursesTaught;
@@ -37,8 +39,8 @@ public class Teacher {
     public void setTeacherLastName(String teacherLastName) {
         this.teacherLastName = teacherLastName;
     }
-    public void setTeacherFirstName(String teacherFirstName) {
-        this.teacherFirstName = teacherFirstName;
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
     public void setNumCoursesTaught(int numCoursesTaught) {
         this.numCoursesTaught = numCoursesTaught;
@@ -57,7 +59,7 @@ public class Teacher {
         coursesTaught.remove(course);
         numCoursesTaught--;
     }
-    public void manageStudentInCourse(Student student, Course course, boolean add){
+    public void manageStudentInCourse(Student student, Course course, boolean add) throws IOException {
         if (coursesTaught.contains(course)){
             if (add) {
                 course.addStudent(student);
@@ -100,11 +102,32 @@ public class Teacher {
         return totalUnits;
     }
     public void TeacherSetCourseGrades(Course course, double grade, Student student){
-        if (coursesTaught.contains(course) && student.getRegisteredCourses().contains(course)){
-            student.setCourseGrades(course.getCourseName(), grade);
+        String courseName = course.getCourseName();
+        String courseUnit = Integer.toString(course.getCourseUnits());
+        String stu = student.getStudentName();
+        String courseExam = course.getExamDate();
+        String teacher = this.getTeacherName() + " " + this.getTeacherLastName();
+        try (BufferedReader reader = new BufferedReader(new FileReader(database.courseFileName))){
+            String line;
+            String[] info;
+            boolean ok = false;
+            while ((line = reader.readLine()) != null){
+                info = line.split(",");
+                if (info[0].equals(courseName) && info[3].equals(teacher) && info[1].equals(courseUnit) && info[2].equals(courseExam)){
+                    database.addScoreToStudent(stu, courseName, Double.toString(grade));
+                    ok = true;
+                    break;
+                }
+            }
+            if (!ok){
+                System.out.println("You have not this course!");
+            }
+            if (ok){
+                System.out.println("Score added successfully!");
+            }
         }
-        else {
-            System.out.println("3.check");
+        catch (IOException e){
+            e.printStackTrace();
         }
     }
     public void definePractice(String practiceName, int deadline, Course course){
