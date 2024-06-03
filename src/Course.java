@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -107,7 +106,7 @@ public class Course {
     public void addStudent(Student student) throws IOException {
         String course = this.getCourseName();
         String stu = student.getStudentName();
-        database.addSCourseToStudent(stu, course);
+        database.addCourseToStudent(stu, course);
     }
     public void removeStudent(Student student){
         if (getStudents().contains(student)) {

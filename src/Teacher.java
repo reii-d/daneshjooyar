@@ -101,48 +101,4 @@ public class Teacher {
         }
         return totalUnits;
     }
-    public void TeacherSetCourseGrades(Course course, double grade, Student student){
-        String courseName = course.getCourseName();
-        String courseUnit = Integer.toString(course.getCourseUnits());
-        String stu = student.getStudentName();
-        String courseExam = course.getExamDate();
-        String teacher = this.getTeacherName() + " " + this.getTeacherLastName();
-        try (BufferedReader reader = new BufferedReader(new FileReader(database.courseFileName))){
-            String line;
-            String[] info;
-            boolean ok = false;
-            while ((line = reader.readLine()) != null){
-                info = line.split(",");
-                if (info[0].equals(courseName) && info[3].equals(teacher) && info[1].equals(courseUnit) && info[2].equals(courseExam)){
-                    database.addScoreToStudent(stu, courseName, Double.toString(grade));
-                    ok = true;
-                    break;
-                }
-            }
-            if (!ok){
-                System.out.println("You have not this course!");
-            }
-            if (ok){
-                System.out.println("Score added successfully!");
-            }
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    public void definePractice(String practiceName, int deadline, Course course){
-        Assignment practice = new Assignment(practiceName, deadline);
-        practice.setAssignmentName(practiceName);
-        course.getPractices().add(practice);
-        course.setNumPractices(course.getNumPractices() + 1);
-    }
-    public void removePractice(String practiceName, Course course){
-        for (Assignment practice : course.getPractices()){
-            if (practice.getAssignmentName().equals(practiceName)){
-                course.getPractices().remove(practice);
-                course.setNumPractices(course.getNumPractices() - 1);
-                break;
-            }
-        }
-    }
 }
