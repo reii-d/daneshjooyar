@@ -222,15 +222,12 @@ class _signUp_pageState extends State<signUp_page> {
                     ),
                   ),
                   if (_error.isNotEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Text(
+                      Text(
                         _error,
                         style: TextStyle(
                           color: Colors.red,
                           fontSize: 16,
                         ),
-                      ),
                     ),
                 ],
               ),
