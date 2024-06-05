@@ -5,7 +5,7 @@ import 'package:test1/pages/signup_page.dart';
 import 'package:test1/pages/teacher_login.dart';
 
 class login_choice extends StatelessWidget {
-  const login_choice({super.key});
+  login_choice({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class admin_login extends StatefulWidget {
-  const admin_login({super.key});
+  admin_login({super.key});
 
   @override
   State<admin_login> createState() => _admin_loginState();

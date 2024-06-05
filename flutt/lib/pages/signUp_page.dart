@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test1/pages/profile.dart';
 
 class signUp_page extends StatefulWidget {
-  const signUp_page({Key? key}) : super(key: key);
+  signUp_page({super.key});
 
   @override
   State<signUp_page> createState() => _signUp_pageState();

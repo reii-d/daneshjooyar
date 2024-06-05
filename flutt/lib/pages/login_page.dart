@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -11,7 +11,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController userControl = TextEditingController();
   TextEditingController passwordControl = TextEditingController();
 
-  bool _isObscured1 = true;
   bool _isObscured2 = true;
 
   @override
