@@ -13,6 +13,7 @@ class _signUp_pageState extends State<signUp_page> {
 
   TextEditingController realnameControl = TextEditingController();
   TextEditingController usernameControl = TextEditingController();
+  TextEditingController studentidControl = TextEditingController();//////////
   TextEditingController password1Control = TextEditingController();
   TextEditingController password2Control = TextEditingController();
 
@@ -32,6 +33,7 @@ class _signUp_pageState extends State<signUp_page> {
             name: realnameControl.text,
             gpa: 0.0,
             username: usernameControl.text,
+            studentid: studentidControl.hashCode,
           ),
         ),
       );
@@ -132,6 +134,29 @@ class _signUp_pageState extends State<signUp_page> {
                     validator: (valueUsern) {
                       if (valueUsern == null || valueUsern.isEmpty) {
                         return 'Please enter a username';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: studentidControl,
+                    decoration: InputDecoration(
+                      labelText: "StudentId",
+                      labelStyle: TextStyle(color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                    ),
+                    validator: (valueUsern) {
+                      if (valueUsern == null || valueUsern.isEmpty || valueUsern.length<8) {
+                        return 'Please enter a valid StudentId';
                       }
                       return null;
                     },

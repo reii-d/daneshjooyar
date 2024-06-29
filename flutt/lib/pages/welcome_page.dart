@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:test1/pages/login_chioce.dart';
-import 'package:test1/pages/login_page.dart';
 import 'package:test1/pages/signup_page.dart';
 
 class welcome_page extends StatelessWidget {
@@ -34,7 +33,7 @@ class welcome_page extends StatelessWidget {
                 color: Colors.black.withOpacity(0.5),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
+                offset: Offset(0, 3),
               ),
             ],
           ),
@@ -50,7 +49,7 @@ class welcome_page extends StatelessWidget {
                     color: Colors.black.withOpacity(0.4),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: Offset(0, 3),
                   ),
                 ],
               ),

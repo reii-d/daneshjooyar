@@ -4,8 +4,15 @@ class StudentInfoPage extends StatelessWidget {
   String name;
   double gpa;
   String username;
+  int studentid;
+  String profilePictureUrl = "https://via.placeholder.com/150";
 
-   StudentInfoPage({Key? key, required this.name, required this.gpa, required this.username,
+  StudentInfoPage({
+    Key? key,
+    required this.name,
+    required this.gpa,
+    required this.username,
+    required this.studentid
   }) : super(key: key);
 
   @override
@@ -15,7 +22,7 @@ class StudentInfoPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          "Student Info",
+          "User Info",
           style: TextStyle(
             color: Colors.white,
             fontSize: 28,
@@ -29,7 +36,7 @@ class StudentInfoPage extends StatelessWidget {
           padding: const EdgeInsets.all(25.0),
           child: Container(
             width: 400,
-            height: 400,
+            height: 500,
             decoration: BoxDecoration(
               color: Colors.blueGrey[500],
               borderRadius: BorderRadius.circular(50),
@@ -44,9 +51,12 @@ class StudentInfoPage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(20.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(profilePictureUrl),
+                  ),
+                  SizedBox(height: 20), // Space between the picture and text
                   Text(
                     "Name: $name",
                     style: TextStyle(
@@ -55,7 +65,25 @@ class StudentInfoPage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  Divider(color: Colors.white), // Divider
+                  Text(
+                    "Id: $studentid",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Divider(color: Colors.white), // Divider
+                  Text(
+                    "Username: $username",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Divider(color: Colors.white), // Divider
                   Text(
                     "GPA: $gpa",
                     style: TextStyle(
@@ -64,13 +92,25 @@ class StudentInfoPage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Username: $username",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  Spacer(), // Push the button
+                  ElevatedButton(
+                    onPressed: () {
+                      // connect to backend
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    ),
+                    child: Text(
+                      "Delete Account!",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],
