@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class teacher_login extends StatefulWidget {
-  const teacher_login({super.key});
+  teacher_login({super.key});
 
   @override
   State<teacher_login> createState() => _teacher_loginState();
