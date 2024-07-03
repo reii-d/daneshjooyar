@@ -72,27 +72,8 @@ public class Student {
     }
 
 
+
     //Methods
-    public void addCourse(Course course) throws IOException {
-        if (!getRegisteredCourses().contains(course)){
-            registeredCourses.add(course);
-            numUnits += course.getCourseUnits();
-            numRegisteredCourses++;
-            if (!course.getStudents().contains(this)){
-                course.addStudent(this);
-            }
-        }
-    }
-    public void removeCourse(Course course){
-        if (getRegisteredCourses().contains(course)) {
-            registeredCourses.remove(course);
-            numUnits -= course.getCourseUnits();
-            numRegisteredCourses--;
-            if (course.getStudents().contains(this)) {
-                course.removeStudent(this);
-            }
-        }
-    }
     public void prtRegisteredCourses(){
         ArrayList<Course> courses = getRegisteredCourses();
         if (courses != null) {
