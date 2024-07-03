@@ -3,11 +3,11 @@ import java.io.*;
 public class Database {
 
     //Files
-    String studentFileName = "src/data/students.txt";
+    String studentFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/students.txt";
     File studentFile = new File(studentFileName);
-    String teacherFileName = "src/data/teachers.txt";
+    String teacherFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/teachers.txt";
     File teacherFile = new File(teacherFileName);
-    String courseFileName = "src/data/courses.txt";
+    String courseFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/courses.txt";
     File courseFile = new File(courseFileName);
 
 
@@ -71,7 +71,7 @@ public class Database {
     //Methods
     public void addCourseToStudent(String student, String course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/temp.txt";
             String line;
             String[] info;
             while ((line = reader.readLine()) != null) {
@@ -99,7 +99,7 @@ public class Database {
     }
 
     public void removeCourseFromStudent(String cName, String sName) throws IOException {
-        String tempFileName = "src/data/temp.txt";
+        String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/temp.txt";
         boolean removed = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
              FileWriter fileWriter = new FileWriter(tempFileName)) {
@@ -144,7 +144,7 @@ public class Database {
 
     public void studentScore(String student, String courseName, String score) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/temp.txt";
             String line;
             String[] info;
             FileWriter fileWriter = new FileWriter(tempFileName);
@@ -213,7 +213,7 @@ public class Database {
 
     public void removeCourse(Course course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/temp.txt";
             String line;
             boolean removed = false;
             String remove = course.getCourseName() + "," + course.getCourseUnits() + "," +
@@ -247,7 +247,7 @@ public class Database {
 
     public void updateCourse(Course oldCourse, Course newCourse, String teacher) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/temp.txt";
             String line;
             String[] info;
             boolean updated = false;
@@ -286,7 +286,7 @@ public class Database {
 
     public void updateAssignment(String courseName, Assignment assignment) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/temp.txt";
             String line;
             String[] info;
             FileWriter fileWriter = new FileWriter(tempFileName);
@@ -332,7 +332,7 @@ public class Database {
 
     public void addAssignment(Assignment assignment, String courseName) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/temp.txt";
             String line;
             String[] info;
             while ((line = reader.readLine()) != null) {
@@ -360,7 +360,7 @@ public class Database {
     }
 
     public void removeAssignment(Assignment assignment, String course) throws IOException {
-        String tempFileName = "src/data/temp.txt";
+        String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/src/data/temp.txt";
         boolean removed = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName));
         FileWriter fileWriter = new FileWriter(tempFileName)) {
