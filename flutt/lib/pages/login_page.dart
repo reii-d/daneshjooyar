@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
               TextField(
                 controller: userControl,
                 decoration: InputDecoration(
-                  labelText: "Username",
+                  labelText: "Student Id",
                   labelStyle: TextStyle(color: Colors.white),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
