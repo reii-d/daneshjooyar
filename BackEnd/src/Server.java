@@ -14,6 +14,7 @@ public class Server {
         }
     }
 }
+
 class handleClient extends Thread {
     Socket socket;
     DataInputStream dis;
@@ -37,6 +38,7 @@ class handleClient extends Thread {
         }
         String[] splitter = command.split(",");
         switch (splitter[0]){
+            //case
             //TODO
         }
     }
