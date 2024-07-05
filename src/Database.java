@@ -2,6 +2,7 @@ import org.testng.mustache.Value;
 import org.testng.reporters.jq.IPanel;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class Database {
 
@@ -87,6 +88,62 @@ public class Database {
 
 
     //Methods
+    public void signUp(String username, String password) throws IOException {
+        boolean isExist = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(",");
+                if (username.equals(info[0])) {
+                    System.out.println("You can't use this username!");
+                    isExist = true;
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+        if (!isExist) {
+            while (password.length() < 8
+                    || password.contains(username) ||
+                    !password.matches(".*[a-z].*") ||
+                    !password.matches(".*[A-Z].*")){
+                System.err.println("Invalid password!");
+            }
+            try (FileWriter fileWriter = new FileWriter(studentFileName, true)) {
+                fileWriter.write(username + "," + password + ",\n");
+                System.out.println("you signed up successfully!");
+            } catch (IOException e) {
+                throw new IOException();
+            }
+        }
+    }
+
+    public int logIn(String username, String password) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
+            String line;
+            String[] info;
+            int result = 0;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(",");
+                if (username.equals(info[1])) {
+                    result = 1; //password incorrect
+                    if (password.equals(info[2])) {
+                        result = 2; //logged in
+                        reader.close();
+                        return result;
+                    }
+                    reader.close();
+                    return result;
+                }
+            }
+            reader.close();
+            return result; // 0; username incorrect
+        }
+    }
+
     public void addCourseToStudent(String student, String course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
             String tempFileName = "src/data/temp.txt";

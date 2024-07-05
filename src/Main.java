@@ -395,7 +395,7 @@ public class Main {
                     System.out.println("Enter your password: ");
                     String password = scanner.nextLine();
                     clear();
-                    try (BufferedReader reader = new BufferedReader(new FileReader(database.studentFileName))) {
+                    /*try (BufferedReader reader = new BufferedReader(new FileReader(database.studentFileName))) {
                         String line;
                         String[] info;
                         boolean isExist = false;
@@ -462,7 +462,7 @@ public class Main {
                             enter = true;
                             UserName = username;
                         }
-                    }
+                    }*/
                 }
                 if (enter){
                     System.out.println("Access to Courses:\n1. Add a course\n2. Remove a course");
