@@ -1,8 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dc604d7a-cdc3-4a39-ab9f-10740a020728" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daneshjoo/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/daneshjoo/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daneshjoo/src/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/daneshjoo/src/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daneshjoo/src/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/daneshjoo/src/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daneshjoo/src/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/daneshjoo/src/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daneshjoo/src/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/daneshjoo/src/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daneshjoo/src/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/daneshjoo/src/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daneshjoo/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/daneshjoo/src/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daneshjoo/src/daneshjooyar.iml" beforeDir="false" afterPath="$PROJECT_DIR$/daneshjoo/src/daneshjooyar.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutt/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutt/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutt/lib/pages/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutt/lib/pages/login_page.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2ipxTEriU2uFRj7cicDrPoYy0gP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/RSV/Desktop/daneshjooyar",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dc604d7a-cdc3-4a39-ab9f-10740a020728" name="Changes" comment="" />
+      <created>1720201326019</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1720201326019</updated>
+    </task>
+    <servers />
+  </component>
 </project>
