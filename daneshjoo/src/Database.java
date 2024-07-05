@@ -4,7 +4,7 @@ import java.io.*;
 public class Database {
 
     //Files
-    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\src\\data\\students.txt";
+    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
     File studentFile = new File(studentFileName);
     String teacherFileName = "src/data/teachers.txt";
     File teacherFile = new File(teacherFileName);
