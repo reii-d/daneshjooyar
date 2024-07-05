@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:test1/pages/profile.dart';
 import 'package:test1/pages7/Sara.dart';
@@ -18,15 +20,32 @@ class _signUp_pageState extends State<signUp_page> {
   TextEditingController password2Control = TextEditingController();
 
   String _error = '';
-  String response='';
 
   bool _isPasswordObscured = true;
   bool _isRepeatPasswordObscured = true;
 
   void _register() {
-    setState(() {_error = '';});
+    setState(() {
+      _error = '';
+    });
 
     if (_formKey.currentState!.validate()) {
+      Signup();
+    }
+  }
+
+  Future<void> Signup() async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending signup data
+      socket.write('GET: SignUpCheck,${realnameControl.text},${IdControl.text},${password1Control.text}\u0000');
+      await socket.flush();
+
+      // Close socket immediately after sending data
+      socket.close();
+
+      // Navigate to StudentInfoPage
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -37,6 +56,10 @@ class _signUp_pageState extends State<signUp_page> {
           ),
         ),
       );
+    } catch (e) {
+      setState(() {
+        _error = 'Error: $e';
+      });
     }
   }
 
@@ -195,7 +218,7 @@ class _signUp_pageState extends State<signUp_page> {
                         onPressed: () {
                           setState(() {
                             _isRepeatPasswordObscured =
-                                !_isRepeatPasswordObscured;
+                            !_isRepeatPasswordObscured;
                           });
                         },
                       ),
@@ -224,12 +247,12 @@ class _signUp_pageState extends State<signUp_page> {
                     ),
                   ),
                   if (_error.isNotEmpty)
-                      Text(
-                        _error,
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 16,
-                        ),
+                    Text(
+                      _error,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                      ),
                     ),
                 ],
               ),
@@ -238,27 +261,5 @@ class _signUp_pageState extends State<signUp_page> {
         ),
       ),
     );
-  }
-  Future<void> Signup() async{
-    try {
-      final socket = await Socket.connect("192.168.1.112", 8080);
-      socket.write('GET: SignUpCkeck,${realnameControl},${IdControl}\u0000');
-      socket.flush();
-      // socket.listen((socketResponse) {
-      //   setState(() {
-      //     response = String.fromCharCodes(socketResponse);
-      //     if (response == "200") {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => Sara()),
-      //       );
-      //     }
-      //   });
-      // });
-      socket.close();
-    } catch (e) {
-      setState(() {
-        response = 'Error: $e';
-      });
   }
 }
