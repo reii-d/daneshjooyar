@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test1/pages/profile.dart';
+import 'package:test1/pages7/Sara.dart';
 
 class signUp_page extends StatefulWidget {
   signUp_page({super.key});
@@ -12,12 +13,12 @@ class _signUp_pageState extends State<signUp_page> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController realnameControl = TextEditingController();
-  TextEditingController usernameControl = TextEditingController();
-  TextEditingController studentidControl = TextEditingController();//////////
+  TextEditingController IdControl = TextEditingController();
   TextEditingController password1Control = TextEditingController();
   TextEditingController password2Control = TextEditingController();
 
   String _error = '';
+  String response='';
 
   bool _isPasswordObscured = true;
   bool _isRepeatPasswordObscured = true;
@@ -32,8 +33,7 @@ class _signUp_pageState extends State<signUp_page> {
           builder: (context) => StudentInfoPage(
             name: realnameControl.text,
             gpa: 0.0,
-            username: usernameControl.text,
-            studentid: studentidControl.hashCode,
+            username: IdControl.text,
           ),
         ),
       );
@@ -117,9 +117,9 @@ class _signUp_pageState extends State<signUp_page> {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
-                    controller: usernameControl,
+                    controller: IdControl,
                     decoration: InputDecoration(
-                      labelText: "Username",
+                      labelText: "Student Id",
                       labelStyle: TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
@@ -133,30 +133,7 @@ class _signUp_pageState extends State<signUp_page> {
                     ),
                     validator: (valueUsern) {
                       if (valueUsern == null || valueUsern.isEmpty) {
-                        return 'Please enter a username';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: studentidControl,
-                    decoration: InputDecoration(
-                      labelText: "StudentId",
-                      labelStyle: TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                    ),
-                    validator: (valueUsern) {
-                      if (valueUsern == null || valueUsern.isEmpty || valueUsern.length<8) {
-                        return 'Please enter a valid StudentId';
+                        return 'Please enter a StudentId';
                       }
                       return null;
                     },
@@ -261,5 +238,27 @@ class _signUp_pageState extends State<signUp_page> {
         ),
       ),
     );
+  }
+  Future<void> Signup() async{
+    try {
+      final socket = await Socket.connect("192.168.1.112", 8080);
+      socket.write('GET: SignUpCkeck,${realnameControl},${IdControl}\u0000');
+      socket.flush();
+      // socket.listen((socketResponse) {
+      //   setState(() {
+      //     response = String.fromCharCodes(socketResponse);
+      //     if (response == "200") {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => Sara()),
+      //       );
+      //     }
+      //   });
+      // });
+      socket.close();
+    } catch (e) {
+      setState(() {
+        response = 'Error: $e';
+      });
   }
 }

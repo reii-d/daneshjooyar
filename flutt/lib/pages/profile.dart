@@ -4,7 +4,6 @@ class StudentInfoPage extends StatelessWidget {
   String name;
   double gpa;
   String username;
-  int studentid;
   String profilePictureUrl = "https://via.placeholder.com/150";
 
   StudentInfoPage({
@@ -12,7 +11,6 @@ class StudentInfoPage extends StatelessWidget {
     required this.name,
     required this.gpa,
     required this.username,
-    required this.studentid
   }) : super(key: key);
 
   @override
@@ -59,15 +57,6 @@ class StudentInfoPage extends StatelessWidget {
                   SizedBox(height: 20), // Space between the picture and text
                   Text(
                     "Name: $name",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Divider(color: Colors.white), // Divider
-                  Text(
-                    "Id: $studentid",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

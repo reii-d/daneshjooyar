@@ -37,6 +37,7 @@ public class Database {
         return name;
     }
 
+
     public String teacherName(String teacherID) throws IOException {
         String name = "";
         BufferedReader reader = new BufferedReader(new FileReader(teacherFileName));
