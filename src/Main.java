@@ -384,7 +384,7 @@ public class Main {
             //STUDENT
             case "3":
                 clear();
-                System.out.println("Choose an option: \n1. log in\n2. sign up");
+                /*System.out.println("Choose an option: \n1. log in\n2. sign up");
                 int choice = scanner.nextInt();
                 scanner.nextLine();
                 boolean enter = false;
@@ -395,7 +395,7 @@ public class Main {
                     System.out.println("Enter your password: ");
                     String password = scanner.nextLine();
                     clear();
-                    /*try (BufferedReader reader = new BufferedReader(new FileReader(database.studentFileName))) {
+                    try (BufferedReader reader = new BufferedReader(new FileReader(database.studentFileName))) {
                         String line;
                         String[] info;
                         boolean isExist = false;
@@ -462,7 +462,7 @@ public class Main {
                             enter = true;
                             UserName = username;
                         }
-                    }*/
+                    }
                 }
                 if (enter){
                     System.out.println("Access to Courses:\n1. Add a course\n2. Remove a course");
@@ -477,7 +477,7 @@ public class Main {
                         String courseName = scanner.nextLine();
                         database.removeCourseFromStudent(courseName, database.studentName(UserName));
                     }
-                }
+                }*/
                 break;
             case "4":
                 System.out.println("Goodbye!");
