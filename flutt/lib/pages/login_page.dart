@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,7 +7,6 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> {
   TextEditingController userControl = TextEditingController();
   TextEditingController passwordControl = TextEditingController();
@@ -132,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<String> LogIn() async {
     try {
-      final socket = await Socket.connect('192.168.1.112', 8080);
+      final socket = await Socket.connect("192.168.1.112",8080);
       socket.write('GET: logInChecker~${userControl.text}~${passwordControl.text}\u0000');
       socket.flush();
       socket.listen((socketResponse) {
@@ -140,7 +138,6 @@ class _LoginPageState extends State<LoginPage> {
           response = String.fromCharCodes(socketResponse);
         });
       });
-      // await Future.delayed(Duration(seconds: 1)); // wait for the response
       socket.close();
     } catch (e) {
       setState(() {
