@@ -64,8 +64,8 @@ public class LoginSignUp {
             boolean isExist = false;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (username.equals(info[0])) {
-                    if (password.equals(info[1])) {
+                if (username.equals(info[1])) {
+                    if (password.equals(info[2])) {
                         System.out.println("Welcome to Daneshjooyar!");
                         break;
                     } else {

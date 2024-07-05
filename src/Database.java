@@ -1,3 +1,6 @@
+import org.testng.mustache.Value;
+import org.testng.reporters.jq.IPanel;
+
 import java.io.*;
 
 public class Database {
@@ -14,8 +17,7 @@ public class Database {
     //Constructor
     private static Database instance;
 
-    private Database() {
-    }
+    private Database() {}
 
     public static Database getInstance() {
         if (instance == null)
@@ -64,6 +66,22 @@ public class Database {
                 }
             }
             return ok;
+        }
+    }
+
+    public int getNumUnits (String courseName) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
+            String line;
+            String[] info;
+            int units = 0;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(",");
+                if (info[0].equals(courseName)) {
+                    units = Integer.parseInt(info[1]);
+                    break;
+                }
+            }
+            return units;
         }
     }
 
@@ -400,6 +418,95 @@ public class Database {
             PrintWriter writer1 = new PrintWriter(tempFileName);
             writer1.println("");
             writer1.close();
+        }
+    }
+    public String maxScore(String student) {
+        double max = Double.MIN_VALUE;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(",");
+                if (info[0].equals(student)){
+                    if (info.length > 3) {
+                        String[] course = info[3].split(";");
+                        for (String c : course) {
+                            String[] score = c.split(":");
+                            if (score.length > 1) {
+                                if (Double.parseDouble(score[1]) > max)
+                                    max = Double.parseDouble(score[1]);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+        if (max != Double.MIN_VALUE)
+            return String.valueOf(max);
+        else
+            return "nothing to show";
+    }
+
+    public String minScore(String student) {
+        double min = Double.MAX_VALUE;
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(",");
+                if (info[0].equals(student)){
+                    if (info.length > 3) {
+                        String[] course = info[3].split(";");
+                        for (String c : course) {
+                            String[] score = c.split(":");
+                            if (score.length > 1) {
+                                if (Double.parseDouble(score[1]) < min)
+                                    min = Double.parseDouble(score[1]);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
+        if (min != Double.MAX_VALUE)
+            return String.valueOf(min);
+        else
+            return "nothing to show";
+    }
+
+    public String Average(String student) {
+        double total = 0;
+        int units = 0;
+        try (BufferedReader reader1 = new BufferedReader(new FileReader(studentFileName))) {
+            String line;
+            String[] info;
+            while ((line = reader1.readLine()) != null){
+                info = line.split(",");
+                if (info[0].equals(student) && info.length > 3){
+                    String[] course = info[3].split(";");
+                    for (String c : course){
+                        String[] part = c.split(":");
+                        if (part.length > 1){
+                            units += getNumUnits(part[0]);
+                            total += Double.parseDouble(part[1]) * getNumUnits(part[0]);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e){
+            throw new RuntimeException();
+        }
+        if (units != 0){
+            double average = total / units;
+            return String.valueOf(average);
+        }
+        else {
+            return "nothing to show";
         }
     }
 }
