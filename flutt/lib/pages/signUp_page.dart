@@ -34,7 +34,7 @@ class _signUp_pageState extends State<signUp_page> {
     }
   }
 
-  Future<void> Signup() async {
+  Future<void> Signup() async {//server data     ///////////////////////////////////
     try {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
 
