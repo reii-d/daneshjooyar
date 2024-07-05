@@ -14,10 +14,12 @@ public class Server {
         }
     }
 }
+
 class handleClient extends Thread {
     Socket socket;
     DataInputStream dis;
     DataOutputStream dos;
+
     public handleClient(Socket socket) throws IOException {
         this.socket = socket;
         dis = new DataInputStream(socket.getInputStream());
@@ -32,54 +34,61 @@ class handleClient extends Thread {
         try {
             command = receiver();
             System.out.println("command: " + command);
+            String[] splitter = command.split(",");
+            if (splitter.length < 3) {
+                System.out.println("Invalid command format");
+                return;
+            }
+            switch (splitter[0]) {
+                case "GET: logInChecker":
+                    //0 -> username no
+                    //1 -> username yes, password no
+                    //2 -> username yes, password yes
+                    boolean signedIn = false;
+                    int responseDatabase = 100;
+                    try {
+                        responseDatabase = Database.getInstance().logIn(splitter[1], splitter[2]);
+                    } catch (IOException e) {
+                        System.out.println("Error accessing database: " + e.getMessage());
+                        return;  // Exit the method gracefully
+                    }
+                    if (responseDatabase == 2) {
+                        signedIn = true;
+                        System.out.println("code 200");
+                        System.out.println("logged in successfully!");
+                        try {
+                            writer("200");
+                        } catch (IOException e) {
+                            System.out.println("Error writing response: " + e.getMessage());
+                        }
+                    } else if (responseDatabase == 1) {
+                        signedIn = false;
+                        System.out.println("code 100");
+                        System.out.println("password is not correct");
+                        try {
+                            writer("100");
+                        } catch (IOException e) {
+                            System.out.println("Error writing response: " + e.getMessage());
+                        }
+                    } else if (responseDatabase == 0) {
+                        signedIn = false;
+                        System.out.println("code 000");
+                        System.out.println("user not found");
+                        try {
+                            writer("000");
+                        } catch (IOException e) {
+                            System.out.println("Error writing response: " + e.getMessage());
+                        }
+                    }
+                    break;
+                // signup and other commands
+                default:
+                    System.out.println("Unknown command: " + splitter[0]);
+            }
         } catch (IOException e) {
-            throw new RuntimeException();
-        }
-        String[] splitter = command.split(",");
-        switch (splitter[0]){
-            case "GET: logInChecker":
-                //0 -> username no
-                //1 -> username yes, password no
-                //2 -> username yes, password yes
-                boolean signedIn = false;
-                int responseDatabase = 100;
-                try {
-                    responseDatabase = Database.getInstance().logIn(splitter[1], splitter[2]);
-                } catch (IOException e){
-                    throw new RuntimeException();
-                }
-                if (responseDatabase == 2){
-                    signedIn = true;
-                    System.out.println("code 200");
-                    System.out.println("logged in successfully!");
-                    try {
-                        writer("200");
-                    } catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-                else if (responseDatabase == 1){
-                    signedIn = false;
-                    System.out.println("code 100");
-                    System.out.println("password is not correct");
-                    try{
-                        writer("100");
-                    } catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-                else if (responseDatabase == 0){
-                    signedIn = false;
-                    System.out.println("code 000");
-                    System.out.println("user not found");
-                    try {
-                        writer("000");
-                    } catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            //signup and other commands
+            System.out.println("Error receiving command: " + e.getMessage());
+        } catch (RuntimeException e) {
+            System.out.println("Runtime exception: " + e.getMessage());
         }
     }
 

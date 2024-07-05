@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:test1/pages7/Sara.dart';
+
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -7,6 +9,7 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
   TextEditingController userControl = TextEditingController();
   TextEditingController passwordControl = TextEditingController();
@@ -128,14 +131,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<String> LogIn() async {
+  Future<void> LogIn() async {
     try {
-      final socket = await Socket.connect("192.168.1.112",8080);
-      socket.write('GET: logInChecker~${userControl.text}~${passwordControl.text}\u0000');
+      final socket = await Socket.connect("192.168.1.112", 8080);
+      socket.write('GET: logInChecker,${userControl.text},${passwordControl.text}\u0000');
       socket.flush();
       socket.listen((socketResponse) {
         setState(() {
           response = String.fromCharCodes(socketResponse);
+          if (response == "200") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Sara()),
+            );
+          }
         });
       });
       socket.close();
@@ -144,6 +153,5 @@ class _LoginPageState extends State<LoginPage> {
         response = 'Error: $e';
       });
     }
-    return response;
   }
 }

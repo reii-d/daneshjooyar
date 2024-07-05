@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Database {
 
     //Files
-    String studentFileName = "src/data/students.txt";
+    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\src\\data\\students.txt";
     File studentFile = new File(studentFileName);
     String teacherFileName = "src/data/teachers.txt";
     File teacherFile = new File(teacherFileName);
