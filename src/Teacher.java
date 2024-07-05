@@ -7,11 +7,6 @@ public class Teacher {
     private String teacherName;
     private String teacherLastName;
     private int numCoursesTaught;
-<<<<<<< Updated upstream
-    private ArrayList<Course> coursesTaught;
-    Database database = Database.getInstance();
-=======
->>>>>>> Stashed changes
 
 
     //Constructor
@@ -19,10 +14,6 @@ public class Teacher {
         this.teacherName = firstName;
         this.teacherLastName = lastName;
         this.numCoursesTaught = 0;
-<<<<<<< Updated upstream
-        this.coursesTaught = new ArrayList<>();
-=======
->>>>>>> Stashed changes
     }
 
 
@@ -36,12 +27,6 @@ public class Teacher {
     public int getNumCoursesTaught() {
         return numCoursesTaught;
     }
-<<<<<<< Updated upstream
-    public ArrayList<Course> getCoursesTaught() {
-        return coursesTaught;
-    }
-=======
->>>>>>> Stashed changes
 
 
     //Setters
@@ -54,63 +39,4 @@ public class Teacher {
     public void setNumCoursesTaught(int numCoursesTaught) {
         this.numCoursesTaught = numCoursesTaught;
     }
-<<<<<<< Updated upstream
-    public void setCoursesTaught(ArrayList<Course> coursesTaught) {
-        this.coursesTaught = coursesTaught;
-    }
-
-
-    //Methods
-    public void addCourse(Course course){
-        coursesTaught.add(course);
-        numCoursesTaught++;
-    }
-    public void removeCourse(Course course){
-        coursesTaught.remove(course);
-        numCoursesTaught--;
-    }
-    public void manageStudentInCourse(Student student, Course course, boolean add) throws IOException {
-        if (coursesTaught.contains(course)){
-            if (add) {
-                course.addStudent(student);
-                course.setNumStudents(course.getNumStudents() + 1);
-            }
-            else {
-                course.removeStudent(student);
-                course.setNumStudents(course.getNumStudents() - 1);
-            }
-        }
-        else {
-            System.out.println("1.check");
-        }
-    }
-    public void manageProjects (Assignment project, Course course, boolean add){
-        if (coursesTaught.contains(course)) {
-            if (add){
-                course.getActiveProjects().add(project);
-                course.setNumActiveProjects(course.getNumActiveProjects() + 1);
-            }
-            else {
-                for (Assignment assignment : course.getActiveProjects()){
-                    if (assignment.getAssignmentName().equals(project.getAssignmentName())){
-                        course.getActiveProjects().remove(assignment);
-                        course.setNumActiveProjects(course.getNumActiveProjects() - 1);
-                        break;
-                    }
-                }
-            }
-        }
-        else {
-            System.out.println("2.check");
-        }
-    }
-    public int getTotalUnitsTaught(){
-        int totalUnits = 0;
-        for (Course course : coursesTaught){
-            totalUnits += course.getCourseUnits();
-        }
-        return totalUnits;
-    }
-=======
->>>>>>> Stashed changes
 }

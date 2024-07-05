@@ -35,16 +35,4 @@ public class Assignment {
     public void setDayCounter(int dayCounter) {
         this.dayCounter = dayCounter;
     }
-
-
-    //Methods
-    public void changeDeadline(Assignment assignment, int newDeadline){
-        assignment.setDayCounter(newDeadline);
-    }
-    public void archiveAssignment(Assignment assignment){
-        assignment.setIsProjectActive(false);
-    }
-    public void unArchiveAssignment(Assignment assignment){
-        assignment.setIsProjectActive(true);
-    }
 }
