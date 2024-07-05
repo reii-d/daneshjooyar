@@ -7,8 +7,11 @@ public class Teacher {
     private String teacherName;
     private String teacherLastName;
     private int numCoursesTaught;
+<<<<<<< Updated upstream
     private ArrayList<Course> coursesTaught;
     Database database = Database.getInstance();
+=======
+>>>>>>> Stashed changes
 
 
     //Constructor
@@ -16,7 +19,10 @@ public class Teacher {
         this.teacherName = firstName;
         this.teacherLastName = lastName;
         this.numCoursesTaught = 0;
+<<<<<<< Updated upstream
         this.coursesTaught = new ArrayList<>();
+=======
+>>>>>>> Stashed changes
     }
 
 
@@ -30,9 +36,12 @@ public class Teacher {
     public int getNumCoursesTaught() {
         return numCoursesTaught;
     }
+<<<<<<< Updated upstream
     public ArrayList<Course> getCoursesTaught() {
         return coursesTaught;
     }
+=======
+>>>>>>> Stashed changes
 
 
     //Setters
@@ -45,6 +54,7 @@ public class Teacher {
     public void setNumCoursesTaught(int numCoursesTaught) {
         this.numCoursesTaught = numCoursesTaught;
     }
+<<<<<<< Updated upstream
     public void setCoursesTaught(ArrayList<Course> coursesTaught) {
         this.coursesTaught = coursesTaught;
     }
@@ -101,4 +111,6 @@ public class Teacher {
         }
         return totalUnits;
     }
+=======
+>>>>>>> Stashed changes
 }

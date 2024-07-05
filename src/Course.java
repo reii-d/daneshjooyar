@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Course {
+<<<<<<< Updated upstream
     Database database = Database.getInstance();
     private String courseName;
     private Teacher courseTeacher;
@@ -13,6 +14,15 @@ public class Course {
     private String examDate;
     private int numStudents;
     private ArrayList<Assignment> activeProjects;
+=======
+    private String courseName;
+    private Teacher courseTeacher;
+    private int courseUnits;
+    private boolean isCourseActive;
+    private int numPractices;
+    private String examDate;
+    private int numStudents;
+>>>>>>> Stashed changes
     private int numActiveProjects;
 
 
@@ -25,10 +35,13 @@ public class Course {
         this.numPractices = 0;
         this.courseTeacher = teacher;
         this.numStudents = 0;
+<<<<<<< Updated upstream
         this.students = new ArrayList<>();
         this.assignments = new ArrayList<>();
         this.activeProjects = new ArrayList<>();
 
+=======
+>>>>>>> Stashed changes
         this.numActiveProjects = 0;
     }
 
@@ -37,6 +50,7 @@ public class Course {
     public int getCourseUnits() {
         return courseUnits;
     }
+<<<<<<< Updated upstream
     public boolean isCourseActive() {
         return isCourseActive;
     }
@@ -46,6 +60,11 @@ public class Course {
     public int getNumPractices() {
         return numPractices;
     }
+=======
+    public String getExamDate() {
+        return examDate;
+    }
+>>>>>>> Stashed changes
     public int getNumStudents() {
         return numStudents;
     }
@@ -55,6 +74,7 @@ public class Course {
     public Teacher getCourseTeacher() {
         return courseTeacher;
     }
+<<<<<<< Updated upstream
     public ArrayList<Student> getStudents() {
         return students;
     }
@@ -138,6 +158,20 @@ public class Course {
         }
         return highest;
     }
+=======
+    public int getNumActiveProjects() {
+        return numActiveProjects;
+    }
+
+
+    //Setters
+    public void setNumStudents(int numStudents) {
+        this.numStudents = numStudents;
+    }
+    public void setNumActiveProjects(int numActiveProjects) {
+        this.numActiveProjects = numActiveProjects;
+    }
+>>>>>>> Stashed changes
 }
 
 
