@@ -2,28 +2,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Course {
-<<<<<<< Updated upstream
-    Database database = Database.getInstance();
     private String courseName;
     private Teacher courseTeacher;
     private int courseUnits;
     private ArrayList<Student> students;
     private boolean isCourseActive;
-    private ArrayList<Assignment> assignments;
     private int numPractices;
     private String examDate;
     private int numStudents;
-    private ArrayList<Assignment> activeProjects;
-=======
-    private String courseName;
-    private Teacher courseTeacher;
-    private int courseUnits;
-    private boolean isCourseActive;
-    private int numPractices;
-    private String examDate;
-    private int numStudents;
->>>>>>> Stashed changes
-    private int numActiveProjects;
 
 
     //Constructor
@@ -35,14 +21,6 @@ public class Course {
         this.numPractices = 0;
         this.courseTeacher = teacher;
         this.numStudents = 0;
-<<<<<<< Updated upstream
-        this.students = new ArrayList<>();
-        this.assignments = new ArrayList<>();
-        this.activeProjects = new ArrayList<>();
-
-=======
->>>>>>> Stashed changes
-        this.numActiveProjects = 0;
     }
 
 
@@ -50,21 +28,9 @@ public class Course {
     public int getCourseUnits() {
         return courseUnits;
     }
-<<<<<<< Updated upstream
-    public boolean isCourseActive() {
-        return isCourseActive;
-    }
     public String getExamDate() {
         return examDate;
     }
-    public int getNumPractices() {
-        return numPractices;
-    }
-=======
-    public String getExamDate() {
-        return examDate;
-    }
->>>>>>> Stashed changes
     public int getNumStudents() {
         return numStudents;
     }
@@ -73,19 +39,6 @@ public class Course {
     }
     public Teacher getCourseTeacher() {
         return courseTeacher;
-    }
-<<<<<<< Updated upstream
-    public ArrayList<Student> getStudents() {
-        return students;
-    }
-    public ArrayList<Assignment> getPractices() {
-        return assignments;
-    }
-    public int getNumActiveProjects() {
-        return numActiveProjects;
-    }
-    public ArrayList<Assignment> getActiveProjects() {
-        return activeProjects;
     }
 
 
@@ -102,76 +55,12 @@ public class Course {
     public void setCourseUnits(int courseUnits) {
         this.courseUnits = courseUnits;
     }
-    public void setNumStudents(int numStudents) {
-        this.numStudents = numStudents;
-    }
-    public void setActiveProjects(ArrayList<Assignment> activeProjects) {
-        this.activeProjects = activeProjects;
-    }
-    public void setPractices(ArrayList<Assignment> practices) {
-        this.assignments = practices;
-    }
     public void setNumPractices(int numPractices) {
         this.numPractices = numPractices;
     }
     public void setCourseActive(boolean courseActive) {
         isCourseActive = courseActive;
     }
-    public void setNumActiveProjects(int numActiveProjects) {
-        this.numActiveProjects = numActiveProjects;
-    }
-
-
-    //Methods
-    public void addStudent(Student student) throws IOException {
-        String course = this.getCourseName();
-        String stu = student.getStudentName();
-        database.addCourseToStudent(stu, course);
-    }
-    public void removeStudent(Student student){
-        if (getStudents().contains(student)) {
-            students.remove(student);
-            numStudents--;
-            if (student.getRegisteredCourses().contains(this)) {
-                student.removeCourse(this);
-            }
-        }
-    }
-    public void printCourseStudents(){
-        ArrayList<Student> students = getStudents();
-        if (students != null){
-            for (Student student : students) {
-                System.out.println("Student Name: " + student.getStudentName());
-            }
-        }
-    }
-    public void giveGrade(Student student, double grade){
-        student.setCourseGrades(courseName, grade);
-    }
-    public double findHighestGrade(){
-        double highest = 0;
-        for (Student student : students){
-            if(student.getCourseGrades().containsKey(courseName)){
-                double grade = student.getCourseGrades().get(courseName);
-                highest = Math.max(highest, grade);
-            }
-        }
-        return highest;
-    }
-=======
-    public int getNumActiveProjects() {
-        return numActiveProjects;
-    }
-
-
-    //Setters
-    public void setNumStudents(int numStudents) {
-        this.numStudents = numStudents;
-    }
-    public void setNumActiveProjects(int numActiveProjects) {
-        this.numActiveProjects = numActiveProjects;
-    }
->>>>>>> Stashed changes
 }
 
 
