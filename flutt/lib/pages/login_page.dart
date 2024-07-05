@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,6 +12,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController userControl = TextEditingController();
   TextEditingController passwordControl = TextEditingController();
+
+  String response = '';
 
   bool _isObscured2 = true;
 
@@ -94,7 +98,9 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    LogIn();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.cyan,
                     foregroundColor: Colors.white,
@@ -109,10 +115,38 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text("Login"),
                 ),
               ),
+              SizedBox(height: 20),
+              Text(
+                response,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<String> LogIn() async {
+    try {
+      final socket = await Socket.connect('192.168.1.112', 8080);
+      socket.write('GET: logInChecker~${userControl.text}~${passwordControl.text}\u0000');
+      socket.flush();
+      socket.listen((socketResponse) {
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+        });
+      });
+      // await Future.delayed(Duration(seconds: 1)); // wait for the response
+      socket.close();
+    } catch (e) {
+      setState(() {
+        response = 'Error: $e';
+      });
+    }
+    return response;
   }
 }
