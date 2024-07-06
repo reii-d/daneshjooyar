@@ -37,6 +37,7 @@ public class Database {
         return name;
     }
 
+
     public String teacherName(String teacherID) throws IOException {
         String name = "";
         BufferedReader reader = new BufferedReader(new FileReader(teacherFileName));
@@ -98,24 +99,27 @@ public class Database {
                     isExist = true;
                     break;
                 }
+                else {
+
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException();
         }
-        if (!isExist) {
-            while (password.length() < 8
-                    || password.contains(username) ||
-                    !password.matches(".*[a-z].*") ||
-                    !password.matches(".*[A-Z].*")){
-                System.err.println("Invalid password!");
-            }
-            try (FileWriter fileWriter = new FileWriter(studentFileName, true)) {
-                fileWriter.write(username + "," + password + ",\n");
-                System.out.println("you signed up successfully!");
-            } catch (IOException e) {
-                throw new IOException();
-            }
-        }
+//        if (!isExist) {
+//            while (password.length() < 8
+//                    || password.contains(username) ||
+//                    !password.matches(".*[a-z].*") ||
+//                    !password.matches(".*[A-Z].*")){
+//                System.err.println("Invalid password!");
+//            }
+//            try (FileWriter fileWriter = new FileWriter(studentFileName, true)) {
+//                fileWriter.write(username + "," + password + ",\n");
+//                System.out.println("you signed up successfully!");
+//            } catch (IOException e) {
+//                throw new IOException();
+//            }
+//        }
     }
 
     public int logIn(String username, String password) throws IOException {

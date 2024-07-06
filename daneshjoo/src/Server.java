@@ -3,7 +3,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+////////////////////////////////////////////////ineeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 public class Server {
     public static void main (String[] args) throws IOException {
         System.out.println("Welcome to the Server!");
@@ -81,7 +81,8 @@ class handleClient extends Thread {
                         }
                     }
                     break;
-                // signup and other commands
+                case "GET: SignUpCkeck":
+
                 default:
                     System.out.println("Unknown command: " + splitter[0]);
             }

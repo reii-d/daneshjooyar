@@ -40,7 +40,6 @@ class Sara extends StatelessWidget {
                     name: "John Doe",
                     gpa: 3.75,
                     username: "john_doe",
-                    studentid: 12345678,
                   ),
                 ),
               );
@@ -84,7 +83,6 @@ class Sara extends StatelessWidget {
                       name: "John Doe",
                       gpa: 3.75,
                       username: "john_doe",
-                      studentid: 12345678,
                     ),
                   ),
                 );

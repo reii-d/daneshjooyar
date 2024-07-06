@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:test1/pages/profile.dart';
+import 'package:test1/pages7/Sara.dart';
 
 class signUp_page extends StatefulWidget {
   signUp_page({super.key});
@@ -12,8 +15,7 @@ class _signUp_pageState extends State<signUp_page> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController realnameControl = TextEditingController();
-  TextEditingController usernameControl = TextEditingController();
-  TextEditingController studentidControl = TextEditingController();//////////
+  TextEditingController IdControl = TextEditingController();
   TextEditingController password1Control = TextEditingController();
   TextEditingController password2Control = TextEditingController();
 
@@ -23,20 +25,41 @@ class _signUp_pageState extends State<signUp_page> {
   bool _isRepeatPasswordObscured = true;
 
   void _register() {
-    setState(() {_error = '';});
+    setState(() {
+      _error = '';
+    });
 
     if (_formKey.currentState!.validate()) {
+      Signup();
+    }
+  }
+
+  Future<void> Signup() async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending signup data
+      socket.write('GET: SignUpCheck,${realnameControl.text},${IdControl.text},${password1Control.text}\u0000');
+      await socket.flush();
+
+      // Close socket immediately after sending data
+      socket.close();
+
+      // Navigate to StudentInfoPage
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => StudentInfoPage(
             name: realnameControl.text,
             gpa: 0.0,
-            username: usernameControl.text,
-            studentid: studentidControl.hashCode,
+            username: IdControl.text,
           ),
         ),
       );
+    } catch (e) {
+      setState(() {
+        _error = 'Error: $e';
+      });
     }
   }
 
@@ -117,9 +140,9 @@ class _signUp_pageState extends State<signUp_page> {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
-                    controller: usernameControl,
+                    controller: IdControl,
                     decoration: InputDecoration(
-                      labelText: "Username",
+                      labelText: "Student Id",
                       labelStyle: TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
@@ -133,30 +156,7 @@ class _signUp_pageState extends State<signUp_page> {
                     ),
                     validator: (valueUsern) {
                       if (valueUsern == null || valueUsern.isEmpty) {
-                        return 'Please enter a username';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: studentidControl,
-                    decoration: InputDecoration(
-                      labelText: "StudentId",
-                      labelStyle: TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                    ),
-                    validator: (valueUsern) {
-                      if (valueUsern == null || valueUsern.isEmpty || valueUsern.length<8) {
-                        return 'Please enter a valid StudentId';
+                        return 'Please enter a StudentId';
                       }
                       return null;
                     },
@@ -218,7 +218,7 @@ class _signUp_pageState extends State<signUp_page> {
                         onPressed: () {
                           setState(() {
                             _isRepeatPasswordObscured =
-                                !_isRepeatPasswordObscured;
+                            !_isRepeatPasswordObscured;
                           });
                         },
                       ),
@@ -247,12 +247,12 @@ class _signUp_pageState extends State<signUp_page> {
                     ),
                   ),
                   if (_error.isNotEmpty)
-                      Text(
-                        _error,
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 16,
-                        ),
+                    Text(
+                      _error,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                      ),
                     ),
                 ],
               ),
