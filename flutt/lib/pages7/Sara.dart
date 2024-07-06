@@ -185,18 +185,18 @@ class _SaraState extends State<Sara> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(25.0),
+        padding: EdgeInsets.all(25.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildInfoCard("Best Score", bestScore.toString()),
+            ShowCard("Best Score", bestScore.toString()),
             SizedBox(height: 20),
-            buildInfoCard("Worst Score", worstScore.toString()),
+            ShowCard("Worst Score", worstScore.toString()),
             SizedBox(height: 20),
-            buildInfoCard("Number of Assignments", numberOfAssignments.toString()),
+            ShowCard("Number of Assignments", numberOfAssignments.toString()),
             if (_error.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: 20),
                 child: Text(
                   _error,
                   style: TextStyle(color: Colors.red, fontSize: 16),
@@ -208,7 +208,7 @@ class _SaraState extends State<Sara> {
     );
   }
 
-  Widget buildInfoCard(String title, String content) {
+  Widget ShowCard(String title, String content) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(15),
