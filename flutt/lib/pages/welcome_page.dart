@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test1/pages/login_chioce.dart';
+import 'package:test1/pages/login_page.dart';
 import 'package:test1/pages/signup_page.dart';
 
 class welcome_page extends StatelessWidget {
@@ -72,7 +72,7 @@ class welcome_page extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => login_choice(),
+                            builder: (context) => LoginPage(),
                           ),
                         );
                       },
