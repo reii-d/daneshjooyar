@@ -117,6 +117,7 @@ class handleClient extends Thread {
                 case "GET: DeleteAccount":
                     try {
                         Database.getInstance().deleteAccount(splitter[1]);
+                        writer("200");
                     }catch (IOException e){
                         System.out.println("Error accessing database: " + e.getMessage());
                         return;  // Exit the method gracefully
