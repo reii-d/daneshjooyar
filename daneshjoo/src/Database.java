@@ -23,6 +23,8 @@ public class Database {
         return instance;
     }
 
+
+    //for returning the name of students with their username.
     public String studentName(String username) throws IOException {
         String name = "";
         BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
@@ -38,6 +40,7 @@ public class Database {
     }
 
 
+    //for returning the name of teachers with their teacherID.
     public String teacherName(String teacherID) throws IOException {
         String name = "";
         BufferedReader reader = new BufferedReader(new FileReader(teacherFileName));
@@ -52,6 +55,8 @@ public class Database {
         return name;
     }
 
+
+    //To check the teacher teaches a course or not
     public boolean isTeacher (String teacherID, String courseName) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
@@ -68,6 +73,8 @@ public class Database {
         }
     }
 
+
+    //to return the number of units of a course
     public int getNumUnits (String courseName) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
@@ -85,7 +92,8 @@ public class Database {
     }
 
 
-    //Methods
+    //Methods for Database
+    //Sign Up: To save the information of students in file.
     public void signUp(String username, String password) throws IOException {
         boolean isExist = false;
 
@@ -106,22 +114,10 @@ public class Database {
         } catch (IOException e) {
             throw new RuntimeException();
         }
-//        if (!isExist) {
-//            while (password.length() < 8
-//                    || password.contains(username) ||
-//                    !password.matches(".*[a-z].*") ||
-//                    !password.matches(".*[A-Z].*")){
-//                System.err.println("Invalid password!");
-//            }
-//            try (FileWriter fileWriter = new FileWriter(studentFileName, true)) {
-//                fileWriter.write(username + "," + password + ",\n");
-//                System.out.println("you signed up successfully!");
-//            } catch (IOException e) {
-//                throw new IOException();
-//            }
-//        }
     }
 
+
+    //Log In: To check correction of username and password
     public int logIn(String username, String password) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
             String line;
@@ -145,6 +141,8 @@ public class Database {
         }
     }
 
+
+    //To add a course to
     public void addCourseToStudent(String student, String course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
             String tempFileName = "src/data/temp.txt";
