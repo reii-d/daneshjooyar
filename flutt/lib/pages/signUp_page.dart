@@ -37,7 +37,7 @@ class _signUp_pageState extends State<signUp_page> {
   Future<void> Signup() async {
     try {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
-
+//tessssssssssst
       // Sending signup data
       socket.write('GET: SignUpCheck,${realnameControl.text},${IdControl.text},${password1Control.text}\u0000');
       await socket.flush();
