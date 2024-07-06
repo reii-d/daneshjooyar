@@ -4,7 +4,7 @@ import java.io.*;
 public class Database {
 
     //Files
-    String studentFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/students.txt";
+    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
     File studentFile = new File(studentFileName);
     String teacherFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/teachers.txt";
     File teacherFile = new File(teacherFileName);
@@ -142,7 +142,7 @@ public class Database {
     public int deleteAccount(String studentID) throws IOException {
         int result = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
-            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
+            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(",");

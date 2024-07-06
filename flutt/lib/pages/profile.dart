@@ -83,7 +83,7 @@ class StudentInfoPage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  //Spacer(), // Push the button//////////// ckeck//////////
+                  Spacer(), // Push the button//////////// ckeck//////////
                   ElevatedButton(
                     onPressed: () {
                       DeleteAccount(context);
