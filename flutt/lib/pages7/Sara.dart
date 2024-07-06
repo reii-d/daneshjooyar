@@ -8,7 +8,7 @@ import 'package:test1/pages7/Tamrina.dart';
 import '../pages/profile.dart';
 
 class Sara extends StatefulWidget {
-  String Id;
+  final String Id;
 
   Sara({super.key, required this.Id});
 
@@ -34,7 +34,7 @@ class _SaraState extends State<Sara> {
 
       // Sending request for SaraInfo
       socket.write('GET: SaraInfo,${widget.Id}\u0000');
-      await socket.flush();
+      socket.flush();
 
       // Listening for the response
       socket.listen((List<int> data) {
@@ -96,16 +96,27 @@ class _SaraState extends State<Sara> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+            Container(
+              height: 100,
+              child: DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
                 ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 16.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Menu',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                ),
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
               ),
             ),
             ListTile(
