@@ -4,19 +4,17 @@ import java.io.*;
 public class Database {
 
     //Files
-    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
+    String studentFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/students.txt";
     File studentFile = new File(studentFileName);
-    String teacherFileName = "src/data/teachers.txt";
+    String teacherFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/teachers.txt";
     File teacherFile = new File(teacherFileName);
-    String courseFileName = "src/data/courses.txt";
+    String courseFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/courses.txt";
     File courseFile = new File(courseFileName);
 
 
     //Constructor
     private static Database instance;
-
     private Database() {}
-
     public static Database getInstance() {
         if (instance == null)
             instance = new Database();
@@ -92,27 +90,28 @@ public class Database {
     }
 
 
+
     //Methods for Database
     //Sign Up: To save the information of students in file.
-    public void signUp(String username, String password) throws IOException {
+    public int signUp(String realName, String username, String password) throws IOException {
         boolean isExist = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
+            FileWriter fileWriter = new FileWriter(studentFileName, true)) {
             String line;
             String[] info;
+            int result = 2;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (username.equals(info[0])) {
                     System.out.println("You can't use this username!");
-                    isExist = true;
-                    break;
-                }
-                else {
-
+                    result = 0;
+                    return result; //the studentID is in use
                 }
             }
-        } catch (IOException e) {
-            throw new RuntimeException();
+            fileWriter.write(realName + "," + username + "," + password + ",\n");
+            System.out.println("you signed up successfully!");
+            return result; //Signed up successfully
         }
     }
 
@@ -142,10 +141,10 @@ public class Database {
     }
 
 
-    //To add a course to
+    //To add a course to student's courses
     public void addCourseToStudent(String student, String course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
             String line;
             String[] info;
             while ((line = reader.readLine()) != null) {
@@ -172,8 +171,9 @@ public class Database {
         }
     }
 
+    //To remove a course from student's courses
     public void removeCourseFromStudent(String cName, String sName) throws IOException {
-        String tempFileName = "src/data/temp.txt";
+        String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
         boolean removed = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
              FileWriter fileWriter = new FileWriter(tempFileName)) {
@@ -216,9 +216,10 @@ public class Database {
         }
     }
 
+    //To change the score of a course (student file)
     public void studentScore(String student, String courseName, String score) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
             String line;
             String[] info;
             FileWriter fileWriter = new FileWriter(tempFileName);
@@ -262,6 +263,7 @@ public class Database {
         }
     }
 
+    //To define a new course to course file(name, units, date of exam, teacher)
     public void addCourse(Course course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String newCourse = course.getCourseName() + "," + course.getCourseUnits() + "," + course.getExamDate() + "," +
@@ -285,9 +287,10 @@ public class Database {
         }
     }
 
+    //To remove a course from course file
     public void removeCourse(Course course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
             String line;
             boolean removed = false;
             String remove = course.getCourseName() + "," + course.getCourseUnits() + "," +
@@ -319,9 +322,10 @@ public class Database {
         }
     }
 
+    //To change information of a course in course file
     public void updateCourse(Course oldCourse, Course newCourse, String teacher) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
             String line;
             String[] info;
             boolean updated = false;
@@ -358,9 +362,10 @@ public class Database {
         }
     }
 
+    //To change assignments of a course
     public void updateAssignment(String courseName, Assignment assignment) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
             String line;
             String[] info;
             FileWriter fileWriter = new FileWriter(tempFileName);
@@ -404,9 +409,10 @@ public class Database {
         }
     }
 
+    //To define an assignment for a course
     public void addAssignment(Assignment assignment, String courseName) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "src/data/temp.txt";
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
             String line;
             String[] info;
             while ((line = reader.readLine()) != null) {
@@ -433,8 +439,9 @@ public class Database {
         }
     }
 
+    //To remove an assignment from a course
     public void removeAssignment(Assignment assignment, String course) throws IOException {
-        String tempFileName = "src/data/temp.txt";
+        String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
         boolean removed = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName));
              FileWriter fileWriter = new FileWriter(tempFileName)) {
@@ -476,8 +483,11 @@ public class Database {
             writer1.close();
         }
     }
+
+    //To return the highest score of a student
     public String maxScore(String student) {
         double max = Double.MIN_VALUE;
+        String name = "";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
             String line;
@@ -490,8 +500,10 @@ public class Database {
                         for (String c : course) {
                             String[] score = c.split(":");
                             if (score.length > 1) {
-                                if (Double.parseDouble(score[1]) > max)
+                                if (Double.parseDouble(score[1]) > max) {
                                     max = Double.parseDouble(score[1]);
+                                    name = score[0];
+                                }
                             }
                         }
                     }
@@ -501,11 +513,12 @@ public class Database {
             throw new RuntimeException();
         }
         if (max != Double.MIN_VALUE)
-            return String.valueOf(max);
+            return (name + ":" + String.valueOf(max));
         else
             return "nothing to show";
     }
 
+    //To return the lowest score of a student
     public String minScore(String student) {
         double min = Double.MAX_VALUE;
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
@@ -535,6 +548,7 @@ public class Database {
             return "nothing to show";
     }
 
+    //To calculate and return the average of a student
     public String Average(String student) {
         double total = 0;
         int units = 0;

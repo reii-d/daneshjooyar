@@ -41,10 +41,11 @@ class handleClient extends Thread {
                 return;
             }
             switch (splitter[0]) {
-                case "GET: logInChecker":
-                    //0 -> username no
-                    //1 -> username yes, password no
-                    //2 -> username yes, password yes
+
+                case "GET: logInChecker": //LOGIN
+                    //0 -> username No
+                    //1 -> username Yes, password No
+                    //2 -> username Yes, password Yes
                     boolean signedIn = false;
                     int responseDatabase = 100;
                     try {
@@ -63,7 +64,6 @@ class handleClient extends Thread {
                             System.out.println("Error writing response: " + e.getMessage());
                         }
                     } else if (responseDatabase == 1) {
-                        signedIn = false;
                         System.out.println("code 100");
                         System.out.println("password is not correct");
                         try {
@@ -72,7 +72,6 @@ class handleClient extends Thread {
                             System.out.println("Error writing response: " + e.getMessage());
                         }
                     } else if (responseDatabase == 0) {
-                        signedIn = false;
                         System.out.println("code 000");
                         System.out.println("user not found");
                         try {
@@ -82,8 +81,39 @@ class handleClient extends Thread {
                         }
                     }
                     break;
+
                 case "GET: SignUpCheck":
+                    //0 -> StudentID is in use
+                    //2 -> Signed up successfully
                     boolean signedUp = false;
+                    int response = 100;
+                    try {
+                        response = Database.getInstance().signUp(splitter[0], splitter[1], splitter[2]);
+                    }catch (IOException e){
+                        System.out.println("Error accessing database: " + e.getMessage());
+                        return;  // Exit the method gracefully
+                    }
+                    if (response == 0) {
+                        System.out.println("code 000");
+                        System.out.println("StudentId is in use");
+                        try {
+                            writer("000");
+                        } catch (IOException e) {
+                            System.out.println("Error writing response: " + e.getMessage());
+                        }
+                    }
+                    else if (response == 2){
+                        signedUp = true;
+                        System.out.println("code 200");
+                        System.out.println("Signed up successfully");
+                        try {
+                            writer("200");
+                        } catch (IOException e) {
+                            System.out.println("Error writing response: " + e.getMessage());
+                        }
+                    }
+                    break;
+
 
                 default:
                     System.out.println("Unknown command: " + splitter[0]);

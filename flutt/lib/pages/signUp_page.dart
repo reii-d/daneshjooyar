@@ -42,7 +42,7 @@ class _signUp_pageState extends State<signUp_page> {
       socket.write('GET: SignUpCheck,${realnameControl.text},${IdControl.text},${password1Control.text}\u0000');
       await socket.flush();
 
-      // Close socket immediately after sending data
+      // Close socket immediately after sending d
       socket.close();
 
       // Navigate to StudentInfoPage

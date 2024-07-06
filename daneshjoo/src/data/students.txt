@@ -1,4 +1,4 @@
 Taghi Taghavi,taghtagh,Ebruuuuuu,AP:12;EC:16;
 Mehdi Mahdavi,mnb,12345678,English:19;Farsi:19.5;Math2:12;Az:;
 Sama Sarayani,sam-sar,AMASrasss,Az:20;Chemistry:13.75;Physics:9.5;
-Aram Daliri,Aram-Daliri,ArraaMdaa,
+Aram Daliri,Aram-Daliri,ArraaMdaa,;
