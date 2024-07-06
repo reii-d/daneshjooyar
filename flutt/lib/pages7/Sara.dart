@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:test1/pages7/Classa.dart';
 import 'package:test1/pages7/Kara.dart';
@@ -5,21 +7,59 @@ import 'package:test1/pages7/Khabara.dart';
 import 'package:test1/pages7/Tamrina.dart';
 import '../pages/profile.dart';
 
-class Sara extends StatelessWidget {
+class Sara extends StatefulWidget {
   String Id;
-  Sara({super.key,
-    required this.Id
-  });
 
+  Sara({super.key, required this.Id});
+
+  @override
+  _SaraState createState() => _SaraState();
+}
+
+class _SaraState extends State<Sara> {
+  int bestScore = 0;
+  int worstScore = 0;
+  int numberOfAssignments = 0;
+  String _error = '';
+
+  @override
+  void initState() {
+    super.initState();
+    SaraInfo();
+  }
+
+  Future<void> SaraInfo() async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending request for SaraInfo
+      socket.write('GET: SaraInfo,${widget.Id}\u0000');
+      await socket.flush();
+
+      // Listening for the response
+      socket.listen((List<int> data) {
+        String response = String.fromCharCodes(data);
+        // format "bestScore,worstScore,numberOfAssignments"
+        List<String> responseData = response.split(',');
+
+        if (responseData.length == 3) {
+          setState(() {
+            bestScore = int.parse(responseData[0]);
+            worstScore = int.parse(responseData[1]);
+            numberOfAssignments = int.parse(responseData[2]);
+          });
+        }
+        socket.close();
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Error: $e';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Dummy data
-    final bestScore = 95;
-    final worstScore = 60;
-    final unfinishedHomework = ["Math Assignment", "Science Project"]; // az backend miyad
-    final futureWorks = ["History Essay", "Programming Assignment"]; // az backend miyad
-
     return Scaffold(
       backgroundColor: Colors.blueGrey[400],
       appBar: AppBar(
@@ -43,7 +83,7 @@ class Sara extends StatelessWidget {
                   builder: (context) => StudentInfoPage(
                     name: "John Doe",
                     gpa: 3.75,
-                    studentid: Id,
+                    studentid: widget.Id,
                   ),
                 ),
               );
@@ -86,7 +126,7 @@ class Sara extends StatelessWidget {
                     builder: (context) => StudentInfoPage(
                       name: "John Doe",
                       gpa: 3.75,
-                      studentid: Id,
+                      studentid: widget.Id,
                     ),
                   ),
                 );
@@ -142,9 +182,15 @@ class Sara extends StatelessWidget {
             SizedBox(height: 20),
             buildInfoCard("Worst Score", worstScore.toString()),
             SizedBox(height: 20),
-            buildInfoCard("Unfinished Homework", unfinishedHomework.join('\n- ')),
-            SizedBox(height: 20),
-            buildInfoCard("Future Works", futureWorks.join('\n- ')),
+            buildInfoCard("Number of Assignments", numberOfAssignments.toString()),
+            if (_error.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Text(
+                  _error,
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                ),
+              ),
           ],
         ),
       ),
