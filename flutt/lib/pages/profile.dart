@@ -1,10 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:test1/pages/welcome_page.dart';
 
 class StudentInfoPage extends StatelessWidget {
-  String name;
-  double gpa;
-  String studentid;
-  String profilePictureUrl = "https://via.placeholder.com/150";
+  final String name;
+  final double gpa;
+  final String studentid;
+  final String profilePictureUrl = "https://via.placeholder.com/150";
 
   StudentInfoPage({
     Key? key,
@@ -81,10 +83,10 @@ class StudentInfoPage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Spacer(), // Push the button
+                  //Spacer(), // Push the button//////////// ckeck//////////
                   ElevatedButton(
                     onPressed: () {
-                      // connect to backend
+                      DeleteAccount(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
@@ -109,5 +111,25 @@ class StudentInfoPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> DeleteAccount(BuildContext context) async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending delete account data
+      socket.write('GET: DeleteAccount,${this.name},${this.studentid}\u0000');
+      socket.flush();
+      socket.close();
+
+      // Navigate to WelcomePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => welcome_page()),
+      );
+    } catch (e) {
+      print("Failed to delete account: $e");
+      // Handle error
+    }
   }
 }
