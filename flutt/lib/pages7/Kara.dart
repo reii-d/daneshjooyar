@@ -68,7 +68,7 @@ class _KaraState extends State<Kara> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => StudentInfoPage(
                   name: "John Doe",
                   gpa: 3.75,
-                  username: "john_doe",
+                  studentid: "john_doe",
                 ),
                 ));
               },

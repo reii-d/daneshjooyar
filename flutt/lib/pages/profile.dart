@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class StudentInfoPage extends StatelessWidget {
   String name;
   double gpa;
-  String username;
+  String studentid;
   String profilePictureUrl = "https://via.placeholder.com/150";
 
   StudentInfoPage({
     Key? key,
     required this.name,
     required this.gpa,
-    required this.username,
+    required this.studentid,
   }) : super(key: key);
 
   @override
@@ -65,7 +65,7 @@ class StudentInfoPage extends StatelessWidget {
                   ),
                   Divider(color: Colors.white), // Divider
                   Text(
-                    "Username: $username",
+                    "StudentId: $studentid",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

@@ -86,7 +86,7 @@ class _TamrinaState extends State<Tamrina> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => StudentInfoPage(
                   name: "John Doe",
                   gpa: 3.75,
-                  username: "john_doe",
+                  studentid: "john_doe",
                 )));
               },
             ),

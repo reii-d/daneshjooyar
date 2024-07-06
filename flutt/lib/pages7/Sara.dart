@@ -39,7 +39,7 @@ class Sara extends StatelessWidget {
                   builder: (context) => StudentInfoPage(
                     name: "John Doe",
                     gpa: 3.75,
-                    username: "john_doe",
+                    studentid: "john_doe",
                   ),
                 ),
               );
@@ -82,7 +82,7 @@ class Sara extends StatelessWidget {
                     builder: (context) => StudentInfoPage(
                       name: "John Doe",
                       gpa: 3.75,
-                      username: "john_doe",
+                      studentid: "john_doe",
                     ),
                   ),
                 );

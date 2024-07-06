@@ -52,7 +52,7 @@ class _signUp_pageState extends State<signUp_page> {
           builder: (context) => StudentInfoPage(
             name: realnameControl.text,
             gpa: 0.0,
-            username: IdControl.text,
+            studentid: IdControl.text,
           ),
         ),
       );

@@ -61,7 +61,7 @@ class _KhabaraState extends State<Khabara> {
                         builder: (context) => StudentInfoPage(
                           name: "John Doe",
                           gpa: 3.75,
-                          username: "john_doe",
+                          studentid: "john_doe",
                         )
                     ));
               },
