@@ -104,13 +104,11 @@ public class Database {
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (username.equals(info[0])) {
-                    System.out.println("You can't use this username!");
                     result = 0;
                     return result; //the studentID is in use
                 }
             }
             fileWriter.write(realName + "," + username + "," + password + ",\n");
-            System.out.println("you signed up successfully!");
             return result; //Signed up successfully
         }
     }
