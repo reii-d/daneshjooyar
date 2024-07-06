@@ -20,6 +20,7 @@ class _signUp_pageState extends State<signUp_page> {
   TextEditingController password2Control = TextEditingController();
 
   String _error = '';
+  String response = '';
 
   bool _isPasswordObscured = true;
   bool _isRepeatPasswordObscured = true;
@@ -37,25 +38,29 @@ class _signUp_pageState extends State<signUp_page> {
   Future<void> Signup() async {
     try {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
-//tessssssssssst
+
       // Sending signup data
       socket.write('GET: SignUpCheck,${realnameControl.text},${IdControl.text},${password1Control.text}\u0000');
-      await socket.flush();
+      socket.flush();
 
-      // Close socket immediately after sending d
+      socket.listen((socketResponse) {
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+          if (response == "200") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StudentInfoPage(
+                  name: realnameControl.text,
+                  gpa: 0.0, // Adjust as per your requirement
+                  studentid: IdControl.text,
+                ),
+              ),
+            );
+          }
+        });
+      });
       socket.close();
-
-      // Navigate to StudentInfoPage
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => StudentInfoPage(
-            name: realnameControl.text,
-            gpa: 0.0,
-            studentid: IdControl.text,
-          ),
-        ),
-      );
     } catch (e) {
       setState(() {
         _error = 'Error: $e';
