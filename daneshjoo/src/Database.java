@@ -114,15 +114,15 @@ public class Database {
     }
 
 
-    //Log In: To check correction of username and password
-    public int logIn(String username, String password) throws IOException {
+    //Log In: To check correction of studentID and password
+    public int logIn(String studentID, String password) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
             String line;
             String[] info;
             int result = 0;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (username.equals(info[1])) {
+                if (studentID.equals(info[1])) {
                     result = 1; //password incorrect
                     if (password.equals(info[2])) {
                         result = 2; //logged in
@@ -134,7 +134,40 @@ public class Database {
                 }
             }
             reader.close();
-            return result; // 0; username incorrect
+            return result; // 0; studentID incorrect
+        }
+    }
+
+    //To remove an student from student file (delete account)
+    public int deleteAccount(String studentID) throws IOException {
+        int result = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
+            String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] info = line.split(",");
+                if (!info[1].equals(studentID)) {
+                    FileWriter fileWriter = new FileWriter(tempFileName, true);
+                    fileWriter.write(line + "\n");
+                    fileWriter.close();
+                }
+                else
+                    result = 2; //Account deleted successfully
+            }
+            reader.close();
+            PrintWriter writer = new PrintWriter(studentFileName);
+            writer.println("");
+            writer.close();
+            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
+            while ((line = reader1.readLine()) != null) {
+                FileWriter fileWriter = new FileWriter(studentFileName, true);
+                fileWriter.write(line + "\n");
+                fileWriter.close();
+            }
+            PrintWriter writer1 = new PrintWriter(tempFileName);
+            writer1.println("");
+            writer1.close();
+            return result;
         }
     }
 
@@ -170,7 +203,7 @@ public class Database {
     }
 
     //To remove a course from student's courses
-    public void removeCourseFromStudent(String cName, String sName) throws IOException {
+    public void removeCourseFromStudent(String courseName, String studentName) throws IOException {
         String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
         boolean removed = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
@@ -179,12 +212,12 @@ public class Database {
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(sName)) {
+                if (info[0].equals(studentName)) {
                     String[] courses = info[4].split(";");
                     StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + ",");
                     for (String str : courses) {
                         String[] part = str.split(":");
-                        if (!part[0].equals(cName)) {
+                        if (!part[0].equals(courseName)) {
                             updatedLine.append(str).append(";");
                         } else {
                             removed = true;

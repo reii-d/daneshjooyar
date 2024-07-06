@@ -114,7 +114,13 @@ class handleClient extends Thread {
                     }
                     break;
 
-
+                case "GET: DeleteAccount":
+                    try {
+                        Database.getInstance().deleteAccount(splitter[1]);
+                    }catch (IOException e){
+                        System.out.println("Error accessing database: " + e.getMessage());
+                        return;  // Exit the method gracefully
+                    }
                 default:
                     System.out.println("Unknown command: " + splitter[0]);
             }
