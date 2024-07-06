@@ -6,7 +6,11 @@ import 'package:test1/pages7/Tamrina.dart';
 import '../pages/profile.dart';
 
 class Sara extends StatelessWidget {
-  Sara({super.key});
+  String Id;
+  Sara({super.key,
+    required this.Id
+  });
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,7 @@ class Sara extends StatelessWidget {
                   builder: (context) => StudentInfoPage(
                     name: "John Doe",
                     gpa: 3.75,
-                    studentid: "john_doe",
+                    studentid: Id,
                   ),
                 ),
               );
@@ -82,7 +86,7 @@ class Sara extends StatelessWidget {
                     builder: (context) => StudentInfoPage(
                       name: "John Doe",
                       gpa: 3.75,
-                      studentid: "john_doe",
+                      studentid: Id,
                     ),
                   ),
                 );

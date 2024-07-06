@@ -64,7 +64,7 @@ class NextTermClassesPage extends StatelessWidget {
               leading: Icon(Icons.home),
               title: Text('Sara'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara(Id: "40243108",)));
               },
             ),
             ListTile(

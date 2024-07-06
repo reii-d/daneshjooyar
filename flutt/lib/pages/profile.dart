@@ -56,7 +56,7 @@ class StudentInfoPage extends StatelessWidget {
                     radius: 50,
                     backgroundImage: NetworkImage(profilePictureUrl),
                   ),
-                  SizedBox(height: 20), // Space between the picture and text
+                  SizedBox(height: 20),
                   Text(
                     "Name: $name",
                     style: TextStyle(
@@ -65,7 +65,7 @@ class StudentInfoPage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Divider(color: Colors.white), // Divider
+                  Divider(color: Colors.white),
                   Text(
                     "StudentId: $studentid",
                     style: TextStyle(
@@ -74,7 +74,7 @@ class StudentInfoPage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Divider(color: Colors.white), // Divider
+                  Divider(color: Colors.white),
                   Text(
                     "GPA: $gpa",
                     style: TextStyle(
@@ -83,7 +83,7 @@ class StudentInfoPage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Spacer(), // Push the button//////////// ckeck//////////
+                  Spacer(),
                   ElevatedButton(
                     onPressed: () {
                       DeleteAccount(context);
@@ -119,13 +119,13 @@ class StudentInfoPage extends StatelessWidget {
 
       // Sending delete account data
       socket.write('GET: DeleteAccount,${this.name},${this.studentid}\u0000');
-      socket.flush();
+      await socket.flush();
       socket.close();
 
-      // Navigate to WelcomePage
-      Navigator.pushReplacement(
+      // Navigate to WelcomePage after the account deletion
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => welcome_page()),
+        MaterialPageRoute(builder: (context) =>welcome_page()),
       );
     } catch (e) {
       print("Failed to delete account: $e");

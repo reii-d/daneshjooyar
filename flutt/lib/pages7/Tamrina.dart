@@ -73,9 +73,9 @@ class _TamrinaState extends State<Tamrina> {
             ),
             ListTile(
               leading: Icon(Icons.home),
-              title: Text('Home'),
+              title: Text('Sara'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara()));;
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara(Id: "40243108",)));;
               },
             ),
             ListTile(

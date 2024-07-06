@@ -57,7 +57,7 @@ class _KaraState extends State<Kara> {
               leading: Icon(Icons.home),
               title: Text('Sara'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara(Id: "402243108",)));
               },
             ),
             ListTile(
