@@ -22,7 +22,6 @@ class _SaraState extends State<Sara> {
   String worstScore = '';
   String numberOfAssignments = '';
   String _error = '';
-  String response='';
 
   @override
   void initState() {
@@ -36,13 +35,18 @@ class _SaraState extends State<Sara> {
 
       // Sending request for SaraInfo
       socket.write('GET: SaraInfo,${widget.Id}\u0000');
-      socket.flush();
+      await socket.flush();
 
-      socket.listen((socketResponse) {
-        print(socketResponse);
-        print("test");
-        setState(() {
-          response = String.fromCharCodes(socketResponse);
+      List<int> dataBuffer = [];
+      socket.listen(
+            (List<int> data) {
+          dataBuffer.addAll(data);
+        },
+        onDone: () {
+          socket.close();
+          String response = String.fromCharCodes(dataBuffer).trim();
+          print('Response received: $response'); // Debug print to verify received data
+
           List<String> responseData = response.split(',');
           if (responseData.length == 3) {
             setState(() {
@@ -51,10 +55,14 @@ class _SaraState extends State<Sara> {
               numberOfAssignments = responseData[2];
             });
           }
-
-        });
-      });
-      socket.close();
+        },
+        onError: (error) {
+          setState(() {
+            _error = 'Error: $error';
+          });
+          socket.close();
+        },
+      );
     } catch (e) {
       setState(() {
         _error = 'Error: $e';
@@ -240,7 +248,7 @@ class _SaraState extends State<Sara> {
           ),
           SizedBox(height: 10),
           Text(
-            "- $content",
+            content,
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,

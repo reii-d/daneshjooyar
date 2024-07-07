@@ -127,19 +127,19 @@ class handleClient extends Thread {
 
                 case "GET: SaraInfo":
                     try {
-                        System.out.println(Database.getInstance().saraInfo(splitter[1]));
-                        Database.getInstance().saraInfo(splitter[1]);
-                    } catch (IOException e){
+                        String info = Database.getInstance().saraInfo(splitter[1]);
+                        writer(info);
+                    } catch (IOException e) {
                         System.out.println("Error accessing database: " + e.getMessage());
-                        return;  // Exit the method gracefully
-                    }
-                    try {
-                        writer("200");
-                    } catch (IOException e){
-                        System.out.println("Error accessing database: " + e.getMessage());
-                        return;  // Exit the method gracefully
+                    } finally {
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                            System.out.println("Error closing resources: " + e.getMessage());
+                        }
                     }
                     break;
+
 
                 default:
                     System.out.println("Unknown command: " + splitter[0]);
