@@ -619,7 +619,7 @@ public class Database {
             }
         }
         if (units != 0){
-             return realName + "," + String.valueOf(total / units);
+             return String.valueOf(total / units) + "," + realName;
         }
         else {
             return realName;
