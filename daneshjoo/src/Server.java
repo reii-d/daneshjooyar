@@ -128,6 +128,7 @@ class handleClient extends Thread {
                 case "GET: SaraInfo":
                     try {
                         Database.getInstance().saraInfo(splitter[1]);
+                        System.out.println( Database.getInstance().saraInfo(splitter[1]));
                     } catch (IOException e) {
                         System.out.println("Error accessing database: " + e.getMessage());
                     }
@@ -141,6 +142,8 @@ class handleClient extends Thread {
                 case "GET: ProfileInfo":
                     try {
                         Database.getInstance().GPA(splitter[1]);
+                        System.out.println(Database.getInstance().GPA(splitter[1]));
+                        writer(Database.getInstance().GPA(splitter[1]));
                     } catch (IOException e) {
                         System.out.println("Error accessing database: " + e.getMessage());
                     }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:test1/pages/welcome_page.dart';
 
@@ -18,7 +19,6 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
   String name = '';
   double gpa = 0.0;
   final String profilePictureUrl = "https://via.placeholder.com/150";
-  String response = '';
 
   @override
   void initState() {
@@ -26,6 +26,24 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
     buildProfile();
   }
 
+  Future<void> deleteAccount(BuildContext context) async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending delete account data
+      socket.write('GET: DeleteAccount,$name,${widget.studentid}\u0000');
+      await socket.flush();
+      socket.close();
+
+      // Navigate to WelcomePage after the account deletion
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => welcome_page()),
+      );
+    } catch (e) {
+      print("Failed to delete account: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,38 +153,25 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
       await socket.flush();
 
       socket.listen((socketResponse) {
-        setState(() {
-          response = String.fromCharCodes(socketResponse);
-          List<String> dataParts = response.split(',');
-          if (dataParts.length >= 2) {
+        String response = utf8.decode(socketResponse);
+        List<String> dataParts = response.split(',');
+        if (dataParts.length >= 2) {
+          setState(() {
             gpa = double.tryParse(dataParts[0]) ?? 0.0;
             name = dataParts[1];
-          }
-        });
+          });
+        }
+        if(dataParts.length < 2){
+          setState(() {
+            gpa =  0.0;
+            name = dataParts[0];
+          });
+        }
       });
 
-      socket.close();
+      //socket.close();
     } catch (e) {
       print("Failed to fetch profile information: $e");
-    }
-  }
-
-  Future<void> deleteAccount(BuildContext context) async {
-    try {
-      Socket socket = await Socket.connect("192.168.1.112", 8080);
-
-      // Sending delete account data
-      socket.write('GET: DeleteAccount,$name,${widget.studentid}\u0000');
-      await socket.flush();
-      socket.close();
-
-      // Navigate to WelcomePage after the account deletion
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => welcome_page()),
-      );
-    } catch (e) {
-      print("Failed to delete account: $e");
     }
   }
 }

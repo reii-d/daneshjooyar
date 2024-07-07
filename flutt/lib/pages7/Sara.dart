@@ -28,43 +28,6 @@ class _SaraState extends State<Sara> {
     super.initState();
     SaraInfo();
   }
-
-  Future<void> SaraInfo() async {
-    try {
-      Socket socket = await Socket.connect("192.168.1.112", 8080);
-
-      // Sending request for SaraInfo
-      socket.write('GET: SaraInfo,${widget.Id}\u0000');
-      await socket.flush();
-
-      List<int> dataBuffer = [];
-      // Listening for the response
-      await socket.listen((List<int> data) {
-        dataBuffer.addAll(data);
-      }).asFuture();
-
-      String response = String.fromCharCodes(dataBuffer).trim();
-      print('Response received: $response'); // Debug print to verify received data
-
-      // format "bestScore,worstScore,numberOfAssignments"
-      List<String> responseData = response.split(',');
-
-      if (responseData.length == 3) {
-        setState(() {
-          bestScore = double.parse(responseData[0]);
-          worstScore = double.parse(responseData[1]);
-          numberOfAssignments = double.parse(responseData[2]);
-        });
-      }
-
-      socket.close();
-    } catch (e) {
-      setState(() {
-        _error = 'Error: $e';
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -245,4 +208,41 @@ class _SaraState extends State<Sara> {
       ),
     );
   }
+
+  Future<void> SaraInfo() async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending request for SaraInfo
+      socket.write('GET: SaraInfo,${widget.Id}\u0000');
+      await socket.flush();
+
+      List<int> dataBuffer = [];
+      // Listening for the response
+      await socket.listen((List<int> data) {
+        dataBuffer.addAll(data);
+      }).asFuture();
+
+      String response = String.fromCharCodes(dataBuffer).trim();
+      print('Response received: $response'); // Debug print to verify received data
+
+      // format "bestScore,worstScore,numberOfAssignments"
+      List<String> responseData = response.split(',');
+
+      if (responseData.length == 3) {
+        setState(() {
+          bestScore = double.parse(responseData[0]);
+          worstScore = double.parse(responseData[1]);
+          numberOfAssignments = double.parse(responseData[2]);
+        });
+      }
+
+      socket.close();
+    } catch (e) {
+      setState(() {
+        _error = 'Error: $e';
+      });
+    }
+  }
+
 }
