@@ -18,9 +18,9 @@ class Sara extends StatefulWidget {
 }
 
 class _SaraState extends State<Sara> {
-  String bestScore = '';
-  String worstScore = '';
-  String numberOfAssignments = '';
+  double bestScore = 0.0;
+  double worstScore = 0.0;
+  double numberOfAssignments = 0.0;
   String _error = '';
 
   @override
@@ -38,31 +38,26 @@ class _SaraState extends State<Sara> {
       await socket.flush();
 
       List<int> dataBuffer = [];
-      socket.listen(
-            (List<int> data) {
-          dataBuffer.addAll(data);
-        },
-        onDone: () {
-          socket.close();
-          String response = String.fromCharCodes(dataBuffer).trim();
-          print('Response received: $response'); // Debug print to verify received data
+      // Listening for the response
+      await socket.listen((List<int> data) {
+        dataBuffer.addAll(data);
+      }).asFuture();
 
-          List<String> responseData = response.split(',');
-          if (responseData.length == 3) {
-            setState(() {
-              bestScore = responseData[0];
-              worstScore = responseData[1];
-              numberOfAssignments = responseData[2];
-            });
-          }
-        },
-        onError: (error) {
-          setState(() {
-            _error = 'Error: $error';
-          });
-          socket.close();
-        },
-      );
+      String response = String.fromCharCodes(dataBuffer).trim();
+      print('Response received: $response'); // Debug print to verify received data
+
+      // format "bestScore,worstScore,numberOfAssignments"
+      List<String> responseData = response.split(',');
+
+      if (responseData.length == 3) {
+        setState(() {
+          bestScore = double.parse(responseData[0]);
+          worstScore = double.parse(responseData[1]);
+          numberOfAssignments = double.parse(responseData[2]);
+        });
+      }
+
+      socket.close();
     } catch (e) {
       setState(() {
         _error = 'Error: $e';
@@ -201,11 +196,11 @@ class _SaraState extends State<Sara> {
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ShowCard("Best Score", bestScore),
+            ShowCard("Best Score", bestScore.toString()),
             SizedBox(height: 20),
-            ShowCard("Worst Score", worstScore),
+            ShowCard("Worst Score", worstScore.toString()),
             SizedBox(height: 20),
-            ShowCard("Number of Assignments", numberOfAssignments),
+            ShowCard("Number of Assignments", numberOfAssignments.toString()),
             if (_error.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(top: 20),
@@ -248,7 +243,7 @@ class _SaraState extends State<Sara> {
           ),
           SizedBox(height: 10),
           Text(
-            content,
+            "- $content",
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
