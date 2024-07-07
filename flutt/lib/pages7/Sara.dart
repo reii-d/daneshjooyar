@@ -1,17 +1,16 @@
-import 'dart:ffi';
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:test1/pages7/Classa.dart';
 import 'package:test1/pages7/Kara.dart';
 import 'package:test1/pages7/Khabara.dart';
 import 'package:test1/pages7/Tamrina.dart';
 import '../pages/profile.dart';
+import 'Classa.dart';
 
 class Sara extends StatefulWidget {
   final String Id;
 
-  Sara({super.key, required this.Id});
+  Sara({Key? key, required this.Id}) : super(key: key);
 
   @override
   _SaraState createState() => _SaraState();
@@ -21,6 +20,7 @@ class _SaraState extends State<Sara> {
   double bestScore = 0.0;
   double worstScore = 0.0;
   double numberOfAssignments = 0.0;
+
   String _error = '';
 
   @override
@@ -28,6 +28,7 @@ class _SaraState extends State<Sara> {
     super.initState();
     SaraInfo();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +47,10 @@ class _SaraState extends State<Sara> {
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
-              // Navigate to Student Info Page
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => StudentInfoPage(studentid: widget.Id,),
+                  builder: (context) => StudentInfoPage(studentid: widget.Id),
                 ),
               );
             },
@@ -96,11 +96,10 @@ class _SaraState extends State<Sara> {
               leading: Icon(Icons.person),
               title: Text('Profile'),
               onTap: () {
-                // Navigate to Profile Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(studentid: widget.Id,),
+                    builder: (context) => StudentInfoPage(studentid: widget.Id),
                   ),
                 );
               },
@@ -109,7 +108,6 @@ class _SaraState extends State<Sara> {
               leading: Icon(Icons.calendar_month),
               title: Text('Kara'),
               onTap: () {
-                // Navigate to Kara Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Kara()),
@@ -120,11 +118,7 @@ class _SaraState extends State<Sara> {
               leading: Icon(Icons.hotel_class_sharp),
               title: Text('Classea'),
               onTap: () {
-                // Navigate to Next Term Classes Page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NextTermClassesPage()),
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NextTermClassesPage()));
               },
             ),
             ListTile(
@@ -143,13 +137,13 @@ class _SaraState extends State<Sara> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina()));
               },
             ),
+            // Add other list tiles for navigation
           ],
         ),
       ),
       body: Padding(
         padding: EdgeInsets.all(25.0),
         child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ShowCard("Best Score", bestScore.toString()),
             SizedBox(height: 20),
@@ -198,7 +192,7 @@ class _SaraState extends State<Sara> {
           ),
           SizedBox(height: 10),
           Text(
-            "- $content",
+            content,
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
@@ -215,21 +209,18 @@ class _SaraState extends State<Sara> {
 
       // Sending request for SaraInfo
       socket.write('GET: SaraInfo,${widget.Id}\u0000');
-      await socket.flush();
+      socket.flush();
 
       List<int> dataBuffer = [];
-      // Listening for the response
       await socket.listen((List<int> data) {
         dataBuffer.addAll(data);
       }).asFuture();
 
-      String response = String.fromCharCodes(dataBuffer).trim();
-      print('Response received: $response'); // Debug print to verify received data
+      String response = utf8.decode(dataBuffer).trim();
+      print('Response received: $response');
 
-      // format "bestScore,worstScore,numberOfAssignments"
       List<String> responseData = response.split(',');
-
-      if (responseData.length == 3) {
+      if (responseData.length >= 3) {
         setState(() {
           bestScore = double.parse(responseData[0]);
           worstScore = double.parse(responseData[1]);
@@ -244,5 +235,4 @@ class _SaraState extends State<Sara> {
       });
     }
   }
-
 }

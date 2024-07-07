@@ -627,17 +627,17 @@ public class Database {
     }
 
     //To send information for page "SARA"
-    public ArrayList<Double> saraInfo(String studentID) throws IOException {
+    public String saraInfo(String studentID) throws IOException {
         ArrayList<Double> sara = new ArrayList<>();
         double num = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
             String line;
             String[] info;
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[1].equals(studentID)){
+                if (info[1].equals(studentID)) {
                     String[] courses = info[3].split(";");
-                    for (String c : courses){
+                    for (String c : courses) {
                         String[] part = c.split(":");
                         num += getNumAssignments(part[0]);
                     }
@@ -646,7 +646,21 @@ public class Database {
         }
         sara.add(bestScore(studentID));
         sara.add(worstScore(studentID));
-        sara.add(Double.parseDouble(String.valueOf(num)));
-        return sara;
+        sara.add(num);
+
+        // Convert the ArrayList<Double> to a String.
+        StringBuilder result = new StringBuilder();
+        for (Double d : sara) {
+            if (d != null) {  // Check for null values
+                result.append(d.toString()).append(",");
+            }
+        }
+        // Remove the trailing comma
+//        if (result.length() > 0) {
+//            result.setLength(result.length() - 1);
+//        }
+        return result.toString();
     }
+
+
 }
