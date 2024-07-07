@@ -89,7 +89,7 @@ class _KhabaraState extends State<Khabara> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => NextTermClassesPage()),
+                      builder: (context) => Classa(id: "40")),
                 );
               },
             ),

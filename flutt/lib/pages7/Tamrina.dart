@@ -109,7 +109,7 @@ class _TamrinaState extends State<Tamrina> {
               leading: Icon(Icons.hotel_class_sharp),
               title: Text('Classea'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => NextTermClassesPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Classa(id: "40")));
               },
             ),
             ListTile(

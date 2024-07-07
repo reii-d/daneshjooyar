@@ -118,7 +118,7 @@ class _SaraState extends State<Sara> {
               leading: Icon(Icons.hotel_class_sharp),
               title: Text('Classea'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => NextTermClassesPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Classa(id: widget.Id)));
               },
             ),
             ListTile(

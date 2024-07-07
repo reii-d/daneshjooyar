@@ -95,7 +95,7 @@ class _KaraState extends State<Kara> {
                 // Navigate to Next Term Classes Page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NextTermClassesPage()),
+                  MaterialPageRoute(builder: (context) => Classa(id: "40")),
                 );
               },
             ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test1/pages/profile.dart';
 import 'package:test1/pages7/Kara.dart';
@@ -5,35 +7,32 @@ import 'package:test1/pages7/Khabara.dart';
 import 'package:test1/pages7/Sara.dart';
 import 'package:test1/pages7/Tamrina.dart';
 
-class NextTermClassesPage extends StatelessWidget {
-  NextTermClassesPage({super.key});
+class Classa extends StatefulWidget {
+  final String id;
 
-  final List<Map<String, String>> classes = [
-    {
-      'className': 'Mathematics',
-      'classId': 'MATH101',
-      'teacherName': 'Mr. Smith',
-    },
-    {
-      'className': 'History',
-      'classId': 'HIST201',
-      'teacherName': 'Ms. Johnson',
-    },
-    {
-      'className': 'Physics',
-      'classId': 'PHYS301',
-      'teacherName': 'Dr. Brown',
-    },
-  ];
+  Classa({Key? key, required this.id}) : super(key: key);
 
+  @override
+  _ClassaState createState() => _ClassaState();
+}
+
+class _ClassaState extends State<Classa> {
   final TextEditingController classIdController = TextEditingController();
+  List<Map<String, String>> classes = [];
+  String _error = '';
+
+  @override
+  void initState() {
+    super.initState();
+    classa();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[400],
       appBar: AppBar(
-          backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue,
         title: Text(
           "Classa",
           style: TextStyle(
@@ -55,7 +54,7 @@ class NextTermClassesPage extends StatelessWidget {
                   color: Colors.blue,
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.only(left: 16.0),
+                  padding: EdgeInsets.only(left: 16.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -75,18 +74,22 @@ class NextTermClassesPage extends StatelessWidget {
               leading: Icon(Icons.home),
               title: Text('Sara'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara(Id: "40243108",)));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Sara(Id: widget.id),
+                  ),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Profile'),
               onTap: () {
-                // Navigate to Profile Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(studentid: "john_doe",),
+                    builder: (context) => StudentInfoPage(studentid: "john_doe"),
                   ),
                 );
               },
@@ -95,7 +98,6 @@ class NextTermClassesPage extends StatelessWidget {
               leading: Icon(Icons.calendar_month),
               title: Text('Kara'),
               onTap: () {
-                // Navigate to Kara Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Kara()),
@@ -106,7 +108,6 @@ class NextTermClassesPage extends StatelessWidget {
               leading: Icon(Icons.hotel_class_sharp),
               title: Text('Classea'),
               onTap: () {
-                // Navigate to Next Term Classes Page
                 Navigator.pop(context);
               },
             ),
@@ -114,23 +115,23 @@ class NextTermClassesPage extends StatelessWidget {
               leading: Icon(Icons.newspaper_rounded),
               title: Text('Khabara'),
               onTap: () {
-                // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Khabara()));
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Khabara()));
               },
             ),
             ListTile(
               leading: Icon(Icons.home_work),
               title: Text('Tamrina'),
               onTap: () {
-                // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Tamrina()));
               },
             ),
           ],
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             Expanded(
@@ -138,45 +139,10 @@ class NextTermClassesPage extends StatelessWidget {
                 itemCount: classes.length,
                 itemBuilder: (context, index) {
                   final classInfo = classes[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
-                    color: Colors.blueGrey[500],
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey[500],
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10,
-                            offset: Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          classInfo['className']!,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Class ID: ${classInfo['classId']}',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              'Teacher: ${classInfo['teacherName']}',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  return buildClassCard(
+                    classInfo['className']!,
+                    classInfo['classId']!,
+                    classInfo['teacherName']!,
                   );
                 },
               ),
@@ -192,10 +158,7 @@ class NextTermClassesPage extends StatelessWidget {
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                // Implement class addition logic here
                 final newClassId = classIdController.text;
-                // Call backend to add the class using newClassId
-                // Update the classes list with new class details
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green, // Button color
@@ -203,9 +166,104 @@ class NextTermClassesPage extends StatelessWidget {
               ),
               child: Text('Add Class'),
             ),
+            if (_error.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text(
+                  _error,
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                ),
+              ),
           ],
         ),
       ),
     );
+  }
+
+  Widget buildClassCard(String className, String classId, String teacherName) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      color: Colors.blueGrey[500],
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.blueGrey[500],
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: ListTile(
+          title: Text(
+            className,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Class ID: $classId',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                'Teacher: $teacherName',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> classa() async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending request for classes
+      socket.write('GET: Classes,${widget.id}\u0000');
+      await socket.flush();
+
+      List<int> dataBuffer = [];
+      // Listening for the response
+      await socket.listen((List<int> data) {
+        dataBuffer.addAll(data);
+      }).asFuture();
+
+      String response = utf8.decode(dataBuffer).trim();
+      print('Response received: $response');
+
+      // Split the response into chunks of 3 parts each
+      List<String> parts = response.split(',');
+      List<Map<String, String>> classList = [];
+
+      for (int i = 0; i < parts.length; i += 3) {
+        if (i + 2 < parts.length) {
+          classList.add({
+            'className': parts[i],
+            'classId': parts[i + 1],
+            'teacherName': parts[i + 2],
+          });
+        }
+      }
+
+      setState(() {
+        classes = classList;
+        _error = '';
+      });
+
+      socket.close();
+    } catch (e) {
+      setState(() {
+        _error = 'Error: $e';
+      });
+    }
   }
 }
