@@ -89,7 +89,7 @@ class _ClassaState extends State<Classa> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(studentid: "john_doe"),
+                    builder: (context) => StudentInfoPage(studentid: widget.id),
                   ),
                 );
               },
@@ -157,8 +157,9 @@ class _ClassaState extends State<Classa> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 final newClassId = classIdController.text;
+                await addClass(newClassId);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green, // Button color
@@ -258,6 +259,50 @@ class _ClassaState extends State<Classa> {
         classes = classList;
         _error = '';
       });
+
+      socket.close();
+    } catch (e) {
+      setState(() {
+        _error = 'Error: $e';
+      });
+    }
+  }
+
+  Future<void> addClass(String newClassId) async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending request to add class
+      socket.write('ADD: Class,${widget.id},$newClassId\u0000');
+      await socket.flush();
+
+      List<int> dataBuffer = [];
+      // Listening for the response
+      await socket.listen((List<int> data) {
+        dataBuffer.addAll(data);
+      }).asFuture();
+
+      String response = utf8.decode(dataBuffer).trim();
+      print('Response received: $response');
+
+      if (response.startsWith('200')) {
+        // Assuming the format is "200,className,classId,teacherName"
+        List<String> parts = response.split(',');
+        if (parts.length >= 4) {
+          setState(() {
+            classes.add({
+              'className': parts[1],
+              'classId': parts[2],
+              'teacherName': parts[3],
+            });
+            _error = '';
+          });
+        }
+      } else {
+        setState(() {
+          _error = 'Error: $response';
+        });
+      }
 
       socket.close();
     } catch (e) {
