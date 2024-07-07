@@ -38,7 +38,6 @@ public class Database {
         return name;
     }
 
-
     //for returning the name of teachers with their teacherID.
     public String teacherName(String teacherID) throws IOException {
         String name = "";
@@ -54,7 +53,6 @@ public class Database {
         return name;
     }
 
-
     //To check the teacher teaches a course or not
     public boolean isTeacher (String teacherID, String courseName) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
@@ -63,7 +61,7 @@ public class Database {
             boolean ok = false;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(courseName) && info[3].equals(teacherName(teacherID))) {
+                if (info[0].equals(courseName) && info[4].equals(teacherName(teacherID))) {
                     ok = true;
                     break;
                 }
@@ -71,7 +69,6 @@ public class Database {
             return ok;
         }
     }
-
 
     //to return the number of units of a course
     public int getNumUnits (String courseName) throws IOException {
@@ -82,7 +79,7 @@ public class Database {
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(courseName)) {
-                    units = Integer.parseInt(info[1]);
+                    units = Integer.parseInt(info[2]);
                     break;
                 }
             }
@@ -90,7 +87,7 @@ public class Database {
         }
     }
 
-
+    //To return the number of assignments of a course
     public int getNumAssignments (String courseName) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
@@ -98,8 +95,8 @@ public class Database {
             int numAssignments = 0;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(courseName) && info.length > 4) {
-                    String[] assignments = info[4].split(";");
+                if (info[0].equals(courseName) && info.length > 5) {
+                    String[] assignments = info[5].split(";");
                     numAssignments = assignments.length;
                     break;
                 }
@@ -107,6 +104,7 @@ public class Database {
             return numAssignments;
         }
     }
+
 
 
     //Methods for Database
@@ -130,7 +128,6 @@ public class Database {
             return result; //Signed up successfully
         }
     }
-
 
     //Log In: To check correction of studentID and password
     public int logIn(String studentID, String password) throws IOException {
@@ -188,7 +185,6 @@ public class Database {
             return result;
         }
     }
-
 
     //To add a course to student's courses
     public void addCourseToStudent(String student, String course) throws IOException {
@@ -315,12 +311,12 @@ public class Database {
     //To define a new course to course file(name, units, date of exam, teacher)
     public void addCourse(Course course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String newCourse = course.getCourseName() + "," + course.getCourseUnits() + "," + course.getExamDate() + "," +
+            String newCourse = course.getCourseName() + "," + course.getCourseID() + "," + course.getCourseUnits() + "," + course.getExamDate() + "," +
                     course.getCourseTeacher().getTeacherName() + " " + course.getCourseTeacher().getTeacherLastName() + ",";
             String line;
             boolean foundInFile = false;
             while ((line = reader.readLine()) != null) {
-                if (line.equals(newCourse))
+                if (line.contains(newCourse))
                     foundInFile = true;
                 else
                     foundInFile = false;
@@ -342,8 +338,8 @@ public class Database {
             String tempFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/temp.txt";
             String line;
             boolean removed = false;
-            String remove = course.getCourseName() + "," + course.getCourseUnits() + "," +
-                    course.getExamDate() + ",";
+            String remove = course.getCourseName() + ","  + course.getCourseID() + "," +
+                    course.getCourseUnits() + "," + course.getExamDate() + ",";
             while ((line = reader.readLine()) != null) {
                 if (!line.contains(remove)) {
                     FileWriter fileWriter = new FileWriter(tempFileName, true);
@@ -378,14 +374,14 @@ public class Database {
             String line;
             String[] info;
             boolean updated = false;
-            String oldLine = oldCourse.getCourseName() + "," + oldCourse.getCourseUnits() + "," + oldCourse.getExamDate() + "," + teacher + ",";
-            String newLine = oldCourse.getCourseName() + "," + newCourse.getCourseUnits() + "," + newCourse.getExamDate() + "," + teacher + ",";
+            String oldLine = oldCourse.getCourseName() + "," + oldCourse.getCourseID() + "," + oldCourse.getCourseUnits() + "," + oldCourse.getExamDate() + "," + teacher + ",";
+            String newLine = oldCourse.getCourseName() + "," + newCourse.getCourseID() + "," + newCourse.getCourseUnits() + "," + newCourse.getExamDate() + "," + teacher + ",";
             while ((line = reader.readLine()) != null) {
                 FileWriter fileWriter = new FileWriter(tempFileName, true);
                 if (line.contains(oldLine)) {
                     info = line.split(",");
-                    fileWriter.write(newLine + info[4] + "\n");
-                    System.out.println(newLine + info[4] + "\n");
+                    fileWriter.write(newLine + info[5] + "\n");
+                    System.out.println(newLine + info[5] + "\n");
                     updated = true;
                 } else {
                     fileWriter.write(line + "\n");
@@ -422,8 +418,8 @@ public class Database {
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(courseName)) {
-                    String[] assignments = info[4].split(";");
-                    StringBuilder updateLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + ",");
+                    String[] assignments = info[5].split(";");
+                    StringBuilder updateLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + "," + info[4] + ",");
                     for (String str : assignments) {
                         String[] assignmentInfo = str.split(":");
                         if (assignmentInfo[0].equals(assignment.getAssignmentName())) {
@@ -499,8 +495,8 @@ public class Database {
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(course)) {
-                    String[] assignments = info[4].split(";");
-                    StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + ",");
+                    String[] assignments = info[5].split(";"); //Access to assignments
+                    StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + "," + info[4] + ",");
                     for (String str : assignments) {
                         String[] part = str.split(":");
                         if (!part[0].equals(assignment.getAssignmentName())) {

@@ -84,6 +84,8 @@ public class Cli {
                         if (courseChoice == 1){
                             System.out.println("Creating a new course!\nEnter the name of course: ");
                             String courseName = scanner.nextLine();
+                            System.out.println("Set an ID for the course: ");
+                            String courseID = scanner.nextLine();
                             System.out.println("First name of Teacher: ");
                             String firstName = scanner.nextLine();
                             System.out.println("Last name of teacher: ");
@@ -92,12 +94,14 @@ public class Cli {
                             String numUnits = scanner.nextLine();
                             System.out.println("When is the exam date?");
                             String examDate = scanner.nextLine();
-                            Course newCourse = new Course(courseName, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
+                            Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
                             database.addCourse(newCourse);
                         }
                         else if (courseChoice == 2){
                             System.out.println("Removing an old course!\nEnter the name of course: ");
                             String courseName = scanner.nextLine();
+                            System.out.println("Set an ID for the course: ");
+                            String courseID = scanner.nextLine();
                             System.out.println("First name of Teacher: ");
                             String firstName = scanner.nextLine();
                             System.out.println("Last name of teacher: ");
@@ -106,11 +110,13 @@ public class Cli {
                             String numUnits = scanner.nextLine();
                             System.out.println("When is the exam date?");
                             String examDate = scanner.nextLine();
-                            Course oldCourse = new Course(courseName, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
+                            Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
                             database.removeCourse(oldCourse);
                         } else if (courseChoice == 3) {
                             System.out.println("Enter the name of course: ");
                             String courseName = scanner.nextLine();
+                            System.out.println("Set an ID for the course: ");
+                            String courseID = scanner.nextLine();
                             System.out.println("First name of Teacher: ");
                             String firstName = scanner.nextLine();
                             System.out.println("Last name of teacher: ");
@@ -120,13 +126,13 @@ public class Cli {
                             String numUnits = scanner.nextLine();
                             System.out.println("When is the exam date?");
                             String examDate = scanner.nextLine();
-                            Course oldCourse = new Course(courseName, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
+                            Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
                             //new
                             System.out.println("Write the new information.\nHow many units does it have?");
                             String newNumUnits = scanner.nextLine();
                             System.out.println("When is the exam date?");
                             String newExamDate = scanner.nextLine();
-                            Course newCourse = new Course(courseName, Integer.parseInt(newNumUnits), newExamDate, new Teacher(firstName, lastName));
+                            Course newCourse = new Course(courseName, courseID, Integer.parseInt(newNumUnits), newExamDate, new Teacher(firstName, lastName));
 
                             database.updateCourse(oldCourse, newCourse, firstName + " " + lastName);
                         }
@@ -224,23 +230,27 @@ public class Cli {
                             if (courseChoice == 1){
                                 System.out.println("Enter the name of course: ");
                                 String courseName = scanner.nextLine();
+                                System.out.println("Set an ID for the course: ");
+                                String courseID = scanner.nextLine();
                                 System.out.println("How many units does it have?");
                                 String numUnits = scanner.nextLine();
                                 System.out.println("When is the exam date?");
                                 String examDate = scanner.nextLine();
                                 String[] teacher = database.teacherName(teacherID).split(" ");
-                                Course newCourse = new Course(courseName, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
+                                Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
                                 database.addCourse(newCourse);
                             }
                             else if (courseChoice == 2){
                                 System.out.println("Remove your course!\nEnter the name of course: ");
                                 String courseName = scanner.nextLine();
+                                System.out.println("Set an ID for the course: ");
+                                String courseID = scanner.nextLine();
                                 System.out.println("How many units does it have?");
                                 String numUnits = scanner.nextLine();
                                 System.out.println("When is the exam date?");
                                 String examDate = scanner.nextLine();
                                 String[] teacher = database.teacherName(teacherID).split(" ");
-                                Course oldCourse = new Course(courseName, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
+                                Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
                                 if (database.isTeacher(teacherID, courseName)) {
                                     database.removeCourse(oldCourse);
                                     System.out.println("Course removed successfully!");
@@ -252,18 +262,20 @@ public class Cli {
                                 String[] teacher = database.teacherName(teacherID).split(" ");
                                 System.out.println("Enter the name of course: ");
                                 String courseName = scanner.nextLine();
+                                System.out.println("Set an ID for the course: ");
+                                String courseID = scanner.nextLine();
                                 //old
                                 System.out.println("Write the old information.\nHow many units does it have?");
                                 String numUnits = scanner.nextLine();
                                 System.out.println("When is the exam date?");
                                 String examDate = scanner.nextLine();
-                                Course oldCourse = new Course(courseName, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
+                                Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
                                 //new
                                 System.out.println("Write the new information.\nHow many units does it have?");
                                 String newNumUnits = scanner.nextLine();
                                 System.out.println("When is the exam date?");
                                 String newExamDate = scanner.nextLine();
-                                Course newCourse = new Course(courseName, Integer.parseInt(newNumUnits), newExamDate, new Teacher(teacher[0], teacher[1]));
+                                Course newCourse = new Course(courseName, courseID, Integer.parseInt(newNumUnits), newExamDate, new Teacher(teacher[0], teacher[1]));
 
                                 if (database.isTeacher(teacherID, courseName)) {
                                     database.updateCourse(oldCourse, newCourse, database.teacherName(teacherID));
