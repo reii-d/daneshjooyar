@@ -730,21 +730,26 @@ public class Database {
     }
 
     public String addClassaInfo(String studentID, String courseID) throws IOException {
-        String newCourse = "";
+        StringBuilder newCourse = new StringBuilder();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
             String line;
             String[] info;
+            boolean courseAdded = false;
             while ((line = reader.readLine()) != null){
                 info = line.split(",");
                 if (info.length > 3 && !info[3].contains(courseName(courseID))){
                     addCourseToStudent(studentID, courseName(courseID));
-                    newCourse = courseInfo(courseName(courseID));
+                    if (!courseAdded) {
+                        newCourse.append(courseInfo(courseName(courseID)));
+                        courseAdded = true;
+                    }
                 }
             }
         }
-        return newCourse;
+        return newCourse.toString();
     }
+
 
     //public String tamrinaInfo(String studentID) throws IOException {}
 }

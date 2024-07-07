@@ -273,7 +273,7 @@ class _ClassaState extends State<Classa> {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending request to add class
-      socket.write('ADD: Class,${widget.id},$newClassId\u0000');
+      socket.write('GET: AddClassa,${widget.id},$newClassId\u0000');
       await socket.flush();
 
       List<int> dataBuffer = [];
@@ -285,9 +285,7 @@ class _ClassaState extends State<Classa> {
       String response = utf8.decode(dataBuffer).trim();
       print('Response received: $response');
 
-      if (response.startsWith('200')) {
-        // Assuming the format is "200,className,classId,teacherName"
-        List<String> parts = response.split(',');
+      List<String> parts = response.split(',');
         if (parts.length >= 4) {
           setState(() {
             classes.add({
@@ -298,11 +296,6 @@ class _ClassaState extends State<Classa> {
             _error = '';
           });
         }
-      } else {
-        setState(() {
-          _error = 'Error: $response';
-        });
-      }
 
       socket.close();
     } catch (e) {
