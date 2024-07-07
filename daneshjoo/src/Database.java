@@ -624,7 +624,7 @@ public class Database {
     }
 
     //To send information for page "SARA"
-    public ArrayList<Double> saraInfo(String studentID) throws IOException {
+    public String saraInfo(String studentID) throws IOException {
         ArrayList<Double> sara = new ArrayList<>();
         double num = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
@@ -644,6 +644,15 @@ public class Database {
         sara.add(bestScore(studentID));
         sara.add(worstScore(studentID));
         sara.add(Double.parseDouble(String.valueOf(num)));
-        return sara;
+
+        StringBuilder result = new StringBuilder();
+        for (Double d : sara) {
+            result.append(d.toString()).append(",");
+        }
+        // delete the last comma
+        if (result.length() > 0) {
+            result.setLength(result.length() - 1);
+        }
+        return result.toString();
     }
 }
