@@ -603,23 +603,26 @@ public class Database {
             String[] info;
             while ((line = reader1.readLine()) != null){
                 info = line.split(",");
-                if (info[1].equals(studentID) && info.length > 3){
-                    String[] course = info[3].split(";");
-                    for (String c : course){
-                        String[] part = c.split(":");
-                        if (part.length > 1){
-                            units += getNumUnits(part[0]);
-                            total += Double.parseDouble(part[1]) * getNumUnits(part[0]);
+                if (info[1].equals(studentID)){
+                    realName = info[0];
+                    if (info.length > 3) {
+                        String[] course = info[3].split(";");
+                        for (String c : course) {
+                            String[] part = c.split(":");
+                            if (part.length > 1) {
+                                units += getNumUnits(part[0]);
+                                total += Double.parseDouble(part[1]) * getNumUnits(part[0]);
+                            }
                         }
                     }
                 }
             }
         }
         if (units != 0){
-             return total / units;
+             return realName + "," + String.valueOf(total / units);
         }
         else {
-            return -1;
+            return realName;
         }
     }
 
