@@ -1,10 +1,12 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Database {
 
     //Files
-    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
+    String studentFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/students.txt";
     File studentFile = new File(studentFileName);
     String teacherFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/teachers.txt";
     File teacherFile = new File(teacherFileName);
@@ -89,6 +91,23 @@ public class Database {
         }
     }
 
+
+    public int getNumAssignments (String courseName) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
+            String line;
+            String[] info;
+            int numAssignments = 0;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(",");
+                if (info[0].equals(courseName)) {
+                    String[] assignments = info[4].split(";");
+                    numAssignments = assignments.length;
+                    break;
+                }
+            }
+            return numAssignments;
+        }
+    }
 
 
     //Methods for Database
@@ -516,16 +535,16 @@ public class Database {
     }
 
     //To return the highest score of a student
-    public String maxScore(String student) {
+    public double bestScore(String student) throws IOException {
         double max = Double.MIN_VALUE;
         String name = "";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
             String line;
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(student)){
+                if (info[0].equals(student)) {
                     if (info.length > 3) {
                         String[] course = info[3].split(";");
                         for (String c : course) {
@@ -540,17 +559,15 @@ public class Database {
                     }
                 }
             }
-        } catch (IOException e) {
-            throw new RuntimeException();
         }
         if (max != Double.MIN_VALUE)
-            return (name + ":" + String.valueOf(max));
+            return (max);
         else
-            return "nothing to show";
+            return -1;
     }
 
     //To return the lowest score of a student
-    public String minScore(String student) {
+    public double worstScore(String student) throws IOException {
         double min = Double.MAX_VALUE;
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
             String line;
@@ -570,17 +587,15 @@ public class Database {
                     }
                 }
             }
-        } catch (IOException e) {
-            throw new RuntimeException();
         }
         if (min != Double.MAX_VALUE)
-            return String.valueOf(min);
+            return min;
         else
-            return "nothing to show";
+            return -1;
     }
 
     //To calculate and return the average of a student
-    public String Average(String student) {
+    public double Average(String student) throws IOException {
         double total = 0;
         int units = 0;
         try (BufferedReader reader1 = new BufferedReader(new FileReader(studentFileName))) {
@@ -599,15 +614,36 @@ public class Database {
                     }
                 }
             }
-        } catch (IOException e){
-            throw new RuntimeException();
         }
         if (units != 0){
-            double average = total / units;
-            return String.valueOf(average);
+             return total / units;
         }
         else {
-            return "nothing to show";
+            return -1;
         }
+    }
+
+    //To send information for page "SARA"
+    public ArrayList<Double> saraInfo(String studentID) throws IOException {
+        ArrayList<Double> sara = new ArrayList<>();
+        double num = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null){
+                info = line.split(",");
+                if (info[1].equals(studentID)){
+                    String[] courses = info[3].split(";");
+                    for (String c : courses){
+                        String[] part = c.split(":");
+                        num += getNumAssignments(part[0]);
+                    }
+                }
+            }
+        }
+        sara.add(bestScore(studentID));
+        sara.add(worstScore(studentID));
+        sara.add(Double.parseDouble(String.valueOf(num)));
+        return sara;
     }
 }

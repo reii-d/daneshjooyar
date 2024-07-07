@@ -129,6 +129,21 @@ class handleClient extends Thread {
                     }
                     break;
 
+                case "GET: SaraInfo":
+                    try {
+                        Database.getInstance().saraInfo(splitter[1]);
+                    } catch (IOException e){
+                        System.out.println("Error accessing database: " + e.getMessage());
+                        return;  // Exit the method gracefully
+                    }
+                    try {
+                        writer("200");
+                    } catch (IOException e){
+                        System.out.println("Error accessing database: " + e.getMessage());
+                        return;  // Exit the method gracefully
+                    }
+                    break;
+
                 default:
                     System.out.println("Unknown command: " + splitter[0]);
             }
