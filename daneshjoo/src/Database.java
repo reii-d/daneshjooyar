@@ -676,5 +676,19 @@ public class Database {
         return result.toString();
     }
 
+    public String classaInfo(String courseID) throws IOException {
+        String courseInfo = "";
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseInfo))) {
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null){
+                info = line.split(",");
+                if (info[1].equals(courseID)){
+                    courseInfo = info[0] + "," + info[1] + "," + info[4];
+                }
+            }
+        }
+        return courseInfo;
+    }
 }
