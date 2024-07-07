@@ -138,6 +138,19 @@ class handleClient extends Thread {
                         return;  // Exit the method gracefully
                     }
                     break;
+                case "GET: ProfileInfo":
+                    try {
+                        Database.getInstance().GPA(splitter[1]);
+                    } catch (IOException e) {
+                        System.out.println("Error accessing database: " + e.getMessage());
+                    }
+                    try {
+                        writer("200");
+                    } catch (IOException e) {
+                        System.out.println("Error accessing database: " + e.getMessage());
+                        return;  // Exit the method gracefully
+                    }
+                    break;
                     //TODO
 
                 default:
