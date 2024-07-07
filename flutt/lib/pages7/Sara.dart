@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -17,10 +18,11 @@ class Sara extends StatefulWidget {
 }
 
 class _SaraState extends State<Sara> {
-  int bestScore = 0;
-  int worstScore = 0;
-  int numberOfAssignments = 0;
+  String bestScore = '';
+  String worstScore = '';
+  String numberOfAssignments = '';
   String _error = '';
+  String response='';
 
   @override
   void initState() {
@@ -36,21 +38,23 @@ class _SaraState extends State<Sara> {
       socket.write('GET: SaraInfo,${widget.Id}\u0000');
       socket.flush();
 
-      // Listening for the response
-      socket.listen((List<int> data) {
-        String response = String.fromCharCodes(data);
-        // format "bestScore,worstScore,numberOfAssignments"
-        List<String> responseData = response.split(',');
+      socket.listen((socketResponse) {
+        print(socketResponse);
+        print("test");
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+          List<String> responseData = response.split(',');
+          if (responseData.length == 3) {
+            setState(() {
+              bestScore = responseData[0];
+              worstScore = responseData[1];
+              numberOfAssignments = responseData[2];
+            });
+          }
 
-        if (responseData.length == 3) {
-          setState(() {
-            bestScore = int.parse(responseData[0]);
-            worstScore = int.parse(responseData[1]);
-            numberOfAssignments = int.parse(responseData[2]);
-          });
-        }
-        socket.close();
+        });
       });
+      socket.close();
     } catch (e) {
       setState(() {
         _error = 'Error: $e';
@@ -189,11 +193,11 @@ class _SaraState extends State<Sara> {
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ShowCard("Best Score", bestScore.toString()),
+            ShowCard("Best Score", bestScore),
             SizedBox(height: 20),
-            ShowCard("Worst Score", worstScore.toString()),
+            ShowCard("Worst Score", worstScore),
             SizedBox(height: 20),
-            ShowCard("Number of Assignments", numberOfAssignments.toString()),
+            ShowCard("Number of Assignments", numberOfAssignments),
             if (_error.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(top: 20),

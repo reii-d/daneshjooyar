@@ -6,11 +6,11 @@ import java.util.List;
 public class Database {
 
     //Files
-    String studentFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/students.txt";
+    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
     File studentFile = new File(studentFileName);
     String teacherFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/teachers.txt";
     File teacherFile = new File(teacherFileName);
-    String courseFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/courses.txt";
+    String courseFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     File courseFile = new File(courseFileName);
 
 
@@ -625,8 +625,8 @@ public class Database {
 
     //To send information for page "SARA"
     public String saraInfo(String studentID) throws IOException {
+        ArrayList<Double> sara = new ArrayList<>();
         double num = 0;
-        String sara = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
             String line;
             String[] info;
@@ -641,7 +641,18 @@ public class Database {
                 }
             }
         }
-        sara = String.valueOf(bestScore(studentID)) + " " + String.valueOf(worstScore(studentID)) + " " + String.valueOf(num);
-        return sara;
+        sara.add(bestScore(studentID));
+        sara.add(worstScore(studentID));
+        sara.add(Double.parseDouble(String.valueOf(num)));
+
+        StringBuilder result = new StringBuilder();
+        for (Double d : sara) {
+            result.append(d.toString()).append(",");
+        }
+        // delete the last comma
+        if (result.length() > 0) {
+            result.setLength(result.length() - 1);
+        }
+        return result.toString();
     }
 }
