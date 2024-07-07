@@ -143,9 +143,9 @@ public class Database {
             raf.seek(file.length());
             raf.write((realName + "," + username + "," + password + ",").getBytes());
         }
-
         return result; // Signed up successfully
     }
+
     //Log In: To check correction of studentID and password
     public int logIn(String studentID, String password) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
@@ -680,7 +680,7 @@ public class Database {
     public String classaInfo(String courseID) throws IOException {
         String courseInfo = "";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(courseInfo))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
             String[] info;
             while ((line = reader.readLine()) != null){
@@ -691,5 +691,33 @@ public class Database {
             }
         }
         return courseInfo;
+    }
+
+    public String tamrinaInfo(String courseID) throws IOException {
+        String assignmentInfo = "";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))){
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(",");
+                if (info[1].equals(courseID)){
+                    assignmentInfo = info[0] + "," + info[1];
+                    if (info.length > 4){
+                        assignmentInfo += ",";
+                        int num = 0;
+                        String[] assignments = info[5].split(";");
+                        for (String a : assignments){
+                            assignmentInfo += a;
+                            num++;
+                            if (num < assignments.length){
+                                assignmentInfo += ";";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return assignmentInfo;
     }
 }
