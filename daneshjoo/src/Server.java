@@ -88,7 +88,7 @@ class handleClient extends Thread {
                     boolean signedUp = false;
                     int response = 100;
                     try {
-                        response = Database.getInstance().signUp(splitter[0], splitter[1], splitter[2]);
+                        response = Database.getInstance().signUp(splitter[1], splitter[2], splitter[3]);
                     }catch (IOException e){
                         System.out.println("Error accessing database: " + e.getMessage());
                         return;  // Exit the method gracefully
@@ -116,12 +116,19 @@ class handleClient extends Thread {
 
                 case "GET: DeleteAccount":
                     try {
-                        Database.getInstance().deleteAccount(splitter[1]);
-                        writer("200");
-                    }catch (IOException e){
+                        Database.getInstance().deleteAccount(splitter[2]);
+                    } catch (IOException e){
                         System.out.println("Error accessing database: " + e.getMessage());
                         return;  // Exit the method gracefully
                     }
+                    try {
+                        writer("200");
+                    } catch (IOException e){
+                        System.out.println("Error accessing database: " + e.getMessage());
+                        return;  // Exit the method gracefully
+                    }
+                    break;
+
                 default:
                     System.out.println("Unknown command: " + splitter[0]);
             }

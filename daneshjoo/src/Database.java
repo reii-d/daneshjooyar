@@ -108,7 +108,7 @@ public class Database {
                     return result; //the studentID is in use
                 }
             }
-            fileWriter.write(realName + "," + username + "," + password + ",\n");
+            fileWriter.write("\n" + realName + "," + username + "," + password + ",");
             return result; //Signed up successfully
         }
     }

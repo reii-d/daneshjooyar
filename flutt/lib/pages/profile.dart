@@ -128,8 +128,7 @@ class StudentInfoPage extends StatelessWidget {
         MaterialPageRoute(builder: (context) =>welcome_page()),
       );
     } catch (e) {
-      print("Failed to delete account: $e");
-      // Handle error
+      print("Failed to delete account: $e"); // Handle error
     }
   }
 }
