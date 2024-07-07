@@ -48,7 +48,7 @@ class handleClient extends Thread {
                     try {
                         responseDatabase = Database.getInstance().logIn(splitter[1], splitter[2]);
                     } catch (IOException e) {
-                        System.out.println("Error accessing database: " + e.getMessage());
+                        System.err.println("Error accessing database: " + e.getMessage());
                         return;  // Exit the method gracefully
                     }
                     if (responseDatabase == 2) {
@@ -58,23 +58,23 @@ class handleClient extends Thread {
                         try {
                             writer("200");
                         } catch (IOException e) {
-                            System.out.println("Error writing response: " + e.getMessage());
+                            System.err.println("Error writing response: " + e.getMessage());
                         }
                     } else if (responseDatabase == 1) {
                         System.out.println("code 100");
-                        System.out.println("password is not correct");
+                        System.err.println("password is not correct");
                         try {
                             writer("100");
                         } catch (IOException e) {
-                            System.out.println("Error writing response: " + e.getMessage());
+                            System.err.println("Error writing response: " + e.getMessage());
                         }
                     } else if (responseDatabase == 0) {
                         System.out.println("code 000");
-                        System.out.println("user not found");
+                        System.err.println("user not found");
                         try {
                             writer("000");
                         } catch (IOException e) {
-                            System.out.println("Error writing response: " + e.getMessage());
+                            System.err.println("Error writing response: " + e.getMessage());
                         }
                     }
                     break;
@@ -87,7 +87,7 @@ class handleClient extends Thread {
                     try {
                         response = Database.getInstance().signUp(splitter[1], splitter[2], splitter[3]);
                     }catch (IOException e){
-                        System.out.println("Error accessing database: " + e.getMessage());
+                        System.err.println("Error accessing database: " + e.getMessage());
                         return;  // Exit the method gracefully
                     }
                     if (response == 0) {
@@ -96,7 +96,7 @@ class handleClient extends Thread {
                         try {
                             writer("000");
                         } catch (IOException e) {
-                            System.out.println("Error writing response: " + e.getMessage());
+                            System.err.println("Error writing response: " + e.getMessage());
                         }
                     }
                     else if (response == 2){
@@ -106,7 +106,7 @@ class handleClient extends Thread {
                         try {
                             writer("200");
                         } catch (IOException e) {
-                            System.out.println("Error writing response: " + e.getMessage());
+                            System.err.println("Error writing response: " + e.getMessage());
                         }
                     }
                     break;
@@ -115,13 +115,13 @@ class handleClient extends Thread {
                     try {
                         Database.getInstance().deleteAccount(splitter[2]);
                     } catch (IOException e){
-                        System.out.println("Error accessing database: " + e.getMessage());
+                        System.err.println("Error accessing database: " + e.getMessage());
                         return;  // Exit the method gracefully
                     }
                     try {
                         writer("200");
                     } catch (IOException e){
-                        System.out.println("Error accessing database: " + e.getMessage());
+                        System.err.println("Error accessing database: " + e.getMessage());
                         return;  // Exit the method gracefully
                     }
                     break;
@@ -129,29 +129,21 @@ class handleClient extends Thread {
                 case "GET: SaraInfo":
                     try {
                         String response1 = Database.getInstance().saraInfo(splitter[1]);
-                        System.out.println(response1);
-
                         writer(response1 + "\u0000");
                     } catch (IOException e) {
-                        System.out.println("Error accessing database: " + e.getMessage());
+                        System.err.println("Error accessing database: " + e.getMessage());
                     }
                     break;
 
                 case "GET: ProfileInfo":
                     try {
                         Database.getInstance().GPA(splitter[1]);
-                        System.out.println(Database.getInstance().GPA(splitter[1]));
                         writer(Database.getInstance().GPA(splitter[1]));
                     } catch (IOException e) {
-                        System.out.println("Error accessing database: " + e.getMessage());
-                    }
-                    try {
-                        writer("200");
-                    } catch (IOException e) {
-                        System.out.println("Error accessing database: " + e.getMessage());
-                        return;  // Exit the method gracefully
+                        System.err.println("Error accessing database: " + e.getMessage());
                     }
                     break;
+
                 case "GET: Classes":
                     try {
                         Database.getInstance().classaInfo(splitter[1]);
@@ -160,15 +152,23 @@ class handleClient extends Thread {
                         System.out.println("Error accessing database: " + e.getMessage());
                     }
                     break;
+
+                case "GET: AddClassa":
+                    try {
+                        Database.getInstance().addClassaInfo(splitter[1], splitter[2]);
+                        writer(Database.getInstance().addClassaInfo(splitter[1], splitter[2]));
+                    } catch (IOException e){
+                        System.err.println("Error accessing database: " + e.getMessage());
+                    }
                     //TODO
 
                 default:
-                    System.out.println("Unknown command: " + splitter[0]);
+                    System.err.println("Unknown command: " + splitter[0]);
             }
         } catch (IOException e) {
-            System.out.println("Error receiving command: " + e.getMessage());
+            System.err.println("Error receiving command: " + e.getMessage());
         } catch (RuntimeException e) {
-            System.out.println("Runtime exception: " + e.getMessage());
+            System.err.println("Runtime exception: " + e.getMessage());
         }
     }
 
