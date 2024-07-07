@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class Database {
@@ -544,7 +543,7 @@ public class Database {
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(student)) {
+                if (info[1].equals(student)) {
                     if (info.length > 3) {
                         String[] course = info[3].split(";");
                         for (String c : course) {
@@ -574,7 +573,7 @@ public class Database {
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(student)){
+                if (info[1].equals(student)){
                     if (info.length > 3) {
                         String[] course = info[3].split(";");
                         for (String c : course) {
@@ -594,16 +593,17 @@ public class Database {
             return -1;
     }
 
-    //To calculate and return the average of a student
-    public double Average(String student) throws IOException {
+    //To calculate and return the average of a student (and the real name)
+    public String GPA(String studentID) throws IOException {
         double total = 0;
         int units = 0;
+        String realName = "";
         try (BufferedReader reader1 = new BufferedReader(new FileReader(studentFileName))) {
             String line;
             String[] info;
             while ((line = reader1.readLine()) != null){
                 info = line.split(",");
-                if (info[0].equals(student) && info.length > 3){
+                if (info[1].equals(studentID) && info.length > 3){
                     String[] course = info[3].split(";");
                     for (String c : course){
                         String[] part = c.split(":");
