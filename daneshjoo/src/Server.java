@@ -154,6 +154,7 @@ class handleClient extends Thread {
                     break;
                 case "GET: Classes":
                     try {
+                        System.out.println(Database.getInstance().classaInfo(splitter[1]));
                         Database.getInstance().classaInfo(splitter[1]);
                         writer(Database.getInstance().classaInfo(splitter[1]));
                     } catch (IOException e) {
