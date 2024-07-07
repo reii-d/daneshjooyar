@@ -54,6 +54,19 @@ public class Database {
         return name;
     }
 
+    //To return the name of course with course ID
+    public String courseName (String courseID) throws IOException {
+        String name = "";
+        BufferedReader reader = new BufferedReader(new FileReader(courseFileName));
+        String line;
+        String[] info;
+        while ((line = reader.readLine()) != null){
+            info = line.split(",");
+            if (courseID.equals(info[1]))
+                name = info[0];
+        }
+        return name;
+    }
 
     //To check the teacher teaches a course or not
     public boolean isTeacher (String teacherID, String courseName) throws IOException {
@@ -90,7 +103,7 @@ public class Database {
         }
     }
 
-
+    //To return the number of assignments of a course
     public int getNumAssignments (String courseName) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
@@ -106,6 +119,23 @@ public class Database {
             }
             return numAssignments;
         }
+    }
+
+    //To send course's info (name, ID, teacher)
+    public String courseInfo(String courseName) throws IOException {
+        String courseInfo = "";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null){
+                info = line.split(",");
+                if (info[0].equals(courseName)){
+                    courseInfo = info[0] + "," + info[1] + "," + info[4];
+                }
+            }
+        }
+        return courseInfo;
     }
 
 
@@ -208,15 +238,15 @@ public class Database {
         return result;
     }
 
-    //To add a course to student's courses
-    public void addCourseToStudent(String student, String course) throws IOException {
+    //To add a course to student's courses (student file)
+    public void addCourseToStudent(String studentID, String course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
             String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
             String line;
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(student)) {
+                if (info[1].equals(studentID)) {
                     line += course + ":;";
                 }
                 FileWriter fileWriter = new FileWriter(tempFileName, true);
@@ -699,48 +729,22 @@ public class Database {
         return courses;
     }
 
-    //To send course's info (name, ID, teacher)
-    public String courseInfo(String courseName) throws IOException {
-        String courseInfo = "";
+    public String addClassaInfo(String studentID, String courseID) throws IOException {
+        String newCourse = "";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
             String line;
             String[] info;
             while ((line = reader.readLine()) != null){
                 info = line.split(",");
-                if (info[0].equals(courseName)){
-                    courseInfo = info[0] + "," + info[1] + "," + info[4];
+                if (info.length > 3 && !info[3].contains(courseName(courseID))){
+                    addCourseToStudent(studentID, courseName(courseID));
+                    newCourse = courseInfo(courseName(courseID));
                 }
             }
         }
-        return courseInfo;
+        return newCourse;
     }
 
-    public String tamrinaInfo(String courseID) throws IOException {
-        String assignmentInfo = "";
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))){
-            String line;
-            String[] info;
-            while ((line = reader.readLine()) != null) {
-                info = line.split(",");
-                if (info[1].equals(courseID)){
-                    assignmentInfo = info[0] + ",";
-                    if (info.length > 4){
-                        int num = 0;
-                        String[] assignments = info[5].split(";");
-                        assignmentInfo = assignmentInfo + String.valueOf(assignments.length) + ",";
-                        for (String a : assignments){
-                            assignmentInfo += a;
-                            num++;
-                            if (num < assignments.length - 1){
-                                assignmentInfo += ";";
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return assignmentInfo;
-    }
+    //public String tamrinaInfo(String studentID) throws IOException {}
 }
