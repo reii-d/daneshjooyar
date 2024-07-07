@@ -237,6 +237,14 @@ class LessonCard extends StatelessWidget {
       ),
     );
   }
+  Future<void> TamrinaInfo() async {
+    Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+    // Sending request for SaraInfo
+    socket.write('GET: SaraInfo,${widget.Id}\u0000');
+    socket.flush();
+
+  }
 }
 
 class Lesson {

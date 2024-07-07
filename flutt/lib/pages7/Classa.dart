@@ -89,7 +89,7 @@ class _ClassaState extends State<Classa> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(studentid: "john_doe"),
+                    builder: (context) => StudentInfoPage(studentid: widget.id),
                   ),
                 );
               },
