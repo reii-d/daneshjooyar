@@ -98,7 +98,7 @@ public class Database {
             int numAssignments = 0;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(courseName)) {
+                if (info[0].equals(courseName) && info.length > 4) {
                     String[] assignments = info[4].split(";");
                     numAssignments = assignments.length;
                     break;
@@ -587,7 +587,7 @@ public class Database {
                 }
             }
         }
-        if (min != Double.MAX_VALUE)
+        if (min < Double.MAX_VALUE)
             return min;
         else
             return -1;
