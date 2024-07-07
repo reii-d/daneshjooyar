@@ -152,7 +152,15 @@ class handleClient extends Thread {
                         return;  // Exit the method gracefully
                     }
                     break;
-                    
+                case "GET: Classes":
+                    try {
+                        Database.getInstance().classaInfo(splitter[1]);
+                        writer(Database.getInstance().classaInfo(splitter[1]));
+                    } catch (IOException e) {
+                        System.out.println("Error accessing database: " + e.getMessage());
+                    }
+                    break;
+                    //TODO
 
                 default:
                     System.out.println("Unknown command: " + splitter[0]);
