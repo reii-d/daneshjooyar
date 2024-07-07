@@ -129,7 +129,6 @@ public class Database {
         if (usernameExists) {
             return 0; // Username is in use
         }
-
         File file = new File(studentFileName);
         boolean isEmptyFile = file.length() == 0;
 
@@ -147,10 +146,6 @@ public class Database {
 
         return result; // Signed up successfully
     }
-
-
-
-
     //Log In: To check correction of studentID and password
     public int logIn(String studentID, String password) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
@@ -176,7 +171,6 @@ public class Database {
     }
 
     //To remove an student from student file (delete account)
-
     public int deleteAccount(String studentID) throws IOException {
         int result = 0;
         String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
