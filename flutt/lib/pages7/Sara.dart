@@ -19,7 +19,7 @@ class Sara extends StatefulWidget {
 class _SaraState extends State<Sara> {
   double bestScore = 0.0;
   double worstScore = 0.0;
-  double numberOfAssignments = 0.0;
+  int numberOfAssignments = 0;
 
   String _error = '';
 
@@ -224,7 +224,8 @@ class _SaraState extends State<Sara> {
         setState(() {
           bestScore = double.parse(responseData[0]);
           worstScore = double.parse(responseData[1]);
-          numberOfAssignments = double.parse(responseData[2]);
+          double responseDataDouble = double.parse(responseData[2]);
+          numberOfAssignments = responseDataDouble.toInt();
         });
       }
 
