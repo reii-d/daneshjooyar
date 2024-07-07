@@ -5,7 +5,7 @@ public class Course {
     private String courseName;
     private Teacher courseTeacher;
     private int courseUnits;
-    private ArrayList<Student> students;
+    private String courseID;
     private boolean isCourseActive;
     private int numPractices;
     private String examDate;
@@ -13,8 +13,9 @@ public class Course {
 
 
     //Constructor
-    public Course(String name, int units, String examDate, Teacher teacher){
+    public Course(String name, String courseID, int units, String examDate, Teacher teacher){
         this.courseName = name;
+        this.courseID = courseID;
         this.courseUnits = units;
         this.examDate = examDate;
         this.isCourseActive = false;
@@ -40,7 +41,9 @@ public class Course {
     public Teacher getCourseTeacher() {
         return courseTeacher;
     }
-
+    public String getCourseID() {
+        return courseID;
+    }
 
     //Setters
     public void setCourseName(String courseName) {
@@ -60,6 +63,9 @@ public class Course {
     }
     public void setCourseActive(boolean courseActive) {
         isCourseActive = courseActive;
+    }
+    public void setCourseID(String courseID) {
+        this.courseID = courseID;
     }
 }
 
