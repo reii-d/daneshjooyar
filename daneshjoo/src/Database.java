@@ -112,24 +112,43 @@ public class Database {
     //Methods for Database
     //Sign Up: To save the information of students in file.
     public int signUp(String realName, String username, String password) throws IOException {
-        boolean isExist = false;
+        int result = 2;
+        boolean usernameExists = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
-            FileWriter fileWriter = new FileWriter(studentFileName, true)) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
             String line;
-            String[] info;
-            int result = 2;
             while ((line = reader.readLine()) != null) {
-                info = line.split(",");
+                String[] info = line.split(",");
                 if (username.equals(info[0])) {
-                    result = 0;
-                    return result; //the studentID is in use
+                    usernameExists = true;
+                    break; // Username is already in use
                 }
             }
-            fileWriter.write("\n" + realName + "," + username + "," + password + ",");
-            return result; //Signed up successfully
         }
+
+        if (usernameExists) {
+            return 0; // Username is in use
+        }
+
+        File file = new File(studentFileName);
+        boolean isEmptyFile = file.length() == 0;
+
+        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+            if (!isEmptyFile) {
+                raf.seek(file.length() - 1); // Move to the last character of the file
+                char lastChar = (char) raf.readByte();
+                if (lastChar != '\n') {
+                    raf.write("\n".getBytes());
+                }
+            }
+            raf.seek(file.length());
+            raf.write((realName + "," + username + "," + password + ",").getBytes());
+        }
+
+        return result; // Signed up successfully
     }
+
+
 
 
     //Log In: To check correction of studentID and password
@@ -157,37 +176,44 @@ public class Database {
     }
 
     //To remove an student from student file (delete account)
+
     public int deleteAccount(String studentID) throws IOException {
         int result = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
-            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
+             PrintWriter tempWriter = new PrintWriter(new FileWriter(tempFileName))) {
+
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(",");
                 if (!info[1].equals(studentID)) {
-                    FileWriter fileWriter = new FileWriter(tempFileName, true);
-                    fileWriter.write(line + "\n");
-                    fileWriter.close();
+                    tempWriter.println(line);
+                } else {
+                    result = 2; // Account deleted successfully
                 }
-                else
-                    result = 2; //Account deleted successfully
             }
-            reader.close();
-            PrintWriter writer = new PrintWriter(studentFileName);
-            writer.println("");
-            writer.close();
-            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-            while ((line = reader1.readLine()) != null) {
-                FileWriter fileWriter = new FileWriter(studentFileName, true);
-                fileWriter.write(line + "\n");
-                fileWriter.close();
-            }
-            PrintWriter writer1 = new PrintWriter(tempFileName);
-            writer1.println("");
-            writer1.close();
-            return result;
         }
+        try (PrintWriter writer = new PrintWriter(new FileWriter(studentFileName))) {
+            writer.print("");
+        }
+        try (BufferedReader tempReader = new BufferedReader(new FileReader(tempFileName));
+             PrintWriter mainWriter = new PrintWriter(new FileWriter(studentFileName))) {
+
+            String line;
+            while ((line = tempReader.readLine()) != null) {
+                mainWriter.println(line);
+            }
+        }
+
+        // Clear the temp file
+        try (PrintWriter writer = new PrintWriter(new FileWriter(tempFileName))) {
+            writer.print(""); // This will clear the file
+        }
+
+        return result;
     }
+
 
 
     //To add a course to student's courses

@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:  Classa(id: "44",),
+      home: welcome_page()
+      //Classa(id: "44",),
     );
   }
 }
