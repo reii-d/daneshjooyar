@@ -76,11 +76,7 @@ class _KaraState extends State<Kara> {
               title: Text('Profile'),
               onTap: () {
                 // Navigate to Profile Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => StudentInfoPage(
-                  name: "John Doe",
-                  gpa: 3.75,
-                  studentid: "john_doe",
-                ),
+                Navigator.push(context, MaterialPageRoute(builder: (context) => StudentInfoPage(studentid: "john_doe",),
                 ));
               },
             ),

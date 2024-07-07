@@ -87,11 +87,7 @@ class _SaraState extends State<Sara> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => StudentInfoPage(
-                    name: "John Doe",
-                    gpa: 3.75,
-                    studentid: widget.Id,
-                  ),
+                  builder: (context) => StudentInfoPage(studentid: widget.Id,),
                 ),
               );
             },
@@ -141,11 +137,7 @@ class _SaraState extends State<Sara> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(
-                      name: "John Doe",
-                      gpa: 3.75,
-                      studentid: widget.Id,
-                    ),
+                    builder: (context) => StudentInfoPage(studentid: widget.Id,),
                   ),
                 );
               },

@@ -86,11 +86,7 @@ class NextTermClassesPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(
-                      name: "John Doe",
-                      gpa: 3.75,
-                      studentid: "john_doe",
-                    ),
+                    builder: (context) => StudentInfoPage(studentid: "john_doe",),
                   ),
                 );
               },

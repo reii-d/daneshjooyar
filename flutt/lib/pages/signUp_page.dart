@@ -50,11 +50,7 @@ class _signUp_pageState extends State<signUp_page> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => StudentInfoPage(
-                  name: realnameControl.text,
-                  gpa: 0.0, // Adjust as per your requirement
-                  studentid: IdControl.text,
-                ),
+                builder: (context) => StudentInfoPage(studentid: IdControl.text,),
               ),
             );
           }

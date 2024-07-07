@@ -2,18 +2,30 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test1/pages/welcome_page.dart';
 
-class StudentInfoPage extends StatelessWidget {
-  final String name;
-  final double gpa;
+class StudentInfoPage extends StatefulWidget {
   final String studentid;
-  final String profilePictureUrl = "https://via.placeholder.com/150";
 
   StudentInfoPage({
     Key? key,
-    required this.name,
-    required this.gpa,
     required this.studentid,
   }) : super(key: key);
+
+  @override
+  _StudentInfoPageState createState() => _StudentInfoPageState();
+}
+
+class _StudentInfoPageState extends State<StudentInfoPage> {
+  String name = '';
+  double gpa = 0.0;
+  final String profilePictureUrl = "https://via.placeholder.com/150";
+  String response = '';
+
+  @override
+  void initState() {
+    super.initState();
+    buildProfile();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +79,7 @@ class StudentInfoPage extends StatelessWidget {
                   ),
                   Divider(color: Colors.white),
                   Text(
-                    "StudentId: $studentid",
+                    "StudentId: ${widget.studentid}",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -86,14 +98,15 @@ class StudentInfoPage extends StatelessWidget {
                   Spacer(),
                   ElevatedButton(
                     onPressed: () {
-                      DeleteAccount(context);
+                      deleteAccount(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     ),
                     child: Text(
                       "Delete Account!",
@@ -113,22 +126,47 @@ class StudentInfoPage extends StatelessWidget {
     );
   }
 
-  Future<void> DeleteAccount(BuildContext context) async {
+  Future<void> buildProfile() async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending profile info request with studentid
+      socket.write('GET: ProfileInfo,${widget.studentid}\u0000');
+      await socket.flush();
+
+      socket.listen((socketResponse) {
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+          List<String> dataParts = response.split(',');
+          if (dataParts.length >= 2) {
+            gpa = double.tryParse(dataParts[0]) ?? 0.0;
+            name = dataParts[1];
+          }
+        });
+      });
+
+      socket.close();
+    } catch (e) {
+      print("Failed to fetch profile information: $e");
+    }
+  }
+
+  Future<void> deleteAccount(BuildContext context) async {
     try {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending delete account data
-      socket.write('GET: DeleteAccount,${this.name},${this.studentid}\u0000');
+      socket.write('GET: DeleteAccount,$name,${widget.studentid}\u0000');
       await socket.flush();
       socket.close();
 
       // Navigate to WelcomePage after the account deletion
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>welcome_page()),
+        MaterialPageRoute(builder: (context) => welcome_page()),
       );
     } catch (e) {
-      print("Failed to delete account: $e"); // Handle error
+      print("Failed to delete account: $e");
     }
   }
 }
