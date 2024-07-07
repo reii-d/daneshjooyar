@@ -676,6 +676,7 @@ public class Database {
         return result.toString();
     }
 
+    //To send course's info (name, ID, teacher)
     public String classaInfo(String courseID) throws IOException {
         String courseInfo = "";
 
