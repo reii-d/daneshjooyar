@@ -36,10 +36,6 @@ class handleClient extends Thread {
             command = receiver();
             System.out.println("command: " + command);
             String[] splitter = command.split(",");
-            if (splitter.length < 3) {
-                System.out.println("Invalid command format");
-                return;
-            }
             switch (splitter[0]) {
 
                 case "GET: logInChecker": //LOGIN
