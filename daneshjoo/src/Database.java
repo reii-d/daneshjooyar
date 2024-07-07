@@ -676,8 +676,31 @@ public class Database {
         return result.toString();
     }
 
+    public String classaInfo(String studentID) throws IOException {
+        String courses = "";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null){
+                info = line.split(",");
+                if (info[1].equals(studentID) && info.length > 3){
+                    String[] course = info[3].split(";");
+                    for (int i = 0; i < course.length; i++){
+                        String[] part = course[i].split(":");
+                        courses += courseInfo(part[0]);
+                        if (i < course.length - 1){
+                            courses += ",";
+                        }
+                    }
+                }
+            }
+        }
+        return courses;
+    }
+
     //To send course's info (name, ID, teacher)
-    public String classaInfo(String courseID) throws IOException {
+    public String courseInfo(String courseName) throws IOException {
         String courseInfo = "";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
@@ -685,7 +708,7 @@ public class Database {
             String[] info;
             while ((line = reader.readLine()) != null){
                 info = line.split(",");
-                if (info[1].equals(courseID)){
+                if (info[0].equals(courseName)){
                     courseInfo = info[0] + "," + info[1] + "," + info[4];
                 }
             }
@@ -702,15 +725,15 @@ public class Database {
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[1].equals(courseID)){
-                    assignmentInfo = info[0] + "," + info[1];
+                    assignmentInfo = info[0] + ",";
                     if (info.length > 4){
-                        assignmentInfo += ",";
                         int num = 0;
                         String[] assignments = info[5].split(";");
+                        assignmentInfo = assignmentInfo + String.valueOf(assignments.length) + ",";
                         for (String a : assignments){
                             assignmentInfo += a;
                             num++;
-                            if (num < assignments.length){
+                            if (num < assignments.length - 1){
                                 assignmentInfo += ";";
                             }
                         }
