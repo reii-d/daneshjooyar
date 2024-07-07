@@ -127,6 +127,7 @@ class handleClient extends Thread {
 
                 case "GET: SaraInfo":
                     try {
+                        System.out.println(Database.getInstance().saraInfo(splitter[1]));
                         Database.getInstance().saraInfo(splitter[1]);
                     } catch (IOException e){
                         System.out.println("Error accessing database: " + e.getMessage());

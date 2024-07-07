@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -17,9 +18,9 @@ class Sara extends StatefulWidget {
 }
 
 class _SaraState extends State<Sara> {
-  int bestScore = 0;
-  int worstScore = 0;
-  int numberOfAssignments = 0;
+  double bestScore = 0.0;
+  double worstScore = 0.0;
+  double numberOfAssignments = 0.0;
   String _error = '';
 
   @override
@@ -33,8 +34,7 @@ class _SaraState extends State<Sara> {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending request for SaraInfo
-      socket.write('GET: SaraInfo,${widget.Id}\u0000');
-      socket.flush();
+      socket.write('GET: SaraInfo,${widget.Id}\u0000');socket.flush();
 
       // Listening for the response
       socket.listen((List<int> data) {
@@ -44,9 +44,9 @@ class _SaraState extends State<Sara> {
 
         if (responseData.length == 3) {
           setState(() {
-            bestScore = int.parse(responseData[0]);
-            worstScore = int.parse(responseData[1]);
-            numberOfAssignments = int.parse(responseData[2]);
+            bestScore = double.parse(responseData[0]);
+            worstScore = double.parse(responseData[1]);
+            numberOfAssignments = double.parse(responseData[2]);
           });
         }
         socket.close();
@@ -57,6 +57,7 @@ class _SaraState extends State<Sara> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,96 +94,97 @@ class _SaraState extends State<Sara> {
         centerTitle: true,
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            Container(
-              height: 100,
-              child: DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 16.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Menu',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                ),
-                margin: EdgeInsets.zero,
-                padding: EdgeInsets.zero,
+      child: ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+      Container(
+      height: 100,
+      child: DrawerHeader(
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(left: 16.0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Menu',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Sara'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Profile'),
-              onTap: () {
-                // Navigate to Profile Page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(
-                      name: "John Doe",
-                      gpa: 3.75,
-                      studentid: widget.Id,
-                    ),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.calendar_month),
-              title: Text('Kara'),
-              onTap: () {
-                // Navigate to Kara Page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Kara()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.hotel_class_sharp),
-              title: Text('Classea'),
-              onTap: () {
-                // Navigate to Next Term Classes Page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NextTermClassesPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.newspaper_rounded),
-              title: Text('Khabara'),
-              onTap: () {
-                // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Khabara()));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.home_work),
-              title: Text('Tamrina'),
-              onTap: () {
-                // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina()));
-              },
-            ),
-          ],
+          ),
         ),
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
+      ),
+    ),
+    ListTile(
+    leading: Icon(Icons.home),
+    title: Text('Sara'),
+    onTap: () {
+    Navigator.pop(context);
+    },
+    ),
+    ListTile(
+    leading: Icon(Icons.person),
+    title: Text('Profile'),
+    onTap: () {
+    // Navigate to Profile Page
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => StudentInfoPage(
+    name: "John Doe",
+    gpa: 3.75,
+    studentid: widget.Id,
+    ),
+    ),
+    );
+    },
+    ),
+    ListTile(
+
+      leading: Icon(Icons.calendar_month),
+      title: Text('Kara'),
+      onTap: () {
+        // Navigate to Kara Page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Kara()),
+        );
+      },
+    ),
+        ListTile(
+          leading: Icon(Icons.hotel_class_sharp),
+          title: Text('Classea'),
+          onTap: () {
+            // Navigate to Next Term Classes Page
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NextTermClassesPage()),
+            );
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.newspaper_rounded),
+          title: Text('Khabara'),
+          onTap: () {
+            // Navigate to Contact Page
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Khabara()));
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.home_work),
+          title: Text('Tamrina'),
+          onTap: () {
+            // Navigate to Contact Page
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina()));
+          },
+        ),
+      ],
+      ),
       ),
       body: Padding(
         padding: EdgeInsets.all(25.0),

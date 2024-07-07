@@ -6,11 +6,11 @@ import java.util.List;
 public class Database {
 
     //Files
-    String studentFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/students.txt";
+    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
     File studentFile = new File(studentFileName);
     String teacherFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/teachers.txt";
     File teacherFile = new File(teacherFileName);
-    String courseFileName = "C:/Users/RSV/Desktop/daneshjooyar/daneshjoo/src/data/courses.txt";
+    String courseFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     File courseFile = new File(courseFileName);
 
 
