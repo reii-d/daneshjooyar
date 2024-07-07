@@ -624,9 +624,9 @@ public class Database {
     }
 
     //To send information for page "SARA"
-    public ArrayList<Double> saraInfo(String studentID) throws IOException {
-        ArrayList<Double> sara = new ArrayList<>();
+    public String saraInfo(String studentID) throws IOException {
         double num = 0;
+        String sara = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
             String line;
             String[] info;
@@ -641,9 +641,7 @@ public class Database {
                 }
             }
         }
-        sara.add(bestScore(studentID));
-        sara.add(worstScore(studentID));
-        sara.add(Double.parseDouble(String.valueOf(num)));
+        sara = String.valueOf(bestScore(studentID)) + " " + String.valueOf(worstScore(studentID)) + " " + String.valueOf(num);
         return sara;
     }
 }
