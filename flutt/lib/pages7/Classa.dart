@@ -100,7 +100,7 @@ class _ClassaState extends State<Classa> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Kara()),
+                  MaterialPageRoute(builder: (context) => Kara(id:widget.id)),
                 );
               },
             ),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:test1/pages7/Khabara.dart';
 import 'package:test1/pages7/Sara.dart';
 
 class Tamrina extends StatefulWidget {
-   String id;
+  String id;
 
   Tamrina({required this.id});
 
@@ -72,8 +73,7 @@ class _TamrinaState extends State<Tamrina> {
               leading: Icon(Icons.home),
               title: Text('Sara'),
               onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Sara(Id: widget.id)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara(Id: widget.id)));
               },
             ),
             ListTile(
@@ -81,16 +81,14 @@ class _TamrinaState extends State<Tamrina> {
               title: Text('Profile'),
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => StudentInfoPage(studentid: widget.id)));
+                    context, MaterialPageRoute(builder: (context) => StudentInfoPage(studentid: widget.id)));
               },
             ),
             ListTile(
               leading: Icon(Icons.calendar_month),
               title: Text('Kara'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Kara()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Kara(id:widget.id)));
               },
             ),
             ListTile(
@@ -136,6 +134,24 @@ class _TamrinaState extends State<Tamrina> {
                         onPressed: () => Navigator.pop(context),
                         child: Text('OK'),
                       ),
+                      TextButton(
+                        onPressed: () async {
+                          DateTime? newDueDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now().add(Duration(days: assignment['daysLeft'])),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime.now().add(Duration(days: 365)),
+                          );
+                          if (newDueDate != null) {
+                            setState(() {
+                              Duration difference = newDueDate.difference(DateTime.now());
+                              assignment['daysLeft'] = difference.inDays;
+                            });
+                          }
+                          Navigator.pop(context);
+                        },
+                        child: Text('Change Due Date'),
+                      ),
                     ],
                   ),
                 );
@@ -176,6 +192,7 @@ class _TamrinaState extends State<Tamrina> {
             assignments.add({
               'title': assignmentTitle,
               'daysLeft': daysLeft,
+              'dueDate': DateTime.now().add(Duration(days: daysLeft)),
             });
           }
         }
@@ -224,21 +241,70 @@ class LessonCard extends StatelessWidget {
               ),
             ),
             ...lesson['assignments'].map<Widget>((assignment) {
-              return ListTile(
-                title: Text(
-                  assignment['title'],
-                  style: TextStyle(color: Colors.black),
-                ),
-                subtitle: Text(
-                  'Days Left: ${assignment['daysLeft']}',
-                  style: TextStyle(color: Colors.white),
-                ),
+              return AssignmentTile(
+                assignment: assignment,
                 onTap: () => onTapAssignment(assignment),
               );
             }).toList(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class AssignmentTile extends StatefulWidget {
+  final Map<String, dynamic> assignment;
+  final VoidCallback onTap;
+
+  const AssignmentTile({
+    required this.assignment,
+    required this.onTap,
+  });
+
+  @override
+  _AssignmentTileState createState() => _AssignmentTileState();
+}
+
+class _AssignmentTileState extends State<AssignmentTile> {
+  late DateTime dueDate;
+  late Duration timeLeft;
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    dueDate = widget.assignment['dueDate'];
+    updateTimeLeft();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      updateTimeLeft();
+    });
+  }
+
+  void updateTimeLeft() {
+    setState(() {
+      timeLeft = dueDate.difference(DateTime.now());
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        widget.assignment['title'],
+        style: TextStyle(color: Colors.black),
+      ),
+      subtitle: Text(
+        'Time Left: ${timeLeft.inDays} days, ${timeLeft.inHours % 24} hours, ${timeLeft.inMinutes % 60} minutes',
+        style: TextStyle(color: Colors.green),
+      ),
+      onTap: widget.onTap,
     );
   }
 }

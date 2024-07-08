@@ -110,7 +110,7 @@ class _SaraState extends State<Sara> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Kara()),
+                  MaterialPageRoute(builder: (context) => Kara(id:widget.Id)),
                 );
               },
             ),

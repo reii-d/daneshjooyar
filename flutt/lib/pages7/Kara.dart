@@ -6,20 +6,52 @@ import '../pages/profile.dart';
 import 'Sara.dart';
 
 class Kara extends StatefulWidget {
+  final String id;
+
+  Kara({required this.id});
+
   @override
   _KaraState createState() => _KaraState();
 }
 
 class _KaraState extends State<Kara> {
-  List<Task> dailyTasks = [
-    Task(name: 'Buy groceries', deadline: DateTime.now().add(Duration(hours: 2))),
-    Task(name: 'Finish project report', deadline: DateTime.now().add(Duration(hours: 5))),
-  ];
+  List<Task> dailyTasks = [];
+  List<Task> futureTasks = [];
 
-  List<Task> futureTasks = [
-    Task(name: 'Plan next week\'s meeting', deadline: DateTime.now().add(Duration(days: 2))),
-    Task(name: 'Review quarterly results', deadline: DateTime.now().add(Duration(days: 3))),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchTasks();
+  }
+
+  Future<void> fetchTasks() async {
+    // Fetch tasks from backend using the widget.id
+    // For example:
+    // final response = await http.get('your-backend-api/tasks/${widget.id}');
+    // Parse the response and setState to update the dailyTasks and futureTasks lists
+  }
+
+  Future<void> addTask(Task task) async {
+    setState(() {
+      dailyTasks.add(task);
+    });
+    // Send task details to backend
+    // For example:
+    // await http.post('your-backend-api/tasks/add', body: {'id': widget.id, 'task': task.name});
+  }
+
+  Future<void> deleteTask(Task task) async {
+    setState(() {
+      if (dailyTasks.contains(task)) {
+        dailyTasks.remove(task);
+      } else {
+        futureTasks.remove(task);
+      }
+    });
+    // Send task details to backend
+    // For example:
+    // await http.post('your-backend-api/tasks/delete', body: {'id': widget.id, 'task': task.name});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +80,7 @@ class _KaraState extends State<Kara> {
                   color: Colors.blue,
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.only(left: 16.0),
+                  padding: EdgeInsets.only(left: 16.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -68,23 +100,30 @@ class _KaraState extends State<Kara> {
               leading: Icon(Icons.home),
               title: Text('Sara'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara(Id: "402243108",)));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Sara(Id: "402243108"),
+                  ),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Profile'),
               onTap: () {
-                // Navigate to Profile Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => StudentInfoPage(studentid: "john_doe",),
-                ));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StudentInfoPage(studentid: "john_doe"),
+                  ),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.calendar_month),
               title: Text('Kara'),
               onTap: () {
-                // Navigate to Settings Page
                 Navigator.pop(context);
               },
             ),
@@ -92,7 +131,6 @@ class _KaraState extends State<Kara> {
               leading: Icon(Icons.hotel_class_sharp),
               title: Text('Classea'),
               onTap: () {
-                // Navigate to Next Term Classes Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Classa(id: "40")),
@@ -103,16 +141,20 @@ class _KaraState extends State<Kara> {
               leading: Icon(Icons.newspaper_rounded),
               title: Text('Khabara'),
               onTap: () {
-                // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Khabara()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Khabara()),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.home_work),
               title: Text('Tamrina'),
               onTap: () {
-                // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina(id: "40")));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Tamrina(id: "40")),
+                );
               },
             ),
           ],
@@ -140,6 +182,17 @@ class _KaraState extends State<Kara> {
               child: ListView(
                 children: futureTasks.map((task) => buildTaskItem(task)).toList(),
               ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                // Add a new task (for example purposes)
+                Task newTask = Task(
+                  name: 'New Task',
+                  deadline: DateTime.now().add(Duration(hours: 24)),
+                );
+                await addTask(newTask);
+              },
+              child: Text('Add Task'),
             ),
           ],
         ),
@@ -171,14 +224,8 @@ class _KaraState extends State<Kara> {
             ),
             IconButton(
               icon: Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                setState(() {
-                  if (dailyTasks.contains(task)) {
-                    dailyTasks.remove(task);
-                  } else {
-                    futureTasks.remove(task);
-                  }
-                });
+              onPressed: () async {
+                await deleteTask(task);
               },
             ),
           ],

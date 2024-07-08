@@ -165,6 +165,7 @@ class handleClient extends Thread {
 
                 case "GET: TamrinaInfo":
                     try {
+
                         System.out.println(Database.getInstance().tamrinaInfo(splitter[1]));
                         Database.getInstance().tamrinaInfo(splitter[1]);
                         writer(Database.getInstance().tamrinaInfo(splitter[1]));
