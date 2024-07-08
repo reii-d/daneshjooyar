@@ -16,7 +16,7 @@ class Kara extends StatefulWidget {
 
 class _KaraState extends State<Kara> {
   List<Task> dailyTasks = [];
-  List<Task> futureTasks = [];
+  TextEditingController taskController = TextEditingController();
 
   @override
   void initState() {
@@ -28,25 +28,25 @@ class _KaraState extends State<Kara> {
     // Fetch tasks from backend using the widget.id
     // For example:
     // final response = await http.get('your-backend-api/tasks/${widget.id}');
-    // Parse the response and setState to update the dailyTasks and futureTasks lists
+    // Parse the response and setState to update the dailyTasks list
   }
 
-  Future<void> addTask(Task task) async {
+  Future<void> addTask(String taskName) async {
+    Task newTask = Task(
+      name: taskName,
+      deadline: DateTime.now().add(Duration(hours: 24)),
+    );
     setState(() {
-      dailyTasks.add(task);
+      dailyTasks.add(newTask);
     });
     // Send task details to backend
     // For example:
-    // await http.post('your-backend-api/tasks/add', body: {'id': widget.id, 'task': task.name});
+    // await http.post('your-backend-api/tasks/add', body: {'id': widget.id, 'task': taskName});
   }
 
   Future<void> deleteTask(Task task) async {
     setState(() {
-      if (dailyTasks.contains(task)) {
-        dailyTasks.remove(task);
-      } else {
-        futureTasks.remove(task);
-      }
+      dailyTasks.remove(task);
     });
     // Send task details to backend
     // For example:
@@ -165,32 +165,38 @@ class _KaraState extends State<Kara> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Daily Tasks',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+            Center(
+              child: Text(
+                'Daily Tasks',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
             ),
             Expanded(
               child: ListView(
                 children: dailyTasks.map((task) => buildTaskItem(task)).toList(),
               ),
             ),
-            Text(
-              'Future Tasks',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            Expanded(
-              child: ListView(
-                children: futureTasks.map((task) => buildTaskItem(task)).toList(),
+            TextField(
+              controller: taskController,
+              decoration: InputDecoration(
+                labelText: 'New Task',
+                labelStyle: TextStyle(color: Colors.white),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
               ),
+              style: TextStyle(color: Colors.white),
             ),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: () async {
-                // Add a new task (for example purposes)
-                Task newTask = Task(
-                  name: 'New Task',
-                  deadline: DateTime.now().add(Duration(hours: 24)),
-                );
-                await addTask(newTask);
+                if (taskController.text.isNotEmpty) {
+                  await addTask(taskController.text);
+                  taskController.clear();
+                }
               },
               child: Text('Add Task'),
             ),
