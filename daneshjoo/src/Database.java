@@ -10,6 +10,7 @@ public class Database {
     String teacherFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
     String courseFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     String taskFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\tasks.txt";
+    String newsFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\news.txt";
 
 
     //Constructor
@@ -879,5 +880,18 @@ public class Database {
             writer1.println("");
             writer1.close();
         }
+    }
+
+    //To send news, for the page "KHABARA"
+    public String khabaraInfo() throws IOException {
+        StringBuilder news = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(newsFileName))){
+            String line;
+            while ((line = reader.readLine()) != null) {
+                news.append(line).append("~");
+            }
+        }
+        news.toString().replaceAll("~$", "");
+        return news.toString();
     }
 }
