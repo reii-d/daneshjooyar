@@ -103,7 +103,7 @@ public class Database {
         }
     }
 
-    //To return the number of assignments of a course
+    //To return assignments of a course
     public ArrayList<String> getAssignments(String courseName) throws IOException {
         ArrayList<String> assignments = new ArrayList<>();
 
@@ -118,9 +118,10 @@ public class Database {
                     assignment = info[5].split(";");
                     for (String a :assignment){
                         part = a.split(":");
-                        assignments.add("," + part[0] + "," + part[1]);
+                        if (part.length == 2)
+                            assignments.add("," + part[0] + "," + part[1]);
                     }
-                    break;
+                    break; //
                 }
             }
             return assignments;
@@ -763,7 +764,7 @@ public class Database {
 
     //To send information for page "TAMRINA" (name of course, assignment name, deadline)
     public String tamrinaInfo(String studentID) throws IOException {
-        String tamrina = "";
+        StringBuilder tamrina = new StringBuilder();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
             String line;
@@ -774,18 +775,21 @@ public class Database {
                     String[] course = info[3].split(";");
                     for (int i = 0; i < course.length; i++){
                         String[] part = course[i].split(":");
-                        tamrina += part[0];
-                        ArrayList<String> tamrin = getAssignments(part[0]);
-                        for (int j = 0; j < tamrin.size(); j++){
-                            tamrina += tamrin.get(j);
-                        }
-                        if (i < course.length - 1){
-                            tamrina += ";";
+                        if (part.length == 2) {
+                            tamrina.append(part[0]);
+                            ArrayList<String> tamrin = getAssignments(part[0]);
+                            for (String s : tamrin) {
+                                tamrina.append(s);
+                            }
+                            if (i < course.length - 1) {
+                                tamrina.append(";");
+                            }
                         }
                     }
+                    break;
                 }
             }
         }
-        return tamrina;
+        return tamrina.toString();
     }
 }

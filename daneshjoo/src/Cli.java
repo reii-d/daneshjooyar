@@ -393,111 +393,16 @@ public class Cli {
                 }
                 break;
 
-            //STUDENT
-            case "3":
-                clear();
-                /*System.out.println("Choose an option: \n1. log in\n2. sign up");
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-                boolean enter = false;
-                String UserName = "";
-                if (choice == 1) {
-                    System.out.println("Enter your username/student id: ");
-                    String username = scanner.nextLine();
-                    System.out.println("Enter your password: ");
-                    String password = scanner.nextLine();
-                    clear();
-                    try (BufferedReader reader = new BufferedReader(new FileReader(database.studentFileName))) {
-                        String line;
-                        String[] info;
-                        boolean isExist = false;
-                        while ((line = reader.readLine()) != null) {
-                            info = line.split(",");
-                            if (username.equals(info[1])) {
-                                if (password.equals(info[2])) {
-                                    System.out.println("Welcome to Daneshjooyar!");
-                                    enter = true;
-                                    UserName = username;
-                                    break;
-                                } else {
-                                    System.out.println("Incorrect password. Try again...");
-                                    do {
-                                        scanner.nextLine();
-                                    } while (password.equals(info[1]));
-                                    clear();
-                                    System.out.println("Welcome to Daneshjooyar!");
-                                    enter = true;
-                                    UserName = username;
-                                }
-                                isExist = true;
-                                break;
-                            }
-                        }
-                        if (!isExist) {
-                            System.out.println("You have not registered yet.");
-                        }
-                    }
-                } else if (choice == 2) {
-                    System.out.println("Enter your Name: ");
-                    String firstName = scanner.nextLine();
-                    System.out.println("Enter your last name: ");
-                    String lastName = scanner.nextLine();
-                    System.out.println("Enter your username/student id: ");
-                    String username = scanner.nextLine();
-                    System.out.println("Enter your password: ");
-                    String password = scanner.nextLine();
-                    clear();
-                    boolean isExist = false;
-                    try (BufferedReader reader = new BufferedReader(new FileReader(database.studentFileName))) {
-                        String line;
-                        String[] info;
-                        while ((line = reader.readLine()) != null) {
-                            info = line.split(",");
-                            if (username.equals(info[0])) {
-                                System.out.println("You can't use this username!");
-                                isExist = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!isExist) {
-                        while (password.length() < 8
-                                || password.contains(username) ||
-                                !password.matches(".*[a-z].*") ||
-                                !password.matches(".*[A-Z].*")) {
-                            System.err.println("Invalid password!");
-                            password = scanner.nextLine();
-                        }
-                        try (FileWriter fileWriter = new FileWriter(database.studentFileName, true)) {
-                            fileWriter.write(firstName + " " + lastName + "," + username + "," + password + ",\n");
-                            System.out.println("you signed up successfully!");
-                            enter = true;
-                            UserName = username;
-                        }
-                    }
-                }
-                if (enter){
-                    System.out.println("Access to Courses:\n1. Add a course\n2. Remove a course");
-                    String sChoice = scanner.nextLine();
-                    if (sChoice.equals("1")){
-                        System.out.println("Enter the name of course: ");
-                        String courseName = scanner.nextLine();
-                        database.addCourseToStudent(database.studentName(UserName), courseName);
-                    }
-                    else if (sChoice.equals("2")){
-                        System.out.println("Removing an old course!\nEnter the name of course: ");
-                        String courseName = scanner.nextLine();
-                        database.removeCourseFromStudent(courseName, database.studentName(UserName));
-                    }
-                }*/
-                break;
             case "4":
                 System.out.println("Goodbye!");
                 break;
+
             default:
+                System.err.println("Invalid!");
                 break;
         }
     }
+
     public static void mainMenu(){
         System.out.println("\nMenu: ");
         System.out.println("1. admin");
