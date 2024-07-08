@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test1/pages7/Classa.dart';
 import 'package:test1/pages7/Khabara.dart';
@@ -22,35 +23,6 @@ class _KaraState extends State<Kara> {
   void initState() {
     super.initState();
     fetchTasks();
-  }
-
-  Future<void> fetchTasks() async {
-    // Fetch tasks from backend using the widget.id
-    // For example:
-    // final response = await http.get('your-backend-api/tasks/${widget.id}');
-    // Parse the response and setState to update the dailyTasks list
-  }
-
-  Future<void> addTask(String taskName) async {
-    Task newTask = Task(
-      name: taskName,
-      deadline: DateTime.now().add(Duration(hours: 24)),
-    );
-    setState(() {
-      dailyTasks.add(newTask);
-    });
-    // Send task details to backend
-    // For example:
-    // await http.post('your-backend-api/tasks/add', body: {'id': widget.id, 'task': taskName});
-  }
-
-  Future<void> deleteTask(Task task) async {
-    setState(() {
-      dailyTasks.remove(task);
-    });
-    // Send task details to backend
-    // For example:
-    // await http.post('your-backend-api/tasks/delete', body: {'id': widget.id, 'task': task.name});
   }
 
   @override
@@ -255,6 +227,51 @@ class _KaraState extends State<Kara> {
         },
       ),
     );
+  }
+
+  Future<void> fetchTasks() async {
+    Socket socket = await Socket.connect("192.168.1.112", 8080);
+    socket.write('GET: KaraInfo,${widget.id}\u0000');
+    await socket.flush();
+
+    socket.listen((data) {
+      String response = String.fromCharCodes(data);
+      List<String> taskStrings = response.split(';');
+      setState(() {
+        dailyTasks = taskStrings.map((taskName) {
+          return Task(
+            name: taskName,
+            deadline: DateTime.now().add(Duration(hours: 24)),
+          );
+        }).toList();
+      });
+      socket.destroy();
+    });
+  }
+
+
+  Future<void> addTask(String taskName) async {
+    Task newTask = Task(
+      name: taskName,
+      deadline: DateTime.now().add(Duration(hours: 24)),
+    );
+    setState(() {
+      dailyTasks.add(newTask);
+    });
+    Socket socket = await Socket.connect("192.168.1.112", 8080);
+    socket.write('GET: AddKaraInfo,${widget.id},$taskName\u0000');
+    await socket.flush();
+    socket.destroy();
+  }
+
+  Future<void> deleteTask(Task task) async {
+    setState(() {
+      dailyTasks.remove(task);
+    });
+    Socket socket = await Socket.connect("192.168.1.112", 8080);
+    socket.write('GET: RemoveKaraInfo,${widget.id},${task.name}\u0000');
+    await socket.flush();
+    socket.destroy();
   }
 }
 
