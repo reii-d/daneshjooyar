@@ -153,12 +153,9 @@ class handleClient extends Thread {
                     }
                     break;
 
-                case "GET: Classa":
+                case "GET: AddClassa":
                     try {
-
-                        System.out.println(Database.getInstance().addClassaInfo(splitter[1], splitter[2]));
                         Database.getInstance().addClassaInfo(splitter[1], splitter[2]);
-                        writer(Database.getInstance().addClassaInfo(splitter[1], splitter[2]));
                     } catch (IOException e){
                         System.err.println("Error accessing database: " + e.getMessage());
                     }

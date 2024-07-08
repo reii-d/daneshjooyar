@@ -116,7 +116,8 @@ class _ClassaState extends State<Classa> {
               title: Text('Khabara'),
               onTap: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Khabara()));
+                    context,
+                    MaterialPageRoute(builder: (context) => Khabara()));
               },
             ),
             ListTile(
@@ -267,46 +268,22 @@ class _ClassaState extends State<Classa> {
       });
     }
   }
+
   Future<void> addClass(String newClassId) async {
     try {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending request to add class
-      socket.write('GET: Classa,${widget.id},$newClassId\u0000');
+      socket.write('GET: AddClassa,${widget.id},$newClassId\u0000');
       await socket.flush();
 
-      // Listening for the response
-      socket.listen((socketResponse) {
-        String response = utf8.decode(socketResponse).trim();
-        List<String> parts = response.split(',');
-        if (parts.length >= 4) {
-          setState(() {
-            classes.add({
-              'className': parts[1],
-              'classId': parts[2],
-              'teacherName': parts[3],
-            });
-            _error = '';
-          });
-        } else {
-          setState(() {
-            _error = 'Invalid response format';
-          });
-        }
-        socket.close();
-      }, onError: (error) {
-        setState(() {
-          _error = 'Socket error: $error';
-        });
-      }, onDone: () {
-        socket.destroy();
-      });
-    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Classa(id: widget.id)));
+    }catch (e){
       setState(() {
         _error = 'Error: $e';
       });
-    }
   }
-
+}
 
 }
