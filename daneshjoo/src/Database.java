@@ -809,34 +809,45 @@ public class Database {
     }
 
     //To add task to todolist, for the page "KARA"
-    public void addTask (String studentID, String task) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(taskFileName))) {
-            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+    public void addTask(String studentID, String task) throws IOException {
+        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+
+        // Use try-with-resources to ensure that resources are properly closed
+        try (
+                BufferedReader reader = new BufferedReader(new FileReader(taskFileName));
+                PrintWriter tempWriter = new PrintWriter(new FileWriter(tempFileName, true));
+        ) {
             String line;
-            String[] info;
+            boolean taskAdded = false;
             while ((line = reader.readLine()) != null) {
-                info = line.split(";");
+                String[] info = line.split(";");
                 if (info[0].equals(studentID)) {
                     line += "," + task;
+                    taskAdded = true;
                 }
-                FileWriter fileWriter = new FileWriter(tempFileName, true);
-                fileWriter.write(line + "\n");
-                fileWriter.close();
+                tempWriter.println(line);
             }
-            PrintWriter writer = new PrintWriter(taskFileName);
-            writer.println("");
-            writer.close();
-            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-            while ((line = reader1.readLine()) != null) {
-                FileWriter fileWriter = new FileWriter(taskFileName, true);
-                fileWriter.write(line + "\n");
-                fileWriter.close();
+            // If the task was not added (student ID not found), we should add the new task for the student
+            if (!taskAdded) {
+                tempWriter.println(studentID + ";" + task);
             }
-            PrintWriter writer1 = new PrintWriter(tempFileName);
-            writer1.println("");
-            writer1.close();
+        }
+        // Overwrite the original file with the temporary file content
+        try (
+                BufferedReader tempReader = new BufferedReader(new FileReader(tempFileName));
+                PrintWriter writer = new PrintWriter(new FileWriter(taskFileName))
+        ) {
+            String line;
+            while ((line = tempReader.readLine()) != null) {
+                writer.println(line);
+            }
+        }
+        // Clear the temporary file
+        try (PrintWriter tempWriter = new PrintWriter(new FileWriter(tempFileName))) {
+            tempWriter.print("");
         }
     }
+
 
     //To remove a task from todolist, for the page "KARA"
     public void removeTask(String studentID, String task) throws IOException {
