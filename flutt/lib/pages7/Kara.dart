@@ -236,7 +236,7 @@ class _KaraState extends State<Kara> {
 
     socket.listen((data) {
       String response = String.fromCharCodes(data);
-      List<String> taskStrings = response.split(';');
+      List<String> taskStrings = response.split(',');
       setState(() {
         dailyTasks = taskStrings.map((taskName) {
           return Task(
