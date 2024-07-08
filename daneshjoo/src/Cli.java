@@ -393,7 +393,7 @@ public class Cli {
                 }
                 break;
 
-            case "4":
+            case "3":
                 System.out.println("Goodbye!");
                 break;
 
@@ -407,8 +407,7 @@ public class Cli {
         System.out.println("\nMenu: ");
         System.out.println("1. admin");
         System.out.println("2. teacher");
-        System.out.println("3. student");
-        System.out.println("4. exit");
+        System.out.println("3. exit");
         System.out.println("What is your choice?: ");
     }
     public static void AdminAccess(){
