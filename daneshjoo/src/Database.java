@@ -8,8 +8,8 @@ public class Database {
     String teacherFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
     String courseFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     String taskFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\tasks.txt";
-    String newsFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\news.txt";
-    String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+    String newsFileName = "C:\\Users\\RSV/Desktop\\daneshjooyar\\daneshjoo\\src\\data\\news.txt";
+    String tempFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
 
 
     //Constructor
@@ -906,7 +906,7 @@ public class Database {
 
     //To add news (command from Cli)
     public void addNews (String title, String text) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(taskFileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(newsFileName))) {
             String line;
             boolean newsAdded = true;
             while ((line = reader.readLine()) != null) {
@@ -917,7 +917,7 @@ public class Database {
             }
 
             if (newsAdded) {
-                String completeText = title + ":" + text;
+                String completeText = title + ":" + text + "\n";
                 FileWriter fileWriter = new FileWriter(newsFileName, true);
                 fileWriter.write(completeText);
                 fileWriter.close();
