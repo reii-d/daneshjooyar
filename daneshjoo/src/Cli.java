@@ -199,6 +199,28 @@ public class Cli {
 
                         break;
 
+                    //Access to NEWS
+                    case "4":
+                        clear();
+                        System.out.println("1. Add news \n2. Remove the news");
+                        String newsChoice = scanner.nextLine();
+
+                        if (newsChoice.equals("1")){        //Adding news
+                            System.out.println("Adding news!\nWrite the title of the news: ");
+                            String title = scanner.nextLine();
+                            System.out.println("Write the texe of the news: ");
+                            String text = scanner.nextLine();
+                            database.addNews(title, text);
+                        }
+
+                        else if (newsChoice.equals("2")){       //Removing news
+                            System.out.println("Removing news!\nWrite the title of the news: ");
+                            String title = scanner.nextLine();
+                            database.removeNews(title);
+                        } else
+                            System.err.println("Unknown command!");
+                        break;
+
                     default:
                         System.out.println("Unknown command");
                         break; //for the admin options

@@ -903,4 +903,63 @@ public class Database {
         news.toString().replaceAll("~$", "");
         return news.toString();
     }
+
+    //To add news (command from Cli)
+    public void addNews (String title, String text) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(taskFileName))) {
+            String line;
+            boolean newsAdded = true;
+            while ((line = reader.readLine()) != null) {
+                String[] info = line.split(";");
+                if (info[0].equals(title)) {
+                    newsAdded = false;
+                }
+            }
+
+            if (newsAdded) {
+                String completeText = title + ":" + text;
+                FileWriter fileWriter = new FileWriter(newsFileName, true);
+                fileWriter.write(completeText);
+                fileWriter.close();
+                System.out.println("News added successfully!");
+            } else if (!newsAdded) {
+                System.err.println("This title is in use. Try again with another title.");
+            }
+        }
+    }
+
+    //To Removing news (command from Cli)
+    public void removeNews (String title) throws IOException {
+        boolean removed = false;
+        try (BufferedReader reader = new BufferedReader(new FileReader(newsFileName));
+             FileWriter fileWriter = new FileWriter(tempFileName)) {
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(":");
+                if (!info[0].equals(title)) {
+                    fileWriter.write(line + "\n");
+                } else {
+                    removed = true;
+                }
+            }
+            fileWriter.close();
+            PrintWriter writer = new PrintWriter(newsFileName);
+            writer.println("");
+            writer.close();
+            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
+            while ((line = reader1.readLine()) != null) {
+                FileWriter fileWriter1 = new FileWriter(newsFileName, true);
+                fileWriter1.write(line + "\n");
+                fileWriter1.close();
+            }
+            PrintWriter writer1 = new PrintWriter(tempFileName);
+            writer1.println("");
+            writer1.close();
+        }
+        if (removed)
+            System.out.println("News removed successfully!");
+        else
+            System.err.println("Cannot find this news. Try again please...");
+    }
 }
