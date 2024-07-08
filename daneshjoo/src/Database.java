@@ -7,11 +7,9 @@ public class Database {
 
     //Files
     String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
-    File studentFile = new File(studentFileName);
     String teacherFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
-    File teacherFile = new File(teacherFileName);
     String courseFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
-    File courseFile = new File(courseFileName);
+    String taskFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\tasks.txt";
 
 
     //Constructor
@@ -791,5 +789,95 @@ public class Database {
             }
         }
         return tamrina.toString();
+    }
+
+    //To send tasks for the page "KARA"
+    public String sendTasks (String studentID) throws IOException {
+        String tasks = "";
+        try (BufferedReader reader = new BufferedReader(new FileReader(taskFileName))) {
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null){
+                info = line.split(";");
+                if (info[0].equals(studentID)) {
+                    tasks = info[1];
+                }
+            }
+        }
+        return tasks;
+    }
+
+    //To add task to todolist, for the page "KARA"
+    public void addTask (String studentID, String task) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(taskFileName))) {
+            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(";");
+                if (info[0].equals(studentID)) {
+                    line += "," + task;
+                }
+                FileWriter fileWriter = new FileWriter(tempFileName, true);
+                fileWriter.write(line + "\n");
+                fileWriter.close();
+            }
+            PrintWriter writer = new PrintWriter(taskFileName);
+            writer.println("");
+            writer.close();
+            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
+            while ((line = reader1.readLine()) != null) {
+                FileWriter fileWriter = new FileWriter(taskFileName, true);
+                fileWriter.write(line + "\n");
+                fileWriter.close();
+            }
+            PrintWriter writer1 = new PrintWriter(tempFileName);
+            writer1.println("");
+            writer1.close();
+        }
+    }
+
+    //To remove a task from todolist, for the page "KARA"
+    public void removeTask(String studentID, String task) throws IOException {
+        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+        boolean removed = false;
+        try (BufferedReader reader = new BufferedReader(new FileReader(taskFileName));
+             FileWriter fileWriter = new FileWriter(tempFileName)) {
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(";");
+                if (info[0].equals(studentID)) {
+                    String[] tasks = info[1].split(",");
+                    StringBuilder updatedLine = new StringBuilder(info[0] + ";");
+                    for (String str : tasks) {
+                        if (!str.contains(task)) {
+                            updatedLine.append(str).append(",");
+                        } else {
+                            removed = true;
+                        }
+                    }
+                    if (!removed) {
+                        System.out.println("Task did not found.");
+                    }
+                    fileWriter.write(updatedLine.toString() + "\n");
+                } else {
+                    fileWriter.write(line + "\n");
+                }
+            }
+            fileWriter.close();
+            PrintWriter writer = new PrintWriter(taskFileName);
+            writer.println("");
+            writer.close();
+            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
+            while ((line = reader1.readLine()) != null) {
+                FileWriter fileWriter1 = new FileWriter(taskFileName, true);
+                fileWriter1.write(line + "\n");
+                fileWriter1.close();
+            }
+            PrintWriter writer1 = new PrintWriter(tempFileName);
+            writer1.println("");
+            writer1.close();
+        }
     }
 }

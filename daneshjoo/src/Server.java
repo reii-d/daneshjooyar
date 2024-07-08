@@ -165,13 +165,41 @@ class handleClient extends Thread {
 
                 case "GET: TamrinaInfo":
                     try {
-
                         System.out.println(Database.getInstance().tamrinaInfo(splitter[1]));
                         Database.getInstance().tamrinaInfo(splitter[1]);
                         writer(Database.getInstance().tamrinaInfo(splitter[1]));
                     } catch (IOException e){
                         System.err.println("Error accessing database: " + e.getMessage());
                     }
+
+                case "GET: KaraInfo":
+                    try {
+                        Database.getInstance().sendTasks(splitter[1]);
+                        writer(Database.getInstance().sendTasks(splitter[1]));
+                    } catch (IOException e) {
+                        System.out.println("Error accessing database: " + e.getMessage());
+                    }
+                    break;
+
+                case "GET: AddKaraInfo":
+                    try {
+                        Database.getInstance().addTask(splitter[1], splitter[2]);
+                        writer("200");
+                    } catch (IOException e) {
+                        System.out.println("Error accessing database: " + e.getMessage());
+                    }
+                    break;
+
+                case "GET: RemoveKaraInfo":
+                    try {
+                        Database.getInstance().removeTask(splitter[1], splitter[2]);
+                        writer("200");
+                    } catch (IOException e) {
+                        System.out.println("Error accessing database: " + e.getMessage());
+                    }
+                    break;
+
+                    //TODO
                 default:
                     System.err.println("Unknown command: " + splitter[0]);
             }
