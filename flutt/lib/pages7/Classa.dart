@@ -267,25 +267,18 @@ class _ClassaState extends State<Classa> {
       });
     }
   }
-
   Future<void> addClass(String newClassId) async {
     try {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending request to add class
-      socket.write('GET: AddClassa,${widget.id},$newClassId\u0000');
+      socket.write('GET: Classa,${widget.id},$newClassId\u0000');
       await socket.flush();
 
-      List<int> dataBuffer = [];
       // Listening for the response
-      await socket.listen((List<int> data) {
-        dataBuffer.addAll(data);
-      }).asFuture();
-
-      String response = utf8.decode(dataBuffer).trim();
-      print('Response received: $response');
-
-      List<String> parts = response.split(',');
+      socket.listen((socketResponse) {
+        String response = utf8.decode(socketResponse).trim();
+        List<String> parts = response.split(',');
         if (parts.length >= 4) {
           setState(() {
             classes.add({
@@ -295,13 +288,25 @@ class _ClassaState extends State<Classa> {
             });
             _error = '';
           });
+        } else {
+          setState(() {
+            _error = 'Invalid response format';
+          });
         }
-
-      socket.close();
+        socket.close();
+      }, onError: (error) {
+        setState(() {
+          _error = 'Socket error: $error';
+        });
+      }, onDone: () {
+        socket.destroy();
+      });
     } catch (e) {
       setState(() {
         _error = 'Error: $e';
       });
     }
   }
+
+
 }

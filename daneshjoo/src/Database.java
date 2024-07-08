@@ -240,31 +240,34 @@ public class Database {
 
     //To add a course to student's courses (student file)
     public void addCourseToStudent(String studentID, String course) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
-            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+        boolean courseAlreadyAdded = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
+             PrintWriter writer = new PrintWriter(new FileWriter(tempFileName))) {
             String line;
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[1].equals(studentID)) {
-                    line += course + ":;";
+                    if (info[3].contains(course)) {
+                        courseAlreadyAdded = true;
+                    } else {
+                        line += course + ":;";
+                    }
                 }
-                FileWriter fileWriter = new FileWriter(tempFileName, true);
-                fileWriter.write(line + "\n");
-                fileWriter.close();
+                writer.println(line);
             }
-            PrintWriter writer = new PrintWriter(studentFileName);
-            writer.println("");
-            writer.close();
-            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-            while ((line = reader1.readLine()) != null) {
-                FileWriter fileWriter = new FileWriter(studentFileName, true);
-                fileWriter.write(line + "\n");
-                fileWriter.close();
+        }
+
+        if (!courseAlreadyAdded) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(tempFileName));
+                 PrintWriter writer = new PrintWriter(new FileWriter(studentFileName))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    writer.println(line);
+                }
             }
-            PrintWriter writer1 = new PrintWriter(tempFileName);
-            writer1.println("");
-            writer1.close();
         }
     }
 
@@ -731,14 +734,14 @@ public class Database {
 
     public String addClassaInfo(String studentID, String courseID) throws IOException {
         StringBuilder newCourse = new StringBuilder();
+        boolean courseAdded = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
             String line;
             String[] info;
-            boolean courseAdded = false;
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info.length > 3 && !info[3].contains(courseName(courseID))){
+                if (info.length > 3 && info[1].equals(studentID) && !info[3].contains(courseName(courseID))) {
                     addCourseToStudent(studentID, courseName(courseID));
                     if (!courseAdded) {
                         newCourse.append(courseInfo(courseName(courseID)));
@@ -749,6 +752,7 @@ public class Database {
         }
         return newCourse.toString();
     }
+
 
 
     //public String tamrinaInfo(String studentID) throws IOException {}

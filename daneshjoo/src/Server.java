@@ -153,7 +153,7 @@ class handleClient extends Thread {
                     }
                     break;
 
-                case "GET: AddClassa":
+                case "GET: Classa":
                     try {
 
                         System.out.println(Database.getInstance().addClassaInfo(splitter[1], splitter[2]));
@@ -162,8 +162,6 @@ class handleClient extends Thread {
                     } catch (IOException e){
                         System.err.println("Error accessing database: " + e.getMessage());
                     }
-                    //TODO
-
                 default:
                     System.err.println("Unknown command: " + splitter[0]);
             }

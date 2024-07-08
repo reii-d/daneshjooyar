@@ -1,3 +1,3 @@
-Mehdi Mahdavi,mnb,12345678,English:19;Farsi:19.5;Math2:12;Az:;AP:;
+Mehdi Mahdavi,mnb,12345678,English:19;Farsi:19.5;Math2:12;AP:;
 Sama Sarayani,402243100,12345678m,Az:20;Chemistry:13.75;Physics:9.5;
 Aram Daliri,Aram-Daliri,ArraaMdaa,;
