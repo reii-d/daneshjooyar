@@ -1,9 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Scanner;
 
 import javax.imageio.IIOException;
@@ -22,18 +17,22 @@ public class Cli {
         mode = scanner.nextLine();
         clear();
         switch (mode) {
+
+
             //ADMIN
             case "1":
                 clear();
                 AdminAccess();
                 String adminChoice = scanner.nextLine();
                 switch (adminChoice) {
+
+                    //Access to TEACHERS
                     case "1":
                         System.out.println("1. Add Teacher\n2. Remove Teacher");
                         int teacherChoice = scanner.nextInt();
                         scanner.nextLine();
-                        if (teacherChoice == 1){
-                            System.out.println("A new Teacher!\nFirst Name: ");
+                        if (teacherChoice == 1){            //Adding a teacher to teacher file
+                            System.out.println("Adding a new Teacher!\nFirst Name: ");
                             String firstName = scanner.nextLine();
                             System.out.println("Last Name: ");
                             String lastName = scanner.nextLine();
@@ -43,9 +42,11 @@ public class Cli {
                             FileWriter fileWriter = new FileWriter(database.teacherFileName, true);
                             fileWriter.write(newTeacher);
                             fileWriter.close();
+                            System.out.println("Teacher" + firstName + " " + lastName + ",added successfully!");
                         }
-                        else if (teacherChoice == 2){
-                            String tempFileName = "src/data/temp.txt";
+
+                        else if (teacherChoice == 2){       //Removing a teacher from teacher file
+                            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
                             System.out.println("Removing a Teacher!\nFirst Name: ");
                             String firstName = scanner.nextLine();
                             System.out.println("Last Name: ");
@@ -53,7 +54,10 @@ public class Cli {
                             System.out.println("TeacherID: ");
                             String teacherId = scanner.nextLine();
                             String teacherName = firstName + " " + lastName;
-                            try (BufferedReader reader = new BufferedReader(new FileReader(database.teacherFileName))){
+
+                            //file access
+                            try (BufferedReader reader = new BufferedReader(new FileReader(database.teacherFileName))) {
+                                boolean removed = false;
                                 String line;
                                 String[] info;
                                 while ((line = reader.readLine()) != null){
@@ -61,7 +65,8 @@ public class Cli {
                                     info = line.split(",");
                                     if (!info[0].equals(teacherName) && !info[1].equals(teacherId)){
                                         fileWriter.write(line + "\n");
-                                    }
+                                    } else
+                                        removed = true;
                                     fileWriter.close();
                                 }
                                 PrintWriter writer = new PrintWriter(database.teacherFileName);
@@ -73,38 +78,49 @@ public class Cli {
                                     fileWriter.write(line + "\n");
                                     fileWriter.close();
                                 }
+                                if (removed)
+                                    System.out.println("Teacher" + firstName + " " + lastName + ",removed successfully!");
                             }
                         }
+
+                        else {
+                            System.err.println("Unknown command!");
+                        }
                         break;
+
+
+                    //Access to COURSES
                     case "2":
                         clear();
                         System.out.println("1. New Course\n2. Remove Course\n3. Update Course");
-                        int courseChoice = scanner.nextInt();
-                        scanner.nextLine();
-                        if (courseChoice == 1){
+                        String courseChoice = scanner.nextLine();
+
+                        if (courseChoice.equals("1")){      //Adding a course to course file
                             System.out.println("Creating a new course!\nEnter the name of course: ");
                             String courseName = scanner.nextLine();
                             System.out.println("Set an ID for the course: ");
                             String courseID = scanner.nextLine();
-                            System.out.println("First name of Teacher: ");
+                            System.out.println("First name of the Teacher: ");
                             String firstName = scanner.nextLine();
-                            System.out.println("Last name of teacher: ");
+                            System.out.println("Last name of the teacher: ");
                             String lastName = scanner.nextLine();
                             System.out.println("How many units does the course have?");
                             String numUnits = scanner.nextLine();
                             System.out.println("When is the exam date?");
                             String examDate = scanner.nextLine();
+
                             Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
                             database.addCourse(newCourse);
                         }
-                        else if (courseChoice == 2){
+
+                        else if (courseChoice.equals("2")){        //Removing a course from course file
                             System.out.println("Removing an old course!\nEnter the name of course: ");
                             String courseName = scanner.nextLine();
                             System.out.println("Set an ID for the course: ");
                             String courseID = scanner.nextLine();
-                            System.out.println("First name of Teacher: ");
+                            System.out.println("First name of the Teacher: ");
                             String firstName = scanner.nextLine();
-                            System.out.println("Last name of teacher: ");
+                            System.out.println("Last name of the teacher: ");
                             String lastName = scanner.nextLine();
                             System.out.println("How many units does the course have?");
                             String numUnits = scanner.nextLine();
@@ -112,7 +128,9 @@ public class Cli {
                             String examDate = scanner.nextLine();
                             Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
                             database.removeCourse(oldCourse);
-                        } else if (courseChoice == 3) {
+
+                        } else if (courseChoice.equals("3")) {         //Changing the information of a course
+                            //Fixed information about the course
                             System.out.println("Enter the name of course: ");
                             String courseName = scanner.nextLine();
                             System.out.println("Set an ID for the course: ");
@@ -121,44 +139,54 @@ public class Cli {
                             String firstName = scanner.nextLine();
                             System.out.println("Last name of teacher: ");
                             String lastName = scanner.nextLine();
-                            //old
-                            System.out.println("Write the old information.\nHow many units does it have?");
+
+                            //the previous information of the course
+                            System.out.println("Write the previous information...\nHow many units did it have?");
                             String numUnits = scanner.nextLine();
-                            System.out.println("When is the exam date?");
+                            System.out.println("When was the previous exam date?");
                             String examDate = scanner.nextLine();
                             Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
-                            //new
-                            System.out.println("Write the new information.\nHow many units does it have?");
+
+                            //the new information of the course
+                            System.out.println("Write the new information...\nHow many units does it have?");
                             String newNumUnits = scanner.nextLine();
-                            System.out.println("When is the exam date?");
+                            System.out.println("When is the new exam date?");
                             String newExamDate = scanner.nextLine();
                             Course newCourse = new Course(courseName, courseID, Integer.parseInt(newNumUnits), newExamDate, new Teacher(firstName, lastName));
 
                             database.updateCourse(oldCourse, newCourse, firstName + " " + lastName);
+
+                        }
+
+                        else {
+                            System.err.println("Unknown command!");
                         }
                         break;
+
+
+                    //Access to STUDENTS
                     case "3":
                         clear();
                         System.out.println("1. Add Students to a course\n2. Remove Students from a course\n3. Update scores");
-                        int studentChoice = scanner.nextInt();
-                        scanner.nextLine();
-                        if (studentChoice == 1){
+                        String studentChoice = scanner.nextLine();
+
+                        if (studentChoice.equals("1")){         //Adding a student to a course
                             System.out.println("Add a student!\nWrite the name of course: ");
                             String courseName = scanner.nextLine();
                             System.out.println("Write the name of student: ");
                             String studentName = scanner.nextLine();
                             database.addCourseToStudent(courseName, studentName);
-                            System.out.println(studentName + "added to the course successfully!");
                         }
-                        else if (studentChoice == 2){
+
+                        else if (studentChoice.equals("2")){           //Removing a student from a course
                             System.out.println("Remove a student!\nWrite the name of course: ");
                             String courseName = scanner.nextLine();
                             System.out.println("Write the name of student: ");
                             String studentName = scanner.nextLine();
                             database.removeCourseFromStudent(courseName, studentName);
-                            System.out.println(studentName + "removed from the course successfully!");
                         }
-                        else if (studentChoice == 3) {
+
+                        else if (studentChoice.equals("3")) {          //Changing the score of a student's course
                             System.out.println("Updating scores!\nfor which course? ");
                             String courseName = scanner.nextLine();
                             System.out.println("for who? Write the name of Student: ");
@@ -166,14 +194,16 @@ public class Cli {
                             System.out.println("Write the score: ");
                             String score = scanner.nextLine();
                             database.studentScore(studentName, courseName, score);
-                            System.out.println("Score added successfully!");
-                        }
+                        } else
+                            System.err.println("Unknown command!");
+
                         break;
+
                     default:
-                        System.out.println("Invalid");
-                        break;
+                        System.out.println("Unknown command");
+                        break; //for the admin options
                 }
-                break;
+                break; //for the admin
 
             //TEACHER
             case "2":
@@ -202,7 +232,7 @@ public class Cli {
                             while ((line = readerRetry.readLine()) != null) {
                                 info1 = line.split(",");
                                 if (teacherID.equals(info1[1])) {
-                                    System.out.println("Welcome, " + info1[0] + "");
+                                    System.out.println("Welcome, " + info1[0] + "!");
                                     login = true;
                                     break;
                                 }
@@ -217,17 +247,19 @@ public class Cli {
                     throw new IOException();
                 }
 
-                //running
+                //Access to options
                 if (login) {
                     TeacherAccess();
                     String teacherChoice = scanner.nextLine();
                     switch (teacherChoice) {
+
+                        //Access to COURSES
                         case "1":
                             clear();
                             System.out.println("1. New Course\n2. Remove Course\n3. Update Course");
-                            int courseChoice = scanner.nextInt();
-                            scanner.nextLine();
-                            if (courseChoice == 1){
+                            String courseChoice = scanner.nextLine();
+
+                            if (courseChoice.equals("1")){              //Adding a new course for the teacher
                                 System.out.println("Enter the name of course: ");
                                 String courseName = scanner.nextLine();
                                 System.out.println("Set an ID for the course: ");
@@ -237,10 +269,13 @@ public class Cli {
                                 System.out.println("When is the exam date?");
                                 String examDate = scanner.nextLine();
                                 String[] teacher = database.teacherName(teacherID).split(" ");
+
                                 Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
                                 database.addCourse(newCourse);
                             }
-                            else if (courseChoice == 2){
+
+
+                            else if (courseChoice.equals("2")){         //Removing a course
                                 System.out.println("Remove your course!\nEnter the name of course: ");
                                 String courseName = scanner.nextLine();
                                 System.out.println("Set an ID for the course: ");
@@ -250,155 +285,157 @@ public class Cli {
                                 System.out.println("When is the exam date?");
                                 String examDate = scanner.nextLine();
                                 String[] teacher = database.teacherName(teacherID).split(" ");
+
                                 Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
-                                if (database.isTeacher(teacherID, courseName)) {
+                                if (database.isTeacher(teacherID, courseName))
                                     database.removeCourse(oldCourse);
-                                    System.out.println("Course removed successfully!");
-                                }
-                                else {
-                                    System.out.println("You have not access to this course!");
-                                }
-                            } else if (courseChoice == 3) {
+                                else
+                                    System.out.println("Sorry, You have not access to this course!");
+
+
+                            } else if (courseChoice.equals("3")) {      //Changing the information of a course
                                 String[] teacher = database.teacherName(teacherID).split(" ");
+
+                                //information of the teacher
                                 System.out.println("Enter the name of course: ");
                                 String courseName = scanner.nextLine();
                                 System.out.println("Set an ID for the course: ");
                                 String courseID = scanner.nextLine();
-                                //old
-                                System.out.println("Write the old information.\nHow many units does it have?");
+
+                                //the previous information of the course
+                                System.out.println("Write the previous information...\nHow many units did it have?");
                                 String numUnits = scanner.nextLine();
-                                System.out.println("When is the exam date?");
+                                System.out.println("When was the previous exam date?");
                                 String examDate = scanner.nextLine();
                                 Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
-                                //new
-                                System.out.println("Write the new information.\nHow many units does it have?");
+
+                                //the new information of the course
+                                System.out.println("Write the new information...\nHow many units does it have?");
                                 String newNumUnits = scanner.nextLine();
-                                System.out.println("When is the exam date?");
+                                System.out.println("When is the new exam date?");
                                 String newExamDate = scanner.nextLine();
                                 Course newCourse = new Course(courseName, courseID, Integer.parseInt(newNumUnits), newExamDate, new Teacher(teacher[0], teacher[1]));
 
                                 if (database.isTeacher(teacherID, courseName)) {
-                                    database.updateCourse(oldCourse, newCourse, database.teacherName(teacherID));
-                                    System.out.println("Course updated successfully!");
-                                }
+                                    database.updateCourse(oldCourse, newCourse, database.teacherName(teacherID));}
                                 else {
-                                    System.out.println("You have not access to this course!");
-                                }
-                            }
+                                    System.out.println("You have not access to this course!");}
+                            } else
+                                System.err.println("Unknown command!");
+
                             break;
+
+                        //Access to STUDENTS
                         case "2":
                             clear();
                             System.out.println("1. Add Students to your course\n2. Remove Students from your course\n3. Update scores");
-                            int studentChoice = scanner.nextInt();
-                            scanner.nextLine();
-                            if (studentChoice == 1){
+                            String studentChoice = scanner.nextLine();
+
+                            if (studentChoice.equals("1")) {         //Adding a student to the teacher's course
                                 System.out.println("Add a student!\nWrite the name of course: ");
                                 String courseName = scanner.nextLine();
-                                System.out.println("Write the name of student: ");
-                                String studentName = scanner.nextLine();
+                                System.out.println("Write the ID of student: ");
+                                String student = scanner.nextLine();
                                 if (database.isTeacher(teacherID, courseName)){
-                                    database.addCourseToStudent(courseName, studentName);
-                                    System.out.println( studentName + "added to the course successfully!");
-                                }
+                                    database.addCourseToStudent(courseName, student);}
                                 else {
-                                    System.out.println("You have not access to this course!");
-                                }
+                                    System.out.println("You have not access to this course!");}
                             }
-                            else if (studentChoice == 2){
+
+                            else if (studentChoice.equals("2")) {        //Removing a student from the teacher's course
                                 System.out.println("Remove a student!\nWrite the name of course: ");
                                 String courseName = scanner.nextLine();
-                                System.out.println("Write the name of student: ");
-                                String studentName = scanner.nextLine();
+                                System.out.println("Write the ID of student: ");
+                                String student = scanner.nextLine();
                                 if (database.isTeacher(teacherID, courseName)){
-                                    database.removeCourseFromStudent(courseName, studentName);
-                                    System.out.println(studentName + "removed from the course successfully!");
-                                }
+                                    database.removeCourseFromStudent(courseName, student);}
                                 else {
-                                    System.out.println("You have not access to this course!");
-                                }
+                                    System.out.println("You have not access to this course!");}
                             }
-                            else if (studentChoice == 3) {
+
+                            else if (studentChoice.equals("3")) {       //Updating score of teacher's course
                                 System.out.println("Updating scores!\nfor which course? ");
                                 String courseName = scanner.nextLine();
-                                System.out.println("for who? Write the name of Student: ");
-                                String studentName = scanner.nextLine();
+                                System.out.println("Write the ID of Student: ");
+                                String student = scanner.nextLine();
                                 System.out.println("Write the score: ");
                                 String score = scanner.nextLine();
                                 if (!database.isTeacher(teacherID, courseName)) {
-                                    System.out.println("You have not this course!");
-                                }
+                                    System.out.println("You have not this course!");}
                                 else if (database.isTeacher(teacherID, courseName)) {
-                                    database.studentScore(studentName, courseName, score);
-                                    System.out.println("Score added successfully!");
-                                }
-                            }
+                                    database.studentScore(student, courseName, score);}
+                            } else
+                                System.err.println("Unknown command!");
                             break;
+
+
+                        //Access to ASSIGNMENTS
                         case "3":
                             clear();
                             System.out.println("1. Add an assignment\n2. Remove an assignment\n3. Update an assignment");
                             String assignmentChoice = scanner.nextLine();
-                            if (assignmentChoice.equals("1")){
-                                System.out.println("Add a new assignments!");
-                                System.out.println("Write the name of course: ");
+
+                            if (assignmentChoice.equals("1")){              //Adding an assignment
+                                System.out.println("Add a new assignment!");
+                                System.out.println("Write name of the course: ");
                                 String courseName = scanner.nextLine();
-                                System.out.println("Write the name of assignment: ");
+                                System.out.println("Write name of the assignment: ");
                                 String assignmentName = scanner.nextLine();
-                                System.out.println("Deadline: ");
+                                System.out.println("Write the Deadline (in days): ");
                                 String deadline = scanner.nextLine();
+
                                 if (database.isTeacher(teacherID, courseName)) {
-                                    database.addAssignment(new Assignment(assignmentName, Integer.parseInt(deadline)), courseName);
-                                    System.out.println("Assignment added to the course!");
-                                }
+                                    database.addAssignment(new Assignment(assignmentName, Integer.parseInt(deadline)), courseName);}
                                 else {
-                                    System.out.println("You have not access to this course");
-                                }
+                                    System.out.println("You have not access to this course");}
                             }
-                            else if (assignmentChoice.equals("2")){
-                                System.out.println("Remove an assignments!");
-                                System.out.println("Write the name of course: ");
+
+                            else if (assignmentChoice.equals("2")){         //Removing an assignment
+                                System.out.println("Remove an assignment!");
+                                System.out.println("Write name of the course: ");
                                 String courseName = scanner.nextLine();
-                                System.out.println("Write the name of assignment: ");
+                                System.out.println("Write name of the assignment: ");
                                 String assignmentName = scanner.nextLine();
-                                System.out.println("Deadline: ");
+                                System.out.println("Write the Deadline (in days): ");
                                 String deadline = scanner.nextLine();
+
                                 if (database.isTeacher(teacherID, courseName)) {
-                                    database.removeAssignment(new Assignment(assignmentName, Integer.parseInt(deadline)), courseName);
-                                    System.out.println("Assignment removed!");
-                                }
+                                    database.removeAssignment(new Assignment(assignmentName, Integer.parseInt(deadline)), courseName);}
                                 else {
-                                    System.out.println("You have not access to this course");
-                                }
+                                    System.out.println("You have not access to this course");}
                             }
-                            else if (assignmentChoice.equals("3")) {
+
+                            else if (assignmentChoice.equals("3")) {           //Updating an assignment
                                 System.out.println("Update an assignments!");
-                                System.out.println("Write the name of course: ");
+                                System.out.println("Write name of the course: ");
                                 String courseName = scanner.nextLine();
-                                System.out.println("Write the name of assignment: ");
+                                System.out.println("Write the new name of the assignment: ");
                                 String assignmentName = scanner.nextLine();
-                                System.out.println("Deadline: ");
+                                System.out.println("Write the new Deadline (in days): ");
                                 String deadline = scanner.nextLine();
+
                                 if (database.isTeacher(teacherID, courseName)) {
-                                    database.updateAssignment(courseName, new Assignment(assignmentName, Integer.parseInt(deadline)));
-                                    System.out.println("Assignment updated");
-                                }
+                                    database.updateAssignment(courseName, new Assignment(assignmentName, Integer.parseInt(deadline)));}
                                 else {
-                                    System.out.println("You have not access to this course");
-                                }
-                            }
+                                    System.out.println("You have not access to this course");}
+                            }else
+                                System.err.println("Unknown command!");
+
                             break;
+
                         default:
                             System.out.println("Invalid");
-                            break;
+                            break; //for the options
                     }
                 }
-                break;
+                break; //for the teacher
 
             case "3":
                 System.out.println("Goodbye!");
                 break;
 
             default:
-                System.err.println("Invalid!");
+                System.err.println("Unknown command!");
                 break;
         }
     }
@@ -410,14 +447,17 @@ public class Cli {
         System.out.println("3. exit");
         System.out.println("What is your choice?: ");
     }
+
     public static void AdminAccess(){
         System.out.println("""
                 access to?\s
                 1. Teachers
                 2. Courses
                 3. Students
+                4. News
                 """);
     }
+
     public static void TeacherAccess(){
         System.out.println("""
                 access to?\s
