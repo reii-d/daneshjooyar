@@ -862,9 +862,13 @@ public class Database {
                 if (info[0].equals(studentID)) {
                     String[] tasks = info[1].split(",");
                     StringBuilder updatedLine = new StringBuilder(info[0] + ";");
-                    for (String str : tasks) {
-                        if (!str.contains(task)) {
-                            updatedLine.append(str).append(",");
+                    for (int i = 0; i < tasks.length; i++) {
+                        if (!tasks[i].contains(task)) {
+                            if (i < tasks.length - 1) {
+                                updatedLine.append(tasks[i]).append(",");
+                            } else {
+                                updatedLine.append(tasks[i]);
+                            }
                         } else {
                             removed = true;
                         }
