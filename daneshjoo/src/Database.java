@@ -771,7 +771,7 @@ public class Database {
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[1].equals(studentID) && info.length > 3){
+                if (info.length > 1 && info[1].equals(studentID) && info.length > 3){
                     String[] course = info[3].split(";");
                     for (int i = 0; i < course.length; i++){
                         String[] part = course[i].split(":");
