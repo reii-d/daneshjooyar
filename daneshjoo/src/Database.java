@@ -1,16 +1,15 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 
 public class Database {
 
-    //Files
+    //Files PATHs
     String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
     String teacherFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
     String courseFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     String taskFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\tasks.txt";
     String newsFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\news.txt";
+    String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
 
 
     //Constructor
@@ -209,7 +208,6 @@ public class Database {
     //To remove an student from student file (delete account)
     public int deleteAccount(String studentID) throws IOException {
         int result = 0;
-        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
              PrintWriter tempWriter = new PrintWriter(new FileWriter(tempFileName))) {
@@ -246,7 +244,6 @@ public class Database {
 
     //To add a course to student's courses (student file)
     public void addCourseToStudent(String studentID, String course) throws IOException {
-        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
         boolean courseAlreadyAdded = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
@@ -275,19 +272,22 @@ public class Database {
                 }
             }
         }
+
+        if (!courseAlreadyAdded)
+            System.out.println(studentName(studentID) + "added to the course successfully!");
     }
 
     //To remove a course from student's courses
-    public void removeCourseFromStudent(String courseName, String studentName) throws IOException {
-        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+    public void removeCourseFromStudent(String courseName, String studentID) throws IOException {
         boolean removed = false;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
              FileWriter fileWriter = new FileWriter(tempFileName)) {
             String line;
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(studentName)) {
+                if (info[1].equals(studentID)) {
                     String[] courses = info[4].split(";");
                     StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + ",");
                     for (String str : courses) {
@@ -320,19 +320,21 @@ public class Database {
             writer1.println("");
             writer1.close();
         }
+        if (removed)
+            System.out.println(studentID + "removed from the course successfully!");
     }
 
     //To change the score of a course (student file)
-    public void studentScore(String student, String courseName, String score) throws IOException {
+    public void studentScore(String studentID, String courseName, String score) throws IOException {
+        boolean found = false;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
-            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
             String line;
             String[] info;
             FileWriter fileWriter = new FileWriter(tempFileName);
-            boolean found = false;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(student)) {
+                if (info[1].equals(studentID)) {
                     String[] courses = info[3].split(";");
                     StringBuilder updateLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + ",");
                     for (String course : courses) {
@@ -367,6 +369,8 @@ public class Database {
             writer1.println("");
             writer1.close();
         }
+        if (found)
+            System.out.println("Score added successfully!");
     }
 
     //To define a new course to course file(name, units, date of exam, teacher)
@@ -396,7 +400,6 @@ public class Database {
     //To remove a course from course file
     public void removeCourse(Course course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
             String line;
             boolean removed = false;
             String remove = course.getCourseName() + "," + course.getCourseUnits() + "," +
@@ -431,7 +434,6 @@ public class Database {
     //To change information of a course in course file
     public void updateCourse(Course oldCourse, Course newCourse, String teacher) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
             String line;
             String[] info;
             boolean updated = false;
@@ -470,12 +472,12 @@ public class Database {
 
     //To change assignments of a course
     public void updateAssignment(String courseName, Assignment assignment) throws IOException {
+        boolean found = false;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
             String line;
             String[] info;
             FileWriter fileWriter = new FileWriter(tempFileName);
-            boolean found = false;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(courseName)) {
@@ -491,7 +493,7 @@ public class Database {
                         }
                     }
                     if (!found) {
-                        System.out.println("Assignment not found!");
+                        System.err.println("Assignment not found!");
                     } else {
                         fileWriter.write(updateLine.substring(0, updateLine.length() - 1) + "\n");
                     }
@@ -513,12 +515,13 @@ public class Database {
             writer1.println("");
             writer1.close();
         }
+        if (found)
+            System.out.println("Assignment updated successfully!");
     }
 
     //To define an assignment for a course
     public void addAssignment(Assignment assignment, String courseName) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
             String line;
             String[] info;
             while ((line = reader.readLine()) != null) {
@@ -542,13 +545,14 @@ public class Database {
             PrintWriter writer1 = new PrintWriter(tempFileName);
             writer1.println("");
             writer1.close();
+            System.out.println("Assignment added to the course!");
         }
     }
 
     //To remove an assignment from a course
     public void removeAssignment(Assignment assignment, String course) throws IOException {
-        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
         boolean removed = false;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName));
              FileWriter fileWriter = new FileWriter(tempFileName)) {
             String line;
@@ -567,7 +571,7 @@ public class Database {
                         }
                     }
                     if (!removed) {
-                        System.out.println("Assignment not found in course.");
+                        System.err.println("Assignment not found in course.");
                     }
                     fileWriter.write(updatedLine.toString() + "\n");
                 } else {
@@ -588,6 +592,8 @@ public class Database {
             writer1.println("");
             writer1.close();
         }
+        if (removed)
+            System.out.println("Assignment removed successfully!");
     }
 
     //To return the highest score of a student
@@ -810,13 +816,9 @@ public class Database {
 
     //To add task to todolist, for the page "KARA"
     public void addTask(String studentID, String task) throws IOException {
-        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
 
-        // Use try-with-resources to ensure that resources are properly closed
-        try (
-                BufferedReader reader = new BufferedReader(new FileReader(taskFileName));
-                PrintWriter tempWriter = new PrintWriter(new FileWriter(tempFileName, true));
-        ) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(taskFileName));
+                PrintWriter tempWriter = new PrintWriter(new FileWriter(tempFileName, true))) {
             String line;
             boolean taskAdded = false;
             while ((line = reader.readLine()) != null) {
@@ -827,22 +829,19 @@ public class Database {
                 }
                 tempWriter.println(line);
             }
-            // If the task was not added (student ID not found), we should add the new task for the student
+            //for the time student ID not found
             if (!taskAdded) {
                 tempWriter.println(studentID + ";" + task);
             }
         }
-        // Overwrite the original file with the temporary file content
-        try (
-                BufferedReader tempReader = new BufferedReader(new FileReader(tempFileName));
-                PrintWriter writer = new PrintWriter(new FileWriter(taskFileName))
-        ) {
+
+        try (BufferedReader tempReader = new BufferedReader(new FileReader(tempFileName));
+                PrintWriter writer = new PrintWriter(new FileWriter(taskFileName))) {
             String line;
             while ((line = tempReader.readLine()) != null) {
                 writer.println(line);
             }
         }
-        // Clear the temporary file
         try (PrintWriter tempWriter = new PrintWriter(new FileWriter(tempFileName))) {
             tempWriter.print("");
         }
@@ -851,7 +850,6 @@ public class Database {
 
     //To remove a task from todolist, for the page "KARA"
     public void removeTask(String studentID, String task) throws IOException {
-        String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
         boolean removed = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(taskFileName));
              FileWriter fileWriter = new FileWriter(tempFileName)) {
