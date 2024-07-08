@@ -929,37 +929,37 @@ public class Database {
     }
 
     //To Removing news (command from Cli)
-    public void removeNews (String title) throws IOException {
+    public void removeNews(String title) throws IOException {
         boolean removed = false;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(newsFileName));
-             FileWriter fileWriter = new FileWriter(tempFileName)) {
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFileName))) {
+
             String line;
-            String[] info;
             while ((line = reader.readLine()) != null) {
-                info = line.split(":");
+                String[] info = line.split(":");
                 if (!info[0].equals(title)) {
-                    fileWriter.write(line + "\n");
+                    writer.write(line);
+                    writer.newLine();
                 } else {
                     removed = true;
                 }
             }
-            fileWriter.close();
-            PrintWriter writer = new PrintWriter(newsFileName);
-            writer.println("");
-            writer.close();
-            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-            while ((line = reader1.readLine()) != null) {
-                FileWriter fileWriter1 = new FileWriter(newsFileName, true);
-                fileWriter1.write(line + "\n");
-                fileWriter1.close();
-            }
-            PrintWriter writer1 = new PrintWriter(tempFileName);
-            writer1.println("");
-            writer1.close();
         }
-        if (removed)
+
+        if (removed) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(tempFileName));
+                 BufferedWriter writer = new BufferedWriter(new FileWriter(newsFileName))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+            }
             System.out.println("News removed successfully!");
-        else
+        } else {
             System.err.println("Cannot find this news. Try again please...");
+        }
     }
+
 }
