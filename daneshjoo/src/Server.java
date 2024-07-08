@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import javax.xml.crypto.Data;
+
 ////////////////////////////////////////////////ineeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 public class Server {
     public static void main (String[] args) throws IOException {
@@ -156,6 +158,14 @@ class handleClient extends Thread {
                 case "GET: AddClassa":
                     try {
                         Database.getInstance().addClassaInfo(splitter[1], splitter[2]);
+                    } catch (IOException e){
+                        System.err.println("Error accessing database: " + e.getMessage());
+                    }
+
+                case "GET: TamrinaInfo":
+                    try {
+                        Database.getInstance().tamrinaInfo(splitter[1]);
+                        writer(Database.getInstance().tamrinaInfo(splitter[1]));
                     } catch (IOException e){
                         System.err.println("Error accessing database: " + e.getMessage());
                     }

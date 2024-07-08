@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class Database {
@@ -85,7 +86,6 @@ public class Database {
         }
     }
 
-
     //to return the number of units of a course
     public int getNumUnits (String courseName) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
@@ -104,20 +104,26 @@ public class Database {
     }
 
     //To return the number of assignments of a course
-    public int getNumAssignments (String courseName) throws IOException {
+    public ArrayList<String> getAssignments(String courseName) throws IOException {
+        ArrayList<String> assignments = new ArrayList<>();
+
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
             String[] info;
-            int numAssignments = 0;
+            String[] assignment;
+            String[] part;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(courseName) && info.length > 4) {
-                    String[] assignments = info[4].split(";");
-                    numAssignments = assignments.length;
+                if (info[0].equals(courseName) && info.length > 5) {
+                    assignment = info[5].split(";");
+                    for (String a :assignment){
+                        part = a.split(":");
+                        assignments.add("," + part[0] + "," + part[1]);
+                    }
                     break;
                 }
             }
-            return numAssignments;
+            return assignments;
         }
     }
 
@@ -690,7 +696,7 @@ public class Database {
                     String[] courses = info[3].split(";");
                     for (String c : courses) {
                         String[] part = c.split(":");
-                        num += getNumAssignments(part[0]);
+                        num += getAssignments(part[0]).size();
                     }
                 }
             }
@@ -709,6 +715,7 @@ public class Database {
         return result.toString();
     }
 
+    //To send information for page "CLASSA" (showing courses)
     public String classaInfo(String studentID) throws IOException {
         String courses = "";
 
@@ -732,6 +739,7 @@ public class Database {
         return courses;
     }
 
+    //To send information for page "CLASSA" (adding course)
     public String addClassaInfo(String studentID, String courseID) throws IOException {
         StringBuilder newCourse = new StringBuilder();
         boolean courseAdded = false;
@@ -753,7 +761,31 @@ public class Database {
         return newCourse.toString();
     }
 
+    //To send information for page "TAMRINA" (name of course, assignment name, deadline)
+    public String tamrinaInfo(String studentID) throws IOException {
+        String tamrina = "";
 
-
-    //public String tamrinaInfo(String studentID) throws IOException {}
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))){
+            String line;
+            String[] info;
+            while ((line = reader.readLine()) != null) {
+                info = line.split(",");
+                if (info[1].equals(studentID) && info.length > 3){
+                    String[] course = info[3].split(";");
+                    for (int i = 0; i < course.length; i++){
+                        String[] part = course[i].split(":");
+                        tamrina += part[0];
+                        ArrayList<String> tamrin = getAssignments(part[0]);
+                        for (int j = 0; j < tamrin.size(); j++){
+                            tamrina += tamrin.get(j);
+                        }
+                        if (i < course.length - 1){
+                            tamrina += ";";
+                        }
+                    }
+                }
+            }
+        }
+        return tamrina;
+    }
 }
