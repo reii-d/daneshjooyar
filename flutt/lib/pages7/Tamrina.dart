@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test1/pages/profile.dart';
 import 'package:test1/pages7/Classa.dart';
@@ -6,38 +8,22 @@ import 'package:test1/pages7/Khabara.dart';
 import 'package:test1/pages7/Sara.dart';
 
 class Tamrina extends StatefulWidget {
+   String id;
+
+  Tamrina({required this.id});
+
   @override
   _TamrinaState createState() => _TamrinaState();
 }
 
 class _TamrinaState extends State<Tamrina> {
-  List<Lesson> lessons = [
-    Lesson(
-      title: 'Mathematics',
-      assignments: [
-        Assignment(
-          title: 'Algebra Homework',
-          deadline: DateTime.now().add(Duration(hours: 4)),
-          details: 'Complete all exercises on page 32.',
-        ),
-        Assignment(
-          title: 'Geometry Assignment',
-          deadline: DateTime.now().add(Duration(days: 1)),
-          details: 'Draw and label all the geometric shapes.',
-        ),
-      ],
-    ),
-    Lesson(
-      title: 'History',
-      assignments: [
-        Assignment(
-          title: 'World War II Essay',
-          deadline: DateTime.now().add(Duration(hours: 6)),
-          details: 'Write a 2-page essay about World War II.',
-        ),
-      ],
-    ),
-  ];
+  List<Map<String, dynamic>> lessons = [];
+
+  @override
+  void initState() {
+    super.initState();
+    TamrinaInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +52,7 @@ class _TamrinaState extends State<Tamrina> {
                   color: Colors.blue,
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.only(left: 16.0),
+                  padding: EdgeInsets.only(left: 16.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -86,16 +72,18 @@ class _TamrinaState extends State<Tamrina> {
               leading: Icon(Icons.home),
               title: Text('Sara'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara(Id: "40243108",)));;
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Sara(Id: widget.id)));
               },
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Profile'),
               onTap: () {
-                // Navigate to Profile Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => StudentInfoPage(studentid: "john_doe",)
-                ));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => StudentInfoPage(studentid: widget.id)));
               },
             ),
             ListTile(
@@ -109,14 +97,13 @@ class _TamrinaState extends State<Tamrina> {
               leading: Icon(Icons.hotel_class_sharp),
               title: Text('Classea'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Classa(id: "40")));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Classa(id: widget.id)));
               },
             ),
             ListTile(
               leading: Icon(Icons.newspaper_rounded),
               title: Text('Khabara'),
               onTap: () {
-                // Navigate to Contact Page
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Khabara()));
               },
             ),
@@ -124,7 +111,6 @@ class _TamrinaState extends State<Tamrina> {
               leading: Icon(Icons.home_work),
               title: Text('Tamrina'),
               onTap: () {
-                // Navigate to Contact Page
                 Navigator.pop(context);
               },
             ),
@@ -139,17 +125,12 @@ class _TamrinaState extends State<Tamrina> {
             final lesson = lessons[index];
             return LessonCard(
               lesson: lesson,
-              onDeadlineChanged: (assignment, newDeadline) {
-                setState(() {
-                  assignment.deadline = newDeadline;
-                });
-              },
               onTapAssignment: (assignment) {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text(assignment.title),
-                    content: Text(assignment.details),
+                    title: Text(assignment['title']),
+                    content: Text('Due in ${assignment['daysLeft']} days'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
@@ -165,16 +146,62 @@ class _TamrinaState extends State<Tamrina> {
       ),
     );
   }
+
+  Future<void> TamrinaInfo() async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+
+      // Sending request for TamrinaInfo
+      socket.write('GET: TamrinaInfo,${widget.id}\u0000');
+      await socket.flush();
+
+      List<int> dataBuffer = [];
+      await socket.listen((List<int> data) {
+        dataBuffer.addAll(data);
+      }).asFuture();
+
+      String response = utf8.decode(dataBuffer).trim();
+      print('Response received: $response');
+
+      List<Map<String, dynamic>> lessonList = [];
+      List<String> lessonsData = response.split(';');
+      for (String lessonData in lessonsData) {
+        List<String> parts = lessonData.split(',');
+        String lessonTitle = parts[0];
+        List<Map<String, dynamic>> assignments = [];
+        for (int i = 1; i < parts.length; i += 2) {
+          if (i + 1 < parts.length) {
+            String assignmentTitle = parts[i];
+            int daysLeft = int.parse(parts[i + 1]);
+            assignments.add({
+              'title': assignmentTitle,
+              'daysLeft': daysLeft,
+            });
+          }
+        }
+        lessonList.add({
+          'title': lessonTitle,
+          'assignments': assignments,
+        });
+      }
+
+      setState(() {
+        lessons = lessonList;
+      });
+
+      socket.close();
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 }
 
 class LessonCard extends StatelessWidget {
-  final Lesson lesson;
-  final Function(Assignment, DateTime) onDeadlineChanged;
-  final Function(Assignment) onTapAssignment;
+  final Map<String, dynamic> lesson;
+  final Function(Map<String, dynamic>) onTapAssignment;
 
   const LessonCard({
     required this.lesson,
-    required this.onDeadlineChanged,
     required this.onTapAssignment,
   });
 
@@ -189,45 +216,22 @@ class LessonCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              lesson.title,
+              lesson['title'],
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
-            ...lesson.assignments.map((assignment) {
-              final remainingTime = assignment.deadline.difference(DateTime.now());
+            ...lesson['assignments'].map<Widget>((assignment) {
               return ListTile(
                 title: Text(
-                  assignment.title,
+                  assignment['title'],
                   style: TextStyle(color: Colors.black),
                 ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Remaining Time: ${remainingTime.inHours} hours and ${remainingTime.inMinutes % 60} minutes',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        final newDeadline = await showDatePicker(
-                          context: context,
-                          initialDate: assignment.deadline,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
-                        );
-                        if (newDeadline != null) {
-                          onDeadlineChanged(assignment, newDeadline);
-                        }
-                      },
-                      child: Text(
-                        'Change Deadline',
-                        style: TextStyle(color: Colors.green),
-                      ),
-                    ),
-                  ],
+                subtitle: Text(
+                  'Days Left: ${assignment['daysLeft']}',
+                  style: TextStyle(color: Colors.white),
                 ),
                 onTap: () => onTapAssignment(assignment),
               );
@@ -237,35 +241,4 @@ class LessonCard extends StatelessWidget {
       ),
     );
   }
-  // Future<void> TamrinaInfo() async {
-  //   Socket socket = await Socket.connect("192.168.1.112", 8080);
-  //
-  //   // Sending request for SaraInfo
-  //   socket.write('GET: SaraInfo,${widget.Id}\u0000');
-  //   socket.flush();
-  //
-  // }
 }
-
-class Lesson {
-  String title;
-  List<Assignment> assignments;
-
-  Lesson({required this.title, required this.assignments});
-}
-
-class Assignment {
-  String title;
-  DateTime deadline;
-  String details;
-
-  Assignment({
-    required this.title,
-    required this.deadline,
-    required this.details,
-  });
-}
-
-
-
-

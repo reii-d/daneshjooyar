@@ -134,7 +134,7 @@ class _SaraState extends State<Sara> {
               title: Text('Tamrina'),
               onTap: () {
                 // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina(id: widget.Id)));
               },
             ),
             // Add other list tiles for navigation

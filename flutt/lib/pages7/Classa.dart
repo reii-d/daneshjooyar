@@ -125,7 +125,7 @@ class _ClassaState extends State<Classa> {
               title: Text('Tamrina'),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Tamrina()));
+                    MaterialPageRoute(builder: (context) => Tamrina(id: widget.id,)));
               },
             ),
           ],

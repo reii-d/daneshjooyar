@@ -112,7 +112,7 @@ class _KaraState extends State<Kara> {
               title: Text('Tamrina'),
               onTap: () {
                 // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina(id: "40")));
               },
             ),
           ],
