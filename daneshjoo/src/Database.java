@@ -862,13 +862,9 @@ public class Database {
                 if (info[0].equals(studentID)) {
                     String[] tasks = info[1].split(",");
                     StringBuilder updatedLine = new StringBuilder(info[0] + ";");
-                    for (int i = 0; i < tasks.length; i++) {
-                        if (!tasks[i].contains(task)) {
-                            if (i < tasks.length - 1) {
-                                updatedLine.append(tasks[i]).append(",");
-                            } else {
-                                updatedLine.append(tasks[i]);
-                            }
+                    for (String str : tasks) {
+                        if (!str.contains(task)) {
+                            updatedLine.append(str).append(",");
                         } else {
                             removed = true;
                         }
@@ -876,7 +872,7 @@ public class Database {
                     if (!removed) {
                         System.out.println("Task did not found.");
                     }
-                    fileWriter.write(updatedLine.toString() + "\n");
+                    fileWriter.write(updatedLine.toString().replaceAll(",$", "") + "\n");
                 } else {
                     fileWriter.write(line + "\n");
                 }
