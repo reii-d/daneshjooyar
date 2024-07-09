@@ -153,7 +153,9 @@ class _ClassaState extends State<Classa> {
               controller: classIdController,
               decoration: InputDecoration(
                 labelText: 'Class ID',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
               ),
             ),
             SizedBox(height: 10),
@@ -163,7 +165,7 @@ class _ClassaState extends State<Classa> {
                 await addClass(newClassId);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green, // Button color
+                backgroundColor: Colors.white, // Button color
                 foregroundColor: Colors.black, // Text color
               ),
               child: Text('Add Class'),

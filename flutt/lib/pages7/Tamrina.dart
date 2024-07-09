@@ -239,7 +239,7 @@ class LessonCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             ...lesson['assignments'].map<Widget>((assignment) {
@@ -300,7 +300,7 @@ class _AssignmentTileState extends State<AssignmentTile> {
     return ListTile(
       title: Text(
         widget.assignment['title'],
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(color: Colors.white),
       ),
       subtitle: Text(
         'Time Left: ${timeLeft.inDays} days, ${timeLeft.inHours % 24} hours, ${timeLeft.inMinutes % 60} minutes',

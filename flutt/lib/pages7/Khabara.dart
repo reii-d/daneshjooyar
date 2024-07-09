@@ -150,6 +150,7 @@ class _KhabaraState extends State<Khabara> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white
                       ),
                     ),
                   ),
@@ -158,6 +159,7 @@ class _KhabaraState extends State<Khabara> {
                     newsList[index]['news'] ?? '',
                     style: TextStyle(
                       fontSize: 16,
+                        color: Colors.white60
                     ),
                   ),
                 ],
