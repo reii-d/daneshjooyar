@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test1/pages7/Classa.dart';
 import 'package:test1/pages7/Tamrina.dart';
@@ -10,6 +11,15 @@ class Khabara extends StatefulWidget {
 }
 
 class _KhabaraState extends State<Khabara> {
+  String response = '';
+  List<Map<String, String>> newsList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    Khabara();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,26 +68,25 @@ class _KhabaraState extends State<Khabara> {
               title: Text('Sara'),
               onTap: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Sara(Id: "402243108",)));
+                  context,
+                  MaterialPageRoute(builder: (context) => Sara(Id: "402243108")),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.person),
               title: Text('Profile'),
               onTap: () {
-                // Navigate to Profile Page
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => StudentInfoPage(studentid: "john_doe",)
-                    ));
+                  context,
+                  MaterialPageRoute(builder: (context) => StudentInfoPage(studentid: "john_doe")),
+                );
               },
             ),
             ListTile(
               leading: Icon(Icons.calendar_month),
               title: Text('Kara'),
               onTap: () {
-                // Navigate to Settings Page
                 Navigator.pop(context);
               },
             ),
@@ -85,11 +94,9 @@ class _KhabaraState extends State<Khabara> {
               leading: Icon(Icons.hotel_class_sharp),
               title: Text('Classea'),
               onTap: () {
-                // Navigate to Next Term Classes Page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => Classa(id: "40")),
+                  MaterialPageRoute(builder: (context) => Classa(id: "40")),
                 );
               },
             ),
@@ -97,7 +104,6 @@ class _KhabaraState extends State<Khabara> {
               leading: Icon(Icons.newspaper_rounded),
               title: Text('Khabara'),
               onTap: () {
-                // Navigate to Contact Page
                 Navigator.pop(context);
               },
             ),
@@ -105,13 +111,76 @@ class _KhabaraState extends State<Khabara> {
               leading: Icon(Icons.home_work),
               title: Text('Tamrina'),
               onTap: () {
-                // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina(id:"40")));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Tamrina(id: "40")),
+                );
               },
             ),
           ],
         ),
       ),
+      body: ListView.builder(
+        itemCount: newsList.length,
+        itemBuilder: (context, index) {
+          return Card(
+            margin: EdgeInsets.all(10),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      newsList[index]['title'] ?? '',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    newsList[index]['news'] ?? '',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
+  }
+
+  Future<void> Khabara() async {
+    try {
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
+      socket.write('GET: KhabaraInfo\u0000');
+      socket.flush();
+
+      socket.listen((socketResponse) {
+        setState(() {
+          response = String.fromCharCodes(socketResponse);
+          _parseNews(response);
+        });
+      });
+    } catch (e) {
+      print('Error connecting to socket: $e');
+    }
+  }
+
+  void _parseNews(String response) {
+    List<String> newsItems = response.split('.~');
+    newsList = newsItems.map((item) {
+      List<String> parts = item.split(':');
+      if (parts.length == 2) {
+        return {'title': parts[0], 'news': parts[1]};
+      } else {
+        return {'title': '', 'news': ''};
+      }
+    }).toList();
   }
 }

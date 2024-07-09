@@ -204,6 +204,8 @@ class handleClient extends Thread {
                     try {
                         Database.getInstance().khabaraInfo();
                         writer(Database.getInstance().khabaraInfo());
+                        System.out.println(Database.getInstance().khabaraInfo());
+                        
                     } catch (IOException e) {
                         System.err.println("Error accessing database: " + e.getMessage());
                     }
