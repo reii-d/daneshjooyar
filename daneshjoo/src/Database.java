@@ -900,7 +900,10 @@ public class Database {
                 news.append(line).append("~");
             }
         }
-        return news.toString().replaceAll("~$", "");
+        if (news.length() > 1 && news.charAt(news.length() - 1) == '~'){
+            news.deleteCharAt(news.length() - 1);
+        }
+        return news.toString();
     }
 
     //To add news (command from Cli)
