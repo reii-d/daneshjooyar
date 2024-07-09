@@ -115,8 +115,10 @@ class _TamrinaState extends State<Tamrina> {
           ],
         ),
       ),
+
+      //time changing
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: ListView.builder(
           itemCount: lessons.length,
           itemBuilder: (context, index) {
@@ -176,7 +178,7 @@ class _TamrinaState extends State<Tamrina> {
         dataBuffer.addAll(data);
       }).asFuture();
 
-      String response = utf8.decode(dataBuffer).trim();
+      String response = utf8.decode(dataBuffer);
       print('Response received: $response');
 
       List<Map<String, dynamic>> lessonList = [];
@@ -226,9 +228,9 @@ class LessonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.blueGrey[500],
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -302,7 +304,7 @@ class _AssignmentTileState extends State<AssignmentTile> {
       ),
       subtitle: Text(
         'Time Left: ${timeLeft.inDays} days, ${timeLeft.inHours % 24} hours, ${timeLeft.inMinutes % 60} minutes',
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.lightGreen),
       ),
       onTap: widget.onTap,
     );
