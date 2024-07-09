@@ -487,7 +487,7 @@ public class graphic {
             String student = studentField.getText();
             try {
                 Database.getInstance().addCourseToStudent(student, course);
-                JOptionPane.showMessageDialog(addStudent, Database.getInstance().addNews(student, course));
+                JOptionPane.showMessageDialog(addStudent, Database.getInstance().addCourseToStudent(student, course));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -522,8 +522,8 @@ public class graphic {
             String course = courseField.getText();
             String student = studentField.getText();
             try {
-                Database.getInstance().addCourseToStudent(course, student);
-                JOptionPane.showMessageDialog(removeStudent, Database.getInstance().addNews(course, student));
+                Database.getInstance().removeCourseFromStudent(course, student);
+                JOptionPane.showMessageDialog(removeStudent, Database.getInstance().removeCourseFromStudent(course, student));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -533,6 +533,7 @@ public class graphic {
         removeStudent.setVisible(true);
     }
 
+    //Admin: Access to students: Scores
     private static void adminScoresFrame() {
         JFrame updateScores = new JFrame("Updating Scores");
         updateScores.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -572,7 +573,6 @@ public class graphic {
         backButton.addActionListener(e -> updateScores.dispose());
         updateScores.setVisible(true);
     }
-
 
 
 
@@ -663,20 +663,20 @@ public class graphic {
         JFrame teacherCourseFrame = new JFrame("Access to Courses");
         teacherCourseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         teacherCourseFrame.setSize(800, 600);
-        teacherCourseFrame.setLayout(new GridLayout(5, 1));
+        teacherCourseFrame.setLayout(new GridLayout(4, 1));
 
         JLabel label = new JLabel("Access to COURSES:", SwingConstants.CENTER);
         JButton addingButton = new JButton("Add Course");
         JButton removingButton = new JButton("Remove Course");
-        JButton updatingButton = new JButton("Update Course");
         JButton backButton = new JButton("Back");
 
         teacherCourseFrame.add(label);
         teacherCourseFrame.add(addingButton);
         teacherCourseFrame.add(removingButton);
-        teacherCourseFrame.add(updatingButton);
         teacherCourseFrame.add(backButton);
 
+        addingButton.addActionListener(e -> teacherAddCourseFrame());
+        removingButton.addActionListener(e -> teacherRemoveCourseFrame());
         backButton.addActionListener(e -> teacherCourseFrame.dispose());
 
         teacherCourseFrame.setVisible(true);
@@ -725,6 +725,9 @@ public class graphic {
         teacherStudentFrame.add(scoresButton);
         teacherStudentFrame.add(backButton);
 
+        addingButton.addActionListener(e -> teacherAddStudentFrame());
+        removingButton.addActionListener(e -> teacherRemoveStudentFrame());
+        addingButton.addActionListener(e -> teacherScoresFrame());
         backButton.addActionListener(e -> teacherStudentFrame.dispose());
 
         teacherStudentFrame.setVisible(true);
@@ -793,7 +796,7 @@ public class graphic {
 
         JLabel courseNameLabel = new JLabel("Course Name:");
         JTextField courseNameField = new JTextField();
-        JLabel courseIDLabel = new JLabel("Course ID:");
+        JLabel courseIDLabel = new JLabel("Enter Course ID:");
         JTextField courseIDField = new JTextField();
         JLabel teacherIDLabel = new JLabel("Enter your ID:");
         JTextField teacherIDField = new JTextField();
@@ -841,5 +844,147 @@ public class graphic {
         backButton.addActionListener(e -> removeCourse.dispose());
         removeCourse.setVisible(true);
     }
+
+    //Teacher: Access to students: Adding
+    private static void teacherAddStudentFrame() {
+        JFrame addStudent = new JFrame("Add a Student to your Course");
+        addStudent.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addStudent.setSize(800, 600);
+        addStudent.setLayout(new GridLayout(4, 2));
+
+        JLabel courseLabel = new JLabel("Name of Course:");
+        JTextField courseField = new JTextField();
+        JLabel studentLabel = new JLabel("Name of Student:");
+        JTextField studentField = new JTextField();
+        JLabel teacherIDLabel = new JLabel("Enter your ID:");
+        JTextField teacherIDField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        addStudent.add(courseLabel);
+        addStudent.add(courseField);
+        addStudent.add(studentLabel);
+        addStudent.add(studentField);
+        addStudent.add(teacherIDLabel);
+        addStudent.add(teacherIDField);
+        addStudent.add(OKButton);
+        addStudent.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String course = courseField.getText();
+            String student = studentField.getText();
+            String teacher = teacherIDField.getText();
+            try {
+                if (Database.getInstance().isTeacher(teacher, course)) {
+                    Database.getInstance().addCourseToStudent(student, course);
+                    JOptionPane.showMessageDialog(addStudent, Database.getInstance().addCourseToStudent(student, course));
+                }
+                else
+                    JOptionPane.showMessageDialog(addStudent, "Sorry, You have not access to this course!");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> addStudent.dispose());
+        addStudent.setVisible(true);
+    }
+
+    //Teacher: Access to students: Removing
+    private static void teacherRemoveStudentFrame() {
+        JFrame removeStudent = new JFrame("Remove a Student from your Course");
+        removeStudent.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        removeStudent.setSize(800, 600);
+        removeStudent.setLayout(new GridLayout(4, 2));
+
+        JLabel courseLabel = new JLabel("Name of Course:");
+        JTextField courseField = new JTextField();
+        JLabel studentLabel = new JLabel("Name of Student:");
+        JTextField studentField = new JTextField();
+        JLabel teacherIDLabel = new JLabel("Enter your ID:");
+        JTextField teacherIDField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        removeStudent.add(courseLabel);
+        removeStudent.add(courseField);
+        removeStudent.add(studentLabel);
+        removeStudent.add(studentField);
+        removeStudent.add(teacherIDLabel);
+        removeStudent.add(teacherIDField);
+        removeStudent.add(OKButton);
+        removeStudent.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String course = courseField.getText();
+            String student = studentField.getText();
+            String teacher = teacherIDField.getText();
+            try {
+                if (Database.getInstance().isTeacher(teacher, course)) {
+                    Database.getInstance().removeCourseFromStudent(course, student);
+                    JOptionPane.showMessageDialog(removeStudent, Database.getInstance().removeCourseFromStudent(course, student));
+                }
+                else
+                    JOptionPane.showMessageDialog(removeStudent, "Sorry, You have not access to this course!");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> removeStudent.dispose());
+        removeStudent.setVisible(true);
+    }
+
+    //Teacher: Access to students: Scores
+    private static void teacherScoresFrame() {
+        JFrame updateScores = new JFrame("Updating Scores");
+        updateScores.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        updateScores.setSize(800, 600);
+        updateScores.setLayout(new GridLayout(5, 2));
+
+        JLabel courseLabel = new JLabel("Name of Course:");
+        JTextField courseField = new JTextField();
+        JLabel studentLabel = new JLabel("Name of Student:");
+        JTextField studentField = new JTextField();
+        JLabel teacherIDLabel = new JLabel("Enter your ID:");
+        JTextField teacherIDField = new JTextField();
+        JLabel scoreLabel = new JLabel("Enter the Score: ");
+        JTextField scoreField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        updateScores.add(courseLabel);
+        updateScores.add(courseField);
+        updateScores.add(studentLabel);
+        updateScores.add(studentField);
+        updateScores.add(teacherIDLabel);
+        updateScores.add(teacherIDField);
+        updateScores.add(scoreLabel);
+        updateScores.add(scoreField);
+        updateScores.add(OKButton);
+        updateScores.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String course = courseField.getText();
+            String student = studentField.getText();
+            String teacher = teacherIDField.getText();
+            String score = scoreField.getText();
+            try {
+                if (Database.getInstance().isTeacher(teacher, course)) {
+                    Database.getInstance().studentScore(student, course, score);
+                    JOptionPane.showMessageDialog(updateScores, Database.getInstance().studentScore(student, course, score));
+                }
+                else {
+                    JOptionPane.showMessageDialog(updateScores, "Sorry, You have not access to this course!");
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> updateScores.dispose());
+        updateScores.setVisible(true);
+    }
+
 
 }

@@ -310,7 +310,7 @@ public class Cli {
 
                                 Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
                                 if (database.isTeacher(teacherID, courseName))
-                                    database.removeCourse(oldCourse);
+                                    System.out.println(database.removeCourse(oldCourse));
                                 else
                                     System.out.println("Sorry, You have not access to this course!");
 
@@ -356,10 +356,10 @@ public class Cli {
                             if (studentChoice.equals("1")) {         //Adding a student to the teacher's course
                                 System.out.println("Add a student!\nWrite the name of course: ");
                                 String courseName = scanner.nextLine();
-                                System.out.println("Write the ID of student: ");
+                                System.out.println("Write the name of student: ");
                                 String student = scanner.nextLine();
                                 if (database.isTeacher(teacherID, courseName)){
-                                    database.addCourseToStudent(courseName, student);}
+                                    System.out.println(database.addCourseToStudent(student, courseName));}
                                 else {
                                     System.out.println("You have not access to this course!");}
                             }
@@ -367,10 +367,10 @@ public class Cli {
                             else if (studentChoice.equals("2")) {        //Removing a student from the teacher's course
                                 System.out.println("Remove a student!\nWrite the name of course: ");
                                 String courseName = scanner.nextLine();
-                                System.out.println("Write the ID of student: ");
+                                System.out.println("Write the name of student: ");
                                 String student = scanner.nextLine();
                                 if (database.isTeacher(teacherID, courseName)){
-                                    database.removeCourseFromStudent(courseName, student);}
+                                    System.out.println(database.removeCourseFromStudent(courseName, student));}
                                 else {
                                     System.out.println("You have not access to this course!");}
                             }
