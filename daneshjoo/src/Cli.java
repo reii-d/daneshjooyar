@@ -38,15 +38,15 @@ public class Cli {
                             String lastName = scanner.nextLine();
                             System.out.println("TeacherID: ");
                             String teacherId = scanner.nextLine();
-                            String newTeacher = firstName + " " + lastName + "," + teacherId + ",\n";
+                            String newTeacher = firstName + " " + lastName + "," + teacherId + "\n";
                             FileWriter fileWriter = new FileWriter(database.teacherFileName, true);
                             fileWriter.write(newTeacher);
                             fileWriter.close();
-                            System.out.println("Teacher" + firstName + " " + lastName + ",added successfully!");
+                            System.out.println("Teacher" + firstName + " " + lastName + ", added successfully!");
                         }
 
                         else if (teacherChoice == 2){       //Removing a teacher from teacher file
-                            String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+                            String tempFileName = database.tempFileName;
                             System.out.println("Removing a Teacher!\nFirst Name: ");
                             String firstName = scanner.nextLine();
                             System.out.println("Last Name: ");
@@ -79,7 +79,7 @@ public class Cli {
                                     fileWriter.close();
                                 }
                                 if (removed)
-                                    System.out.println("Teacher" + firstName + " " + lastName + ",removed successfully!");
+                                    System.out.println("Teacher" + firstName + " " + lastName + ", removed successfully!");
                             }
                         }
 
@@ -110,7 +110,7 @@ public class Cli {
                             String examDate = scanner.nextLine();
 
                             Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
-                            database.addCourse(newCourse);
+                            System.out.println(database.addCourse(newCourse));
                         }
 
                         else if (courseChoice.equals("2")){        //Removing a course from course file
@@ -127,7 +127,7 @@ public class Cli {
                             System.out.println("When is the exam date?");
                             String examDate = scanner.nextLine();
                             Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
-                            database.removeCourse(oldCourse);
+                            System.out.println(database.removeCourse(oldCourse));
 
                         } else if (courseChoice.equals("3")) {         //Changing the information of a course
                             //Fixed information about the course
