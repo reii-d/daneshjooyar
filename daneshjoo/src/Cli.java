@@ -293,7 +293,7 @@ public class Cli {
                                 String[] teacher = database.teacherName(teacherID).split(" ");
 
                                 Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
-                                database.addCourse(newCourse);
+                                System.out.println(database.addCourse(newCourse));
                             }
 
 

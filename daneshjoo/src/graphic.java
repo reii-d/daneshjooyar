@@ -729,4 +729,117 @@ public class graphic {
 
         teacherStudentFrame.setVisible(true);
     }
+
+    //Teacher: Access to courses: Adding
+    private static void teacherAddCourseFrame() {
+        JFrame addCourse = new JFrame("Add Course");
+        addCourse.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addCourse.setSize(800, 600);
+        addCourse.setLayout(new GridLayout(6, 2));
+
+        JLabel courseNameLabel = new JLabel("Course Name:");
+        JTextField courseNameField = new JTextField();
+        JLabel courseIDLabel = new JLabel("Course ID:");
+        JTextField courseIDField = new JTextField();
+        JLabel teacherIDLabel = new JLabel("Enter your ID:");
+        JTextField teacherIDField = new JTextField();
+        JLabel numUnitsLabel = new JLabel("Number of Units:");
+        JTextField numUnitsField = new JTextField();
+        JLabel examLabel = new JLabel("Date of Exam:");
+        JTextField examField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        addCourse.add(courseNameLabel);
+        addCourse.add(courseNameField);
+        addCourse.add(courseIDLabel);
+        addCourse.add(courseIDField);
+        addCourse.add(teacherIDLabel);
+        addCourse.add(teacherIDField);
+        addCourse.add(numUnitsLabel);
+        addCourse.add(numUnitsField);
+        addCourse.add(examLabel);
+        addCourse.add(examField);
+        addCourse.add(OKButton);
+        addCourse.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String courseName = courseNameField.getText();
+            String courseID = courseIDField.getText();
+            String teacherID = teacherIDField.getText();
+            String numUnits = numUnitsField.getText();
+            String examDate = examField.getText();
+
+            try {
+                String[] teacher = Database.getInstance().teacherName(teacherID).split(" ");
+                Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
+                Database.getInstance().addCourse(newCourse);
+                JOptionPane.showMessageDialog(addCourse, Database.getInstance().addCourse(newCourse));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> addCourse.dispose());
+        addCourse.setVisible(true);
+    }
+
+    //Teacher: Access to courses: Removing
+    private static void teacherRemoveCourseFrame() {
+        JFrame removeCourse = new JFrame("Remove Course");
+        removeCourse.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        removeCourse.setSize(800, 600);
+        removeCourse.setLayout(new GridLayout(6, 2));
+
+        JLabel courseNameLabel = new JLabel("Course Name:");
+        JTextField courseNameField = new JTextField();
+        JLabel courseIDLabel = new JLabel("Course ID:");
+        JTextField courseIDField = new JTextField();
+        JLabel teacherIDLabel = new JLabel("Enter your ID:");
+        JTextField teacherIDField = new JTextField();
+        JLabel numUnitsLabel = new JLabel("Number of Units:");
+        JTextField numUnitsField = new JTextField();
+        JLabel examLabel = new JLabel("Date of Exam:");
+        JTextField examField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        removeCourse.add(courseNameLabel);
+        removeCourse.add(courseNameField);
+        removeCourse.add(courseIDLabel);
+        removeCourse.add(courseIDField);
+        removeCourse.add(teacherIDLabel);
+        removeCourse.add(teacherIDField);
+        removeCourse.add(numUnitsLabel);
+        removeCourse.add(numUnitsField);
+        removeCourse.add(examLabel);
+        removeCourse.add(examField);
+        removeCourse.add(OKButton);
+        removeCourse.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String courseName = courseNameField.getText();
+            String courseID = courseIDField.getText();
+            String teacherID = teacherIDField.getText();
+            String numUnits = numUnitsField.getText();
+            String examDate = examField.getText();
+
+            try {
+                String[] teacher = Database.getInstance().teacherName(teacherID).split(" ");
+                Course course = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
+                if (Database.getInstance().isTeacher(teacherID, courseName)) {
+                    Database.getInstance().removeCourse(course);
+                    JOptionPane.showMessageDialog(removeCourse, Database.getInstance().removeCourse(course));
+                } else {
+                    JOptionPane.showMessageDialog(removeCourse, "Sorry, You have not access to this course!");
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> removeCourse.dispose());
+        removeCourse.setVisible(true);
+    }
+
 }
