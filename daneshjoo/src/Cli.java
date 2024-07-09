@@ -174,8 +174,8 @@ public class Cli {
                             System.out.println("Add a student!\nWrite the name of course: ");
                             String courseName = scanner.nextLine();
                             System.out.println("Write the name of student: ");
-                            String studentName = scanner.nextLine();
-                            database.addCourseToStudent(courseName, studentName);
+                            String student = scanner.nextLine();
+                            System.out.println(database.addCourseToStudent(student, courseName));
                         }
 
                         else if (studentChoice.equals("2")){           //Removing a student from a course
@@ -183,7 +183,7 @@ public class Cli {
                             String courseName = scanner.nextLine();
                             System.out.println("Write the name of student: ");
                             String studentName = scanner.nextLine();
-                            database.removeCourseFromStudent(courseName, studentName);
+                            System.out.println(database.removeCourseFromStudent(courseName, studentName));
                         }
 
                         else if (studentChoice.equals("3")) {          //Changing the score of a student's course
@@ -193,7 +193,7 @@ public class Cli {
                             String studentName = scanner.nextLine();
                             System.out.println("Write the score: ");
                             String score = scanner.nextLine();
-                            database.studentScore(studentName, courseName, score);
+                            System.out.println(database.studentScore(studentName, courseName, score));
                         } else
                             System.err.println("Unknown command!");
 
@@ -210,13 +210,13 @@ public class Cli {
                             String title = scanner.nextLine();
                             System.out.println("Write the texe of the news: ");
                             String text = scanner.nextLine();
-                            database.addNews(title, text);
+                            System.out.println(database.addNews(title, text));
                         }
 
                         else if (newsChoice.equals("2")){       //Removing news
                             System.out.println("Removing news!\nWrite the title of the news: ");
                             String title = scanner.nextLine();
-                            database.removeNews(title);
+                            System.out.println(database.removeNews(title));
                         } else
                             System.err.println("Unknown command!");
                         break;

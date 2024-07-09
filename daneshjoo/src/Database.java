@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Database {
 
     //Files PATHs
-    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
+    String studentFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
     String teacherFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
     String courseFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     String taskFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\tasks.txt";
@@ -243,7 +243,7 @@ public class Database {
     }
 
     //To add a course to student's courses (student file)
-    public void addCourseToStudent(String studentID, String course) throws IOException {
+    public String addCourseToStudent(String student, String course) throws IOException {
         boolean courseAlreadyAdded = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
@@ -252,7 +252,7 @@ public class Database {
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[1].equals(studentID)) {
+                if (info[0].equals(student)) {
                     if (info[3].contains(course)) {
                         courseAlreadyAdded = true;
                     } else {
@@ -274,11 +274,13 @@ public class Database {
         }
 
         if (!courseAlreadyAdded)
-            System.out.println(studentName(studentID) + "added to the course successfully!");
+            return studentName(student) + "added to the course successfully!";
+        else
+            return "Unsuccessful!";
     }
 
     //To remove a course from student's courses
-    public void removeCourseFromStudent(String courseName, String studentID) throws IOException {
+    public String removeCourseFromStudent(String courseName, String student) throws IOException {
         boolean removed = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
@@ -287,7 +289,7 @@ public class Database {
             String[] info;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[1].equals(studentID)) {
+                if (info[0].equals(student)) {
                     String[] courses = info[4].split(";");
                     StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + ",");
                     for (String str : courses) {
@@ -299,7 +301,7 @@ public class Database {
                         }
                     }
                     if (!removed) {
-                        System.out.println("Course not found.");
+                        return "Course not found.";
                     }
                     fileWriter.write(updatedLine.toString() + "\n");
                 } else {
@@ -321,11 +323,13 @@ public class Database {
             writer1.close();
         }
         if (removed)
-            System.out.println(studentID + "removed from the course successfully!");
+            return student + "removed from the course successfully!";
+        else
+            return "Unsuccessful!";
     }
 
     //To change the score of a course (student file)
-    public void studentScore(String studentID, String courseName, String score) throws IOException {
+    public String studentScore(String student, String courseName, String score) throws IOException {
         boolean found = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
@@ -334,7 +338,7 @@ public class Database {
             FileWriter fileWriter = new FileWriter(tempFileName);
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[1].equals(studentID)) {
+                if (info[0].equals(student)) {
                     String[] courses = info[3].split(";");
                     StringBuilder updateLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + ",");
                     for (String course : courses) {
@@ -346,9 +350,7 @@ public class Database {
                             updateLine.append(course).append(";");
                         }
                     }
-                    if (!found) {
-                        System.out.println("Course not found!");
-                    } else {
+                    if (found){
                         fileWriter.write(updateLine.substring(0, updateLine.length() - 1) + "\n");
                     }
                 } else {
@@ -370,7 +372,9 @@ public class Database {
             writer1.close();
         }
         if (found)
-            System.out.println("Score added successfully!");
+            return "Score added successfully!";
+        else
+            return "Course not found!";
     }
 
     //To define a new course to course file(name, units, date of exam, teacher)
@@ -913,31 +917,30 @@ public class Database {
     }
 
     //To add news (command from Cli)
-    public void addNews (String title, String text) throws IOException {
+    public String addNews (String title, String text) throws IOException {
+        boolean newsAdded = true;
         try (BufferedReader reader = new BufferedReader(new FileReader(newsFileName))) {
             String line;
-            boolean newsAdded = true;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");
                 if (info[0].equals(title)) {
                     newsAdded = false;
                 }
             }
-
-            if (newsAdded) {
-                String completeText = title + ":" + text + "\n";
-                FileWriter fileWriter = new FileWriter(newsFileName, true);
-                fileWriter.write(completeText);
-                fileWriter.close();
-                System.out.println("News added successfully!");
-            } else if (!newsAdded) {
-                System.err.println("This title is in use. Try again with another title.");
-            }
+        }
+        if (newsAdded) {
+            String completeText = title + ":" + text + "\n";
+            FileWriter fileWriter = new FileWriter(newsFileName, true);
+            fileWriter.write(completeText);
+            fileWriter.close();
+            return "News added successfully!";
+        } else {
+            return "This title is in use. Try again with another title.";
         }
     }
 
     //To Removing news (command from Cli)
-    public void removeNews(String title) throws IOException {
+    public String removeNews(String title) throws IOException {
         boolean removed = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(newsFileName));
@@ -964,9 +967,9 @@ public class Database {
                     writer.newLine();
                 }
             }
-            System.out.println("News removed successfully!");
+            return "News removed successfully!";
         } else {
-            System.err.println("Cannot find this news. Try again please...");
+            return "Cannot find this news. Try again please...";
         }
     }
 

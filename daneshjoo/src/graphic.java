@@ -94,18 +94,16 @@ public class graphic {
         JFrame adminCourseFrame = new JFrame("Access to Courses");
         adminCourseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         adminCourseFrame.setSize(800, 600);
-        adminCourseFrame.setLayout(new GridLayout(5, 1));
+        adminCourseFrame.setLayout(new GridLayout(4, 1));
 
         JLabel label = new JLabel("Access to COURSES:", SwingConstants.CENTER);
         JButton addingButton = new JButton("Add Course");
         JButton removingButton = new JButton("Remove Course");
-        JButton updatingButton = new JButton("Update Course");
         JButton backButton = new JButton("Back");
 
         adminCourseFrame.add(label);
         adminCourseFrame.add(addingButton);
         adminCourseFrame.add(removingButton);
-        adminCourseFrame.add(updatingButton);
         adminCourseFrame.add(backButton);
 
         addingButton.addActionListener(e -> adminAddCourseFrame());
@@ -134,6 +132,9 @@ public class graphic {
         adminStudentFrame.add(scoresButton);
         adminStudentFrame.add(backButton);
 
+        addingButton.addActionListener(e -> adminAddStudentToCourseFrame());
+        removingButton.addActionListener(e -> adminRemoveStudentFrCourseFrame());
+        scoresButton.addActionListener(e -> adminScoresFrame());
         backButton.addActionListener(e -> adminStudentFrame.dispose());
 
         adminStudentFrame.setVisible(true);
@@ -156,6 +157,8 @@ public class graphic {
         adminNewsFrame.add(removingButton);
         adminNewsFrame.add(backButton);
 
+        addingButton.addActionListener(e -> addNewsFrame());
+        removingButton.addActionListener(e -> removeNewsFrame());
         backButton.addActionListener(e -> adminNewsFrame.dispose());
 
         adminNewsFrame.setVisible(true);
@@ -333,7 +336,7 @@ public class graphic {
         addCourse.setVisible(true);
     }
 
-    //Admin: Access to course: Adding
+    //Admin: Access to course: Removing
     private static void adminRemoveCourseFrame() {
         JFrame removeCourse = new JFrame("Remove Course");
         removeCourse.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -382,7 +385,6 @@ public class graphic {
             try {
                 Database.getInstance().removeCourse(course);
                 JOptionPane.showMessageDialog(removeCourse, Database.getInstance().removeCourse(course));
-
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -392,8 +394,184 @@ public class graphic {
         removeCourse.setVisible(true);
     }
 
+    //Admin: Access to news: Adding
+    private static void addNewsFrame() {
+        JFrame addNews = new JFrame("Add News");
+        addNews.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addNews.setSize(800, 600);
+        addNews.setLayout(new GridLayout(3, 2));
 
+        JLabel titleLabel = new JLabel("Title:");
+        JTextField titleField = new JTextField();
+        JLabel textLabel = new JLabel("Text of news:");
+        JTextField textField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
 
+        addNews.add(titleLabel);
+        addNews.add(titleField);
+        addNews.add(textLabel);
+        addNews.add(textField);
+        addNews.add(OKButton);
+        addNews.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String title = titleField.getText();
+            String text = textField.getText();
+            try {
+                Database.getInstance().addNews(title, text);
+                JOptionPane.showMessageDialog(addNews, Database.getInstance().addNews(title, text));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> addNews.dispose());
+        addNews.setVisible(true);
+    }
+
+    //Admin: Access to news: Removing
+    private static void removeNewsFrame() {
+        JFrame removeNews = new JFrame("Remove News");
+        removeNews.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        removeNews.setSize(800, 600);
+        removeNews.setLayout(new GridLayout(2, 2));
+
+        JLabel titleLabel = new JLabel("Title:");
+        JTextField titleField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        removeNews.add(titleLabel);
+        removeNews.add(titleField);
+        removeNews.add(OKButton);
+        removeNews.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String title = titleField.getText();
+            try {
+                Database.getInstance().removeNews(title);
+                JOptionPane.showMessageDialog(removeNews, Database.getInstance().removeNews(title));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> removeNews.dispose());
+        removeNews.setVisible(true);
+    }
+
+    //Admin: Access to students: Adding
+    private static void adminAddStudentToCourseFrame() {
+        JFrame addStudent = new JFrame("Add a Student to a Course");
+        addStudent.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addStudent.setSize(800, 600);
+        addStudent.setLayout(new GridLayout(3, 2));
+
+        JLabel courseLabel = new JLabel("Name of Course:");
+        JTextField courseField = new JTextField();
+        JLabel studentLabel = new JLabel("Name of Student:");
+        JTextField studentField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        addStudent.add(courseLabel);
+        addStudent.add(courseField);
+        addStudent.add(studentLabel);
+        addStudent.add(studentField);
+        addStudent.add(OKButton);
+        addStudent.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String course = courseField.getText();
+            String student = studentField.getText();
+            try {
+                Database.getInstance().addCourseToStudent(student, course);
+                JOptionPane.showMessageDialog(addStudent, Database.getInstance().addNews(student, course));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> addStudent.dispose());
+        addStudent.setVisible(true);
+    }
+
+    //Admin: Access to students: Removing
+    private static void adminRemoveStudentFrCourseFrame() {
+        JFrame removeStudent = new JFrame("Remove a Student from a Course");
+        removeStudent.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        removeStudent.setSize(800, 600);
+        removeStudent.setLayout(new GridLayout(3, 2));
+
+        JLabel courseLabel = new JLabel("Name of Course:");
+        JTextField courseField = new JTextField();
+        JLabel studentLabel = new JLabel("Name of Student:");
+        JTextField studentField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        removeStudent.add(courseLabel);
+        removeStudent.add(courseField);
+        removeStudent.add(studentLabel);
+        removeStudent.add(studentField);
+        removeStudent.add(OKButton);
+        removeStudent.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String course = courseField.getText();
+            String student = studentField.getText();
+            try {
+                Database.getInstance().addCourseToStudent(course, student);
+                JOptionPane.showMessageDialog(removeStudent, Database.getInstance().addNews(course, student));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> removeStudent.dispose());
+        removeStudent.setVisible(true);
+    }
+
+    private static void adminScoresFrame() {
+        JFrame updateScores = new JFrame("Updating Scores");
+        updateScores.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        updateScores.setSize(800, 600);
+        updateScores.setLayout(new GridLayout(4, 2));
+
+        JLabel courseLabel = new JLabel("Name of Course:");
+        JTextField courseField = new JTextField();
+        JLabel studentLabel = new JLabel("Name of Student:");
+        JTextField studentField = new JTextField();
+        JLabel scoreLabel = new JLabel("Enter the Score: ");
+        JTextField scoreField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        updateScores.add(courseLabel);
+        updateScores.add(courseField);
+        updateScores.add(studentLabel);
+        updateScores.add(studentField);
+        updateScores.add(scoreLabel);
+        updateScores.add(scoreField);
+        updateScores.add(OKButton);
+        updateScores.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String course = courseField.getText();
+            String student = studentField.getText();
+            String score = scoreField.getText();
+            try {
+                Database.getInstance().studentScore(student, course, score);
+                JOptionPane.showMessageDialog(updateScores, Database.getInstance().studentScore(student, course, score));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> updateScores.dispose());
+        updateScores.setVisible(true);
+    }
 
 
 
