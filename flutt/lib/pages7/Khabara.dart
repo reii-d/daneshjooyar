@@ -6,6 +6,10 @@ import '../pages/profile.dart';
 import 'Sara.dart';
 
 class Khabara extends StatefulWidget {
+  final String id;
+
+  Khabara({required this.id});
+
   @override
   _KhabaraState createState() => _KhabaraState();
 }
@@ -69,7 +73,7 @@ class _KhabaraState extends State<Khabara> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Sara(Id: "402243108")),
+                  MaterialPageRoute(builder: (context) => Sara(id: widget.id)),
                 );
               },
             ),
@@ -79,7 +83,7 @@ class _KhabaraState extends State<Khabara> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StudentInfoPage(studentid: "john_doe")),
+                  MaterialPageRoute(builder: (context) => StudentInfoPage(id: widget.id)),
                 );
               },
             ),
@@ -96,7 +100,7 @@ class _KhabaraState extends State<Khabara> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Classa(id: "40")),
+                  MaterialPageRoute(builder: (context) => Classa(id: widget.id)),
                 );
               },
             ),
@@ -113,7 +117,7 @@ class _KhabaraState extends State<Khabara> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Tamrina(id: "40")),
+                  MaterialPageRoute(builder: (context) => Tamrina(id: widget.id)),
                 );
               },
             ),

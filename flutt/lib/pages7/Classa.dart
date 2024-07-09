@@ -77,7 +77,7 @@ class _ClassaState extends State<Classa> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Sara(Id: widget.id),
+                    builder: (context) => Sara(id: widget.id),
                   ),
                 );
               },
@@ -89,7 +89,7 @@ class _ClassaState extends State<Classa> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(studentid: widget.id),
+                    builder: (context) => StudentInfoPage(id: widget.id),
                   ),
                 );
               },
@@ -117,7 +117,7 @@ class _ClassaState extends State<Classa> {
               onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Khabara()));
+                    MaterialPageRoute(builder: (context) => Khabara(id: widget.id)));
               },
             ),
             ListTile(

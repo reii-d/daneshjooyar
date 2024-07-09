@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:test1/pages/welcome_page.dart';
 
 class StudentInfoPage extends StatefulWidget {
-  final String studentid;
+  final String id;
 
   StudentInfoPage({
     Key? key,
-    required this.studentid,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending delete account data
-      socket.write('GET: DeleteAccount,$name,${widget.studentid}\u0000');
+      socket.write('GET: DeleteAccount,$name,${widget.id}\u0000');
       await socket.flush();
       socket.close();
 
@@ -97,7 +97,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
                   ),
                   Divider(color: Colors.white),
                   Text(
-                    "StudentId: ${widget.studentid}",
+                    "StudentId: ${widget.id}",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -149,7 +149,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending profile info request with studentid
-      socket.write('GET: ProfileInfo,${widget.studentid}\u0000');
+      socket.write('GET: ProfileInfo,${widget.id}\u0000');
       await socket.flush();
 
       socket.listen((socketResponse) {

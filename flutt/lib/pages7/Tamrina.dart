@@ -73,7 +73,7 @@ class _TamrinaState extends State<Tamrina> {
               leading: Icon(Icons.home),
               title: Text('Sara'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara(Id: widget.id)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Sara(id: widget.id)));
               },
             ),
             ListTile(
@@ -81,7 +81,7 @@ class _TamrinaState extends State<Tamrina> {
               title: Text('Profile'),
               onTap: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => StudentInfoPage(studentid: widget.id)));
+                    context, MaterialPageRoute(builder: (context) => StudentInfoPage(id: widget.id)));
               },
             ),
             ListTile(
@@ -102,7 +102,7 @@ class _TamrinaState extends State<Tamrina> {
               leading: Icon(Icons.newspaper_rounded),
               title: Text('Khabara'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Khabara()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Khabara(id: widget.id)));
               },
             ),
             ListTile(

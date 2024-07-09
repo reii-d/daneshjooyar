@@ -75,7 +75,7 @@ class _KaraState extends State<Kara> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Sara(Id: "402243108"),
+                    builder: (context) => Sara(id: widget.id),
                   ),
                 );
               },
@@ -87,7 +87,7 @@ class _KaraState extends State<Kara> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(studentid: "john_doe"),
+                    builder: (context) => StudentInfoPage(id: widget.id),
                   ),
                 );
               },
@@ -105,7 +105,7 @@ class _KaraState extends State<Kara> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Classa(id: "40")),
+                  MaterialPageRoute(builder: (context) => Classa(id: widget.id)),
                 );
               },
             ),
@@ -115,7 +115,7 @@ class _KaraState extends State<Kara> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Khabara()),
+                  MaterialPageRoute(builder: (context) => Khabara(id: widget.id)),
                 );
               },
             ),
@@ -125,7 +125,7 @@ class _KaraState extends State<Kara> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Tamrina(id: "40")),
+                  MaterialPageRoute(builder: (context) => Tamrina(id: widget.id)),
                 );
               },
             ),

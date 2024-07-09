@@ -8,9 +8,9 @@ import '../pages/profile.dart';
 import 'Classa.dart';
 
 class Sara extends StatefulWidget {
-  final String Id;
+  final String id;
 
-  Sara({Key? key, required this.Id}) : super(key: key);
+  Sara({Key? key, required this.id}) : super(key: key);
 
   @override
   _SaraState createState() => _SaraState();
@@ -50,7 +50,7 @@ class _SaraState extends State<Sara> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => StudentInfoPage(studentid: widget.Id),
+                  builder: (context) => StudentInfoPage(id: widget.id),
                 ),
               );
             },
@@ -99,7 +99,7 @@ class _SaraState extends State<Sara> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudentInfoPage(studentid: widget.Id),
+                    builder: (context) => StudentInfoPage(id: widget.id),
                   ),
                 );
               },
@@ -110,7 +110,7 @@ class _SaraState extends State<Sara> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Kara(id:widget.Id)),
+                  MaterialPageRoute(builder: (context) => Kara(id:widget.id)),
                 );
               },
             ),
@@ -118,7 +118,7 @@ class _SaraState extends State<Sara> {
               leading: Icon(Icons.hotel_class_sharp),
               title: Text('Classea'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Classa(id: widget.Id)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Classa(id: widget.id)));
               },
             ),
             ListTile(
@@ -126,7 +126,7 @@ class _SaraState extends State<Sara> {
               title: Text('Khabara'),
               onTap: () {
                 // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Khabara()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Khabara(id: widget.id)));
               },
             ),
             ListTile(
@@ -134,7 +134,7 @@ class _SaraState extends State<Sara> {
               title: Text('Tamrina'),
               onTap: () {
                 // Navigate to Contact Page
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina(id: widget.Id)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Tamrina(id: widget.id)));
               },
             ),
             // Add other list tiles for navigation
@@ -208,7 +208,7 @@ class _SaraState extends State<Sara> {
       Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending request for SaraInfo
-      socket.write('GET: SaraInfo,${widget.Id}\u0000');
+      socket.write('GET: SaraInfo,${widget.id}\u0000');
       socket.flush();
 
       List<int> dataBuffer = [];

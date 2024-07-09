@@ -250,7 +250,7 @@ class _signUp_pageState extends State<signUp_page> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Sara(Id: IdControl.text,),
+                builder: (context) => Sara(id: IdControl.text,),
               ),
             );
           }
