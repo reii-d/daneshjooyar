@@ -5,11 +5,11 @@ public class Database {
 
     //Files PATHs
     String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
-    String teacherFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
-    String courseFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
+    String teacherFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
+    String courseFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     String taskFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\tasks.txt";
     String newsFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\news.txt";
-    String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+    String tempFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
 
 
     //Constructor
@@ -374,9 +374,9 @@ public class Database {
     }
 
     //To define a new course to course file(name, units, date of exam, teacher)
-    public void addCourse(Course course) throws IOException {
+    public String addCourse(Course course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
-            String newCourse = course.getCourseName() + "," + course.getCourseUnits() + "," + course.getExamDate() + "," +
+            String newCourse = course.getCourseName() + "," + course.getCourseID() + "," + course.getCourseUnits() + "," + course.getExamDate() + "," +
                     course.getCourseTeacher().getTeacherName() + " " + course.getCourseTeacher().getTeacherLastName() + ",";
             String line;
             boolean foundInFile = false;
@@ -387,22 +387,22 @@ public class Database {
                     foundInFile = false;
             }
             if (foundInFile) {
-                System.err.println("This Course is already exists!");
+                return "This Course is already exists!";
             } else {
                 FileWriter fileWriter = new FileWriter(courseFileName, true);
                 fileWriter.write(newCourse);
-                System.out.println("Course added successfully!");
                 fileWriter.close();
+                return "Course added successfully!";
             }
         }
     }
 
     //To remove a course from course file
-    public void removeCourse(Course course) throws IOException {
+    public String removeCourse(Course course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
             boolean removed = false;
-            String remove = course.getCourseName() + "," + course.getCourseUnits() + "," +
+            String remove = course.getCourseName() + "," +  course.getCourseID() + "," + course.getCourseUnits() + "," +
                     course.getExamDate() + ",";
             while ((line = reader.readLine()) != null) {
                 if (!line.contains(remove)) {
@@ -422,12 +422,16 @@ public class Database {
                     fileWriter.write(line + "\n");
                     fileWriter.close();
                 }
-                System.out.println("Course removed successfully!");
-            } else
-                System.err.println("Oops! Course not found.");
-            PrintWriter writer = new PrintWriter(tempFileName);
-            writer.println("");
-            writer.close();
+                PrintWriter writer1 = new PrintWriter(tempFileName);
+                writer1.println("");
+                writer1.close();
+                return "Course removed successfully!";
+            } else {
+                PrintWriter writer = new PrintWriter(tempFileName);
+                writer.println("");
+                writer.close();
+                return "Oops! Course not found.";
+            }
         }
     }
 
