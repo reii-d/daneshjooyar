@@ -682,7 +682,9 @@ public class Database {
             }
         }
         if (units != 0){
-             return String.valueOf(total / units) + "," + realName;
+             double gpaNum = total / units;
+             String GPA = String.format("%.2f", gpaNum);
+             return GPA + "," + realName;
         }
         else {
             return realName;
