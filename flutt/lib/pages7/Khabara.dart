@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:test1/pages7/Classa.dart';
+import 'package:test1/pages7/Kara.dart';
 import 'package:test1/pages7/Tamrina.dart';
 import '../pages/profile.dart';
 import 'Sara.dart';
@@ -91,7 +92,10 @@ class _KhabaraState extends State<Khabara> {
               leading: Icon(Icons.calendar_month),
               title: Text('Kara'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Kara(id: widget.id)),
+                );
               },
             ),
             ListTile(
@@ -131,7 +135,7 @@ class _KhabaraState extends State<Khabara> {
             color: Colors.blueGrey[500],
             margin: EdgeInsets.all(10),
             elevation: 5,
-            shadowColor: Colors.black,
+            shadowColor: Colors.black26,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

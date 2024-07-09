@@ -160,7 +160,7 @@ class _KaraState extends State<Kara> {
                   borderSide: BorderSide(color: Colors.white),
                 ),
               ),
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.green),
             ),
             SizedBox(height: 10),
             Center( // Wrap the button with Center widget
