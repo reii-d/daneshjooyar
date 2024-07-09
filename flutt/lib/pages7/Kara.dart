@@ -163,14 +163,16 @@ class _KaraState extends State<Kara> {
               style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () async {
-                if (taskController.text.isNotEmpty) {
-                  await addTask(taskController.text);
-                  taskController.clear();
-                }
-              },
-              child: Text('Add Task'),
+            Center( // Wrap the button with Center widget
+              child: ElevatedButton(
+                onPressed: () async {
+                  if (taskController.text.isNotEmpty) {
+                    await addTask(taskController.text);
+                    taskController.clear();
+                  }
+                },
+                child: Text('Add Task'),
+              ),
             ),
           ],
         ),

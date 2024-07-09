@@ -128,7 +128,13 @@ class _KhabaraState extends State<Khabara> {
         itemCount: newsList.length,
         itemBuilder: (context, index) {
           return Card(
+            color: Colors.blueGrey[500],
             margin: EdgeInsets.all(10),
+            elevation: 5,
+            shadowColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Padding(
               padding: EdgeInsets.all(10),
               child: Column(
