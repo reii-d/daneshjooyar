@@ -295,7 +295,7 @@ public class Database {
                 info = line.split(",");
                 if (info[0].equals(student)) {
                     String[] courses = info[3].split(";");
-                    StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + ",");
+                    StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + ",");
                     for (String str : courses) {
                         String[] part = str.split(":");
                         if (!part[0].equals(courseName)) {
