@@ -453,13 +453,6 @@ public class Database {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
-<<<<<<< Updated upstream
-=======
-            String[] info;
-            boolean updated = false;
-            String oldLine = oldCourse.getCourseName() + "," + oldCourse.getCourseID() + "," + oldCourse.getCourseUnits() + "," + oldCourse.getExamDate() + "," + teacher + ",";
-            String newLine = oldCourse.getCourseName() + "," + newCourse.getCourseID() + "," + newCourse.getCourseUnits() + "," + newCourse.getExamDate() + "," + teacher + ",";
->>>>>>> Stashed changes
             while ((line = reader.readLine()) != null) {
                 if (line.contains(oldLine)) {
                     String[] info = line.split(",");
@@ -472,7 +465,6 @@ public class Database {
         }
 
         if (updated) {
-            // Write the updated content back to the original file
             try (PrintWriter writer = new PrintWriter(new FileWriter(courseFileName))) {
                 writer.print(updatedContent.toString());
             }
@@ -481,9 +473,9 @@ public class Database {
             System.err.println("Oops! Course not found.");
         }
 
-        // Clean up the temp file, if it exists
         new PrintWriter(tempFileName).close();
     }
+
 
 
     //To change assignments of a course
