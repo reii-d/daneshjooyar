@@ -476,7 +476,6 @@ public class Database {
         } else {
             System.err.println("Error updating file.");
         }
-        tempFile.delete();//test//////
     }
 
     //To change assignments of a course
