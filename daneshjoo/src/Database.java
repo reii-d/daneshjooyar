@@ -443,40 +443,41 @@ public class Database {
 
     //To change information of a course in course file
     public void updateCourse(Course oldCourse, Course newCourse, String teacher) throws IOException {
+        String oldLine = oldCourse.getCourseName() + "," + oldCourse.getCourseUnits() + "," + oldCourse.getExamDate() + "," + teacher + ",";
+        String newLine = oldCourse.getCourseName() + "," + newCourse.getCourseUnits() + "," + newCourse.getExamDate() + "," + teacher + ",";
+
         boolean updated = false;
 
-        File tempFile = new File("tempFile.txt");
-        File courseFile = new File(courseFileName);
+        // Use StringBuilder to build the updated file content
+        StringBuilder updatedContent = new StringBuilder();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(courseFile));
-             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
-            String oldLine = oldCourse.getCourseName() + "," + oldCourse.getCourseUnits() + "," + oldCourse.getExamDate() + "," + teacher + ",";
-            String newLine = oldCourse.getCourseName() + "," + newCourse.getCourseUnits() + "," + newCourse.getExamDate() + "," + teacher + ",";
-
             while ((line = reader.readLine()) != null) {
                 if (line.contains(oldLine)) {
                     String[] info = line.split(",");
-                    writer.write(newLine + info[4]);
-                    writer.newLine();
+                    updatedContent.append(newLine).append(info[4]).append("\n");
                     updated = true;
                 } else {
-                    writer.write(line);
-                    writer.newLine();
+                    updatedContent.append(line).append("\n");
                 }
             }
         }
 
-        if (courseFile.delete() && tempFile.renameTo(courseFile)) {
-            if (updated) {
-                System.out.println("Course updated successfully!");
-            } else {
-                System.err.println("Oops! Course not found.");
+        if (updated) {
+            // Write the updated content back to the original file
+            try (PrintWriter writer = new PrintWriter(new FileWriter(courseFileName))) {
+                writer.print(updatedContent.toString());
             }
+            System.out.println("Course updated successfully!");
         } else {
-            System.err.println("Error updating file.");
+            System.err.println("Oops! Course not found.");
         }
+
+        // Clean up the temp file, if it exists
+        new PrintWriter(tempFileName).close();
     }
+
 
     //To change assignments of a course
     public void updateAssignment(String courseName, Assignment assignment) throws IOException {
