@@ -1,16 +1,14 @@
 ### Flutter application with java backend
 ### Student.java
-'''
 a class to represent students with their ID, name, their courses and...
-'''
 ### Teacher.java
-'''
 this class is representing teachers with thier names, last name and the courses that they present...
-'''
 ### Graphic.java
-'''
-this class is for java fx to create a graphical cli
-'''
+this class is for java fx to create a graphical cli...
+### Course.java
+this class is representing courses that are available to be represented which has courssename, courseteacher and ...
+### Assignment.java
+this class is representing 
 ### photos of the UI:
 
 ![Screenshot 2024-07-10 134213](https://github.com/reii-d/daneshjooyar/assets/170521769/48c15bf0-0432-4047-a942-ce0bc6523dea)
