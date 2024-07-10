@@ -580,8 +580,8 @@ public class graphic {
     //Teacher's login (with teacher id)
     private static void teacherLogin(JFrame parentFrame) {
         JDialog loginDialog = new JDialog(parentFrame, "Teacher Login", true);
-        loginDialog.setLayout(new GridLayout(3, 2));
-        loginDialog.setSize(500, 250);
+        loginDialog.setLayout(new GridLayout(2, 2));
+        loginDialog.setSize(600, 300);
 
         JLabel idLabel = new JLabel("Enter your teacher ID: ");
         JTextField idField = new JTextField();
@@ -687,20 +687,20 @@ public class graphic {
         JFrame teacherStudentFrame = new JFrame("Access to Assignments");
         teacherStudentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         teacherStudentFrame.setSize(800, 600);
-        teacherStudentFrame.setLayout(new GridLayout(5, 1));
+        teacherStudentFrame.setLayout(new GridLayout(4, 1));
 
         JLabel label = new JLabel("Access to ASSIGNMENTS:", SwingConstants.CENTER);
         JButton addingButton = new JButton("Add an Assignment to a course");
         JButton removingButton = new JButton("Remove an Assignment from a Course");
-        JButton updatingButton = new JButton("Update Assignments of a Course");
         JButton backButton = new JButton("Back");
 
         teacherStudentFrame.add(label);
         teacherStudentFrame.add(addingButton);
         teacherStudentFrame.add(removingButton);
-        teacherStudentFrame.add(updatingButton);
         teacherStudentFrame.add(backButton);
 
+        addingButton.addActionListener(e -> addAssignmentFrame());
+        removingButton.addActionListener(e -> removeAssignmentFrame());
         backButton.addActionListener(e -> teacherStudentFrame.dispose());
 
         teacherStudentFrame.setVisible(true);
@@ -727,7 +727,7 @@ public class graphic {
 
         addingButton.addActionListener(e -> teacherAddStudentFrame());
         removingButton.addActionListener(e -> teacherRemoveStudentFrame());
-        addingButton.addActionListener(e -> teacherScoresFrame());
+        scoresButton.addActionListener(e -> teacherScoresFrame());
         backButton.addActionListener(e -> teacherStudentFrame.dispose());
 
         teacherStudentFrame.setVisible(true);
@@ -986,5 +986,103 @@ public class graphic {
         updateScores.setVisible(true);
     }
 
+    //Teacher: Access to assignments: Adding
+    private static void addAssignmentFrame() {
+        JFrame addAssignment = new JFrame("Add an Assignment to your Course");
+        addAssignment.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addAssignment.setSize(800, 600);
+        addAssignment.setLayout(new GridLayout(5, 2));
 
+        JLabel courseLabel = new JLabel("Name of Course:");
+        JTextField courseField = new JTextField();
+        JLabel assignmentLabel = new JLabel("Name of Assignment:");
+        JTextField assignmentField = new JTextField();
+        JLabel deadlineLabel = new JLabel("Deadline (in days):");
+        JTextField deadlineField = new JTextField();
+        JLabel teacherIDLabel = new JLabel("Enter your ID:");
+        JTextField teacherIDField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        addAssignment.add(courseLabel);
+        addAssignment.add(courseField);
+        addAssignment.add(assignmentLabel);
+        addAssignment.add(assignmentField);
+        addAssignment.add(deadlineLabel);
+        addAssignment.add(deadlineField);
+        addAssignment.add(teacherIDLabel);
+        addAssignment.add(teacherIDField);
+        addAssignment.add(OKButton);
+        addAssignment.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String course = courseField.getText();
+            String assignment = assignmentField.getText();
+            String deadline = deadlineField.getText();
+            String teacher = teacherIDField.getText();
+            try {
+                if (Database.getInstance().isTeacher(teacher, course)) {
+                    Database.getInstance().addAssignment(new Assignment(assignment, Integer.parseInt(deadline)), course);
+                    JOptionPane.showMessageDialog(addAssignment, "in progress...");
+                }
+                else
+                    JOptionPane.showMessageDialog(addAssignment, "Sorry, You have not access to this course!");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> addAssignment.dispose());
+        addAssignment.setVisible(true);
+    }
+
+    //Teacher: Access to assignments: Removing
+    private static void removeAssignmentFrame() {
+        JFrame removingAssignment = new JFrame("Remove an Assignment from your Course");
+        removingAssignment.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        removingAssignment.setSize(800, 600);
+        removingAssignment.setLayout(new GridLayout(5, 2));
+
+        JLabel courseLabel = new JLabel("Name of Course:");
+        JTextField courseField = new JTextField();
+        JLabel assignmentLabel = new JLabel("Name of Assignment:");
+        JTextField assignmentField = new JTextField();
+        JLabel deadlineLabel = new JLabel("Deadline (in days):");
+        JTextField deadlineField = new JTextField();
+        JLabel teacherIDLabel = new JLabel("Enter your ID:");
+        JTextField teacherIDField = new JTextField();
+        JButton OKButton = new JButton("OK");
+        JButton backButton = new JButton("Back");
+
+        removingAssignment.add(courseLabel);
+        removingAssignment.add(courseField);
+        removingAssignment.add(assignmentLabel);
+        removingAssignment.add(assignmentField);
+        removingAssignment.add(deadlineLabel);
+        removingAssignment.add(deadlineField);
+        removingAssignment.add(teacherIDLabel);
+        removingAssignment.add(teacherIDField);
+        removingAssignment.add(OKButton);
+        removingAssignment.add(backButton);
+
+        OKButton.addActionListener(e -> {
+            String course = courseField.getText();
+            String assignment = assignmentField.getText();
+            String deadline = deadlineField.getText();
+            String teacher = teacherIDField.getText();
+            try {
+                if (Database.getInstance().isTeacher(teacher, course)) {
+                    Database.getInstance().removeAssignment(new Assignment(assignment, Integer.parseInt(deadline)), course);
+                    JOptionPane.showMessageDialog(removingAssignment, "in progress...");
+                }
+                else
+                    JOptionPane.showMessageDialog(removingAssignment, "Sorry, You have not access to this course!");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        backButton.addActionListener(e -> removingAssignment.dispose());
+        removingAssignment.setVisible(true);
+    }
 }
