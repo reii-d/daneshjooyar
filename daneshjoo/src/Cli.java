@@ -133,7 +133,7 @@ public class Cli {
                             //Fixed information about the course
                             System.out.println("Enter the name of course: ");
                             String courseName = scanner.nextLine();
-                            System.out.println("Set an ID for the course: ");
+                            System.out.println("Enter the ID of the course: ");
                             String courseID = scanner.nextLine();
                             System.out.println("First name of Teacher: ");
                             String firstName = scanner.nextLine();
