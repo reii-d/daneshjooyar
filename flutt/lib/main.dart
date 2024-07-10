@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: welcome_page()
-      //Classa(id: "44",),
     );
   }
 }

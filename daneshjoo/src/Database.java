@@ -4,12 +4,12 @@ import java.util.ArrayList;
 public class Database {
 
     //Files PATHs
-    String studentFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
-    String teacherFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
-    String courseFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
+    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
+    String teacherFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
+    String courseFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     String taskFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\tasks.txt";
     String newsFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\news.txt";
-    String tempFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
+    String tempFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\temp.txt";
 
 
     //Constructor
@@ -246,10 +246,14 @@ public class Database {
     public void addCourseToStudent(String student, String course) throws IOException {
         boolean courseAlreadyAdded = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
-             PrintWriter writer = new PrintWriter(new FileWriter(tempFileName))) {
+        File tempFile = new File("tempFile.txt");
+        File studentFile = new File(studentFileName);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFile));
+             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(tempFile)))) {
             String line;
             String[] info;
+
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(student)) {
@@ -264,34 +268,34 @@ public class Database {
         }
 
         if (!courseAlreadyAdded) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(tempFileName));
-                 PrintWriter writer = new PrintWriter(new FileWriter(studentFileName))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    writer.println(line);
-                }
+            if (studentFile.delete() && tempFile.renameTo(studentFile)) {
+                System.out.println(studentName(student) + " added to the course successfully!");
+            } else {
+                System.err.println("Error updating file.");
             }
+        } else {
+            tempFile.delete();
+            System.err.println("Unsuccessful! Course already added.");
         }
-
-        if (!courseAlreadyAdded)
-            System.out.println(studentName(student) + "added to the course successfully!");
-        else
-            System.err.println("Unsuccessful!");
     }
 
     //To remove a course from student's courses
     public void removeCourseFromStudent(String courseName, String student) throws IOException {
         boolean removed = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
-             FileWriter fileWriter = new FileWriter(tempFileName)) {
+        File tempFile = new File("tempFile.txt");
+        File studentFile = new File(studentFileName);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             String line;
             String[] info;
+
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(student)) {
                     String[] courses = info[4].split(";");
-                    StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + ",");
+                    StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + ",");
                     for (String str : courses) {
                         String[] part = str.split(":");
                         if (!part[0].equals(courseName)) {
@@ -300,40 +304,46 @@ public class Database {
                             removed = true;
                         }
                     }
-                    if (!removed) {
-                        System.err.println("Course not found.");
+                    // Remove trailing semicolon
+                    if (updatedLine.charAt(updatedLine.length() - 1) == ';') {
+                        updatedLine.deleteCharAt(updatedLine.length() - 1);
                     }
-                    fileWriter.write(updatedLine.toString() + "\n");
+                    writer.write(updatedLine.toString());
+                    writer.newLine();
                 } else {
-                    fileWriter.write(line + "\n");
+                    writer.write(line);
+                    writer.newLine();
                 }
             }
-            fileWriter.close();
-            PrintWriter writer = new PrintWriter(studentFileName);
-            writer.println("");
-            writer.close();
-            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-            while ((line = reader1.readLine()) != null) {
-                FileWriter fileWriter1 = new FileWriter(studentFileName, true);
-                fileWriter1.write(line + "\n");
-                fileWriter1.close();
-            }
-            PrintWriter writer1 = new PrintWriter(tempFileName);
-            writer1.println("");
-            writer1.close();
         }
-        if (removed)
-            System.out.println(student + "removed from the course successfully!");
+
+        if (studentFile.delete() && tempFile.renameTo(studentFile)) {
+            if (removed) {
+                System.out.println(student + " removed from the course successfully!");
+            } else {
+                System.err.println("Course not found.");
+            }
+        } else {
+            System.err.println("Error updating file.");
+        }
+
+
+        tempFile.delete();//test///
     }
+
 
     //To change the score of a course (student file)
     public void studentScore(String student, String courseName, String score) throws IOException {
         boolean found = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
+        File tempFile = new File("tempFile.txt");
+        File studentFile = new File(studentFileName);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(studentFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             String line;
             String[] info;
-            FileWriter fileWriter = new FileWriter(tempFileName);
+
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(student)) {
@@ -348,32 +358,31 @@ public class Database {
                             updateLine.append(course).append(";");
                         }
                     }
-                    if (found){
-                        fileWriter.write(updateLine.substring(0, updateLine.length() - 1) + "\n");
+                    // Remove trailing semicolon
+                    if (updateLine.charAt(updateLine.length() - 1) == ';') {
+                        updateLine.deleteCharAt(updateLine.length() - 1);
                     }
+                    writer.write(updateLine.toString());
+                    writer.newLine();
                 } else {
-                    fileWriter.write(line + "\n");
+                    writer.write(line);
+                    writer.newLine();
                 }
             }
-            fileWriter.close();
-            PrintWriter writer = new PrintWriter(studentFileName);
-            writer.println("");
-            writer.close();
-            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-            while ((line = reader1.readLine()) != null) {
-                FileWriter fileWriter1 = new FileWriter(studentFileName, true);
-                fileWriter1.write(line + "\n");
-                fileWriter1.close();
-            }
-            PrintWriter writer1 = new PrintWriter(tempFileName);
-            writer1.println("");
-            writer1.close();
         }
-        if (found)
-            System.out.println("Score added successfully!");
-        else
-            System.err.println("Course not found!");
+
+        // Replace the original file with the updated file
+        if (studentFile.delete() && tempFile.renameTo(studentFile)) {
+            if (found) {
+                System.out.println("Score added successfully!");
+            } else {
+                System.err.println("Course not found!");
+            }
+        } else {
+            System.err.println("Error updating file.");
+        }
     }
+
 
     //To define a new course to course file(name, units, date of exam, teacher)
     public void addCourse(Course course) throws IOException {
@@ -401,173 +410,176 @@ public class Database {
 
     //To remove a course from course file
     public void removeCourse(Course course) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
+        boolean removed = false;
+
+        File tempFile = new File("tempFile.txt");
+        File courseFile = new File(courseFileName);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             String line;
-            boolean removed = false;
-            String remove = course.getCourseName() + "," +  course.getCourseID() + "," + course.getCourseUnits() + "," +
-                    course.getExamDate() + ",";
+            String remove = course.getCourseName() + "," + course.getCourseID() + "," + course.getCourseUnits() + "," + course.getExamDate() + ",";
+
             while ((line = reader.readLine()) != null) {
                 if (!line.contains(remove)) {
-                    FileWriter fileWriter = new FileWriter(tempFileName, true);
-                    fileWriter.write(line + "\n");
-                    fileWriter.close();
-                } else
+                    writer.write(line);
+                    writer.newLine();
+                } else {
                     removed = true;
-            }
-            if (removed) {
-                PrintWriter writer = new PrintWriter(courseFileName);
-                writer.println("");
-                writer.close();
-                BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-                while ((line = reader1.readLine()) != null) {
-                    FileWriter fileWriter = new FileWriter(courseFileName, true);
-                    fileWriter.write(line + "\n");
-                    fileWriter.close();
                 }
-                PrintWriter writer1 = new PrintWriter(tempFileName);
-                writer1.println("");
-                writer1.close();
+            }
+        }
+        if (courseFile.delete() && tempFile.renameTo(courseFile)) {
+            if (removed) {
                 System.out.println("Course removed successfully!");
             } else {
-                PrintWriter writer = new PrintWriter(tempFileName);
-                writer.println("");
-                writer.close();
                 System.err.println("Oops! Course not found.");
             }
+        } else {
+            System.err.println("Error updating file.");
         }
     }
 
+
     //To change information of a course in course file
     public void updateCourse(Course oldCourse, Course newCourse, String teacher) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
+        boolean updated = false;
+
+        File tempFile = new File("tempFile.txt");
+        File courseFile = new File(courseFileName);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             String line;
-            String[] info;
-            boolean updated = false;
             String oldLine = oldCourse.getCourseName() + "," + oldCourse.getCourseUnits() + "," + oldCourse.getExamDate() + "," + teacher + ",";
             String newLine = oldCourse.getCourseName() + "," + newCourse.getCourseUnits() + "," + newCourse.getExamDate() + "," + teacher + ",";
+
             while ((line = reader.readLine()) != null) {
-                FileWriter fileWriter = new FileWriter(tempFileName, true);
                 if (line.contains(oldLine)) {
-                    info = line.split(",");
-                    fileWriter.write(newLine + info[4] + "\n");
-                    System.out.println(newLine + info[4] + "\n");
+                    String[] info = line.split(",");
+                    writer.write(newLine + info[4]);
+                    writer.newLine();
                     updated = true;
                 } else {
-                    fileWriter.write(line + "\n");
+                    writer.write(line);
+                    writer.newLine();
                 }
-                fileWriter.close();
             }
-            if (updated) {
-                PrintWriter writer = new PrintWriter(courseFileName);
-                writer.println("");
-                writer.close();
-                BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-                while ((line = reader1.readLine()) != null) {
-                    FileWriter fileWriter = new FileWriter(courseFileName, true);
-                    fileWriter.write(line + "\n");
-                    fileWriter.close();
-                }
-                System.out.println("Course updated successfully!");
-            } else
-                System.err.println("Oops! Course not found.");
-            PrintWriter writer = new PrintWriter(tempFileName);
-            writer.println("");
-            writer.close();
         }
+
+        if (courseFile.delete() && tempFile.renameTo(courseFile)) {
+            if (updated) {
+                System.out.println("Course updated successfully!");
+            } else {
+                System.err.println("Oops! Course not found.");
+            }
+        } else {
+            System.err.println("Error updating file.");
+        }
+        tempFile.delete();//test//////
     }
 
     //To change assignments of a course
     public void updateAssignment(String courseName, Assignment assignment) throws IOException {
         boolean found = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
+        File tempFile = new File("tempFile.txt");
+        File courseFile = new File(courseFileName);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             String line;
             String[] info;
-            FileWriter fileWriter = new FileWriter(tempFileName);
+
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(courseName)) {
                     String[] assignments = info[4].split(";");
-                    StringBuilder updateLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + ",");
+                    StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + ",");
+
                     for (String str : assignments) {
                         String[] assignmentInfo = str.split(":");
                         if (assignmentInfo[0].equals(assignment.getAssignmentName())) {
-                            updateLine.append(assignmentInfo[0]).append(":").append(assignment.getAssignmentName()).append(":").append(assignment.getDayCounter()).append(";");
+                            updatedLine.append(assignment.getAssignmentName()).append(":").append(assignment.getDayCounter()).append(";");
                             found = true;
                         } else {
-                            updateLine.append(str).append(";");
+                            updatedLine.append(str).append(";");
                         }
                     }
+
+                    if (updatedLine.charAt(updatedLine.length() - 1) == ';') {
+                        updatedLine.deleteCharAt(updatedLine.length() - 1);
+                    }
+
+                    writer.write(updatedLine.toString());
+                    writer.newLine();
+
                     if (!found) {
                         System.err.println("Assignment not found!");
-                    } else {
-                        fileWriter.write(updateLine.substring(0, updateLine.length() - 1) + "\n");
                     }
                 } else {
-                    fileWriter.write(line + "\n");
+                    writer.write(line);
+                    writer.newLine();
                 }
             }
-            fileWriter.close();
-            PrintWriter writer = new PrintWriter(courseFileName);
-            writer.println("");
-            writer.close();
-            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-            while ((line = reader1.readLine()) != null) {
-                FileWriter fileWriter1 = new FileWriter(courseFileName, true);
-                fileWriter1.write(line + "\n");
-                fileWriter1.close();
-            }
-            PrintWriter writer1 = new PrintWriter(tempFileName);
-            writer1.println("");
-            writer1.close();
         }
-        if (found)
-            System.out.println("Assignment updated successfully!");
+        if (courseFile.delete() && tempFile.renameTo(courseFile)) {
+            if (found) {
+                System.out.println("Assignment updated successfully!");
+            } else {
+                System.err.println("Assignment not found!");
+            }
+        } else {
+            System.err.println("Error updating file.");
+        }
     }
 
     //To define an assignment for a course
     public void addAssignment(Assignment assignment, String courseName) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
+        File tempFile = new File("tempFile.txt");
+        File courseFile = new File(courseFileName);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             String line;
             String[] info;
+
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(courseName)) {
-                    line += assignment.getAssignmentName() + ":" + assignment.getDayCounter() +";";
+                    line += assignment.getAssignmentName() + ":" + assignment.getDayCounter() + ";";
                 }
-                FileWriter fileWriter = new FileWriter(tempFileName, true);
-                fileWriter.write(line + "\n");
-                fileWriter.close();
+                writer.write(line);
+                writer.newLine();
             }
-            PrintWriter writer = new PrintWriter(courseFileName);
-            writer.println("");
-            writer.close();
-            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-            while ((line = reader1.readLine()) != null) {
-                FileWriter fileWriter = new FileWriter(courseFileName, true);
-                fileWriter.write(line + "\n");
-                fileWriter.close();
-            }
-            PrintWriter writer1 = new PrintWriter(tempFileName);
-            writer1.println("");
-            writer1.close();
+        }
+
+        if (courseFile.delete() && tempFile.renameTo(courseFile)) {
             System.out.println("Assignment added to the course!");
+        } else {
+            System.err.println("Error updating file.");
         }
     }
+
 
     //To remove an assignment from a course
     public void removeAssignment(Assignment assignment, String course) throws IOException {
         boolean removed = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName));
-             FileWriter fileWriter = new FileWriter(tempFileName)) {
+        File tempFile = new File("tempFile.txt");
+        File courseFile = new File(courseFileName);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(courseFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
             String line;
             String[] info;
+
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(course)) {
                     String[] assignments = info[4].split(";");
                     StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + ",");
+
                     for (String str : assignments) {
                         String[] part = str.split(":");
                         if (!part[0].equals(assignment.getAssignmentName())) {
@@ -576,31 +588,35 @@ public class Database {
                             removed = true;
                         }
                     }
+
+                    // Remove the trailing semicolon, if any
+                    if (updatedLine.charAt(updatedLine.length() - 1) == ';') {
+                        updatedLine.deleteCharAt(updatedLine.length() - 1);
+                    }
+
+                    writer.write(updatedLine.toString());
+                    writer.newLine();
+
                     if (!removed) {
                         System.err.println("Assignment not found in course.");
                     }
-                    fileWriter.write(updatedLine.toString() + "\n");
                 } else {
-                    fileWriter.write(line + "\n");
+                    writer.write(line);
+                    writer.newLine();
                 }
             }
-            fileWriter.close();
-            PrintWriter writer = new PrintWriter(courseFileName);
-            writer.println("");
-            writer.close();
-            BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
-            while ((line = reader1.readLine()) != null) {
-                FileWriter fileWriter1 = new FileWriter(courseFileName, true);
-                fileWriter1.write(line + "\n");
-                fileWriter1.close();
-            }
-            PrintWriter writer1 = new PrintWriter(tempFileName);
-            writer1.println("");
-            writer1.close();
         }
-        if (removed)
-            System.out.println("Assignment removed successfully!");
+        if (courseFile.delete() && tempFile.renameTo(courseFile)) {
+            if (removed) {
+                System.out.println("Assignment removed successfully!");
+            } else {
+                System.err.println("Assignment not found in course.");
+            }
+        } else {
+            System.err.println("Error updating file.");
+        }
     }
+
 
     //To return the highest score of a student
     public double bestScore(String student) throws IOException {
