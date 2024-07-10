@@ -60,26 +60,32 @@ public class Cli {
                                 boolean removed = false;
                                 String line;
                                 String[] info;
+                                BufferedWriter fileWriter = new BufferedWriter(new FileWriter(tempFileName));
+
                                 while ((line = reader.readLine()) != null){
-                                    FileWriter fileWriter = new FileWriter(tempFileName, true);
                                     info = line.split(",");
                                     if (!info[0].equals(teacherName) && !info[1].equals(teacherId)){
                                         fileWriter.write(line + "\n");
-                                    } else
+                                    } else {
                                         removed = true;
-                                    fileWriter.close();
+                                    }
                                 }
+
                                 PrintWriter writer = new PrintWriter(database.teacherFileName);
-                                writer.println("");
+                                writer.print("");
                                 writer.close();
+
                                 BufferedReader reader1 = new BufferedReader(new FileReader(tempFileName));
+                                BufferedWriter fileWriter2 = new BufferedWriter(new FileWriter(database.teacherFileName, true));
+
                                 while ((line = reader1.readLine()) != null){
-                                    FileWriter fileWriter = new FileWriter(database.teacherFileName, true);
-                                    fileWriter.write(line + "\n");
-                                    fileWriter.close();
+                                    fileWriter2.write(line + "\n");
                                 }
+                                fileWriter.close();
+                                fileWriter2.close();
+                                reader1.close();
                                 if (removed)
-                                    System.out.println("Teacher" + firstName + " " + lastName + ", removed successfully!");
+                                    System.out.println("Teacher " + firstName + " " + lastName + ", removed successfully!");
                             }
                         }
 
@@ -418,11 +424,9 @@ public class Cli {
                                 String courseName = scanner.nextLine();
                                 System.out.println("Write name of the assignment: ");
                                 String assignmentName = scanner.nextLine();
-                                System.out.println("Write the Deadline (in days): ");
-                                String deadline = scanner.nextLine();
 
                                 if (database.isTeacher(teacherID, courseName)) {
-                                    database.removeAssignment(new Assignment(assignmentName, Integer.parseInt(deadline)), courseName);}
+                                    database.removeAssignment(assignmentName, courseName);}
                                 else {
                                     System.out.println("You have not access to this course");}
                             }

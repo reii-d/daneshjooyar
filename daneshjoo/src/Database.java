@@ -5,7 +5,7 @@ public class Database {
 
     //Files PATHs
     String studentFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
-    String teacherFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
+    String teacherFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
     String courseFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     String taskFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\tasks.txt";
     String newsFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\news.txt";
@@ -75,7 +75,7 @@ public class Database {
             boolean ok = false;
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
-                if (info[0].equals(courseName) && info[3].equals(teacherName(teacherID))) {
+                if (info[0].equals(courseName) && info[4].equals(teacherName(teacherID))) {
                     ok = true;
                     break;
                 }
@@ -562,7 +562,7 @@ public class Database {
 
 
     //To remove an assignment from a course
-    public void removeAssignment(Assignment assignment, String course) throws IOException {
+    public void removeAssignment(String assignment, String course) throws IOException {
         boolean removed = false;
 
         File tempFile = new File("tempFile.txt");
@@ -576,12 +576,12 @@ public class Database {
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(course)) {
-                    String[] assignments = info[4].split(";");
-                    StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + ",");
+                    String[] assignments = info[5].split(";");
+                    StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + "," + info[4] + ",");
 
                     for (String str : assignments) {
                         String[] part = str.split(":");
-                        if (!part[0].equals(assignment.getAssignmentName())) {
+                        if (!part[0].equals(assignment)) {
                             updatedLine.append(str).append(";");
                         } else {
                             removed = true;

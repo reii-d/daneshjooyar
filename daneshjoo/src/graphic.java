@@ -1041,14 +1041,12 @@ public class graphic {
         JFrame removingAssignment = new JFrame("Remove an Assignment from your Course");
         removingAssignment.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         removingAssignment.setSize(800, 600);
-        removingAssignment.setLayout(new GridLayout(5, 2));
+        removingAssignment.setLayout(new GridLayout(4, 2));
 
         JLabel courseLabel = new JLabel("Name of Course:");
         JTextField courseField = new JTextField();
         JLabel assignmentLabel = new JLabel("Name of Assignment:");
         JTextField assignmentField = new JTextField();
-        JLabel deadlineLabel = new JLabel("Deadline (in days):");
-        JTextField deadlineField = new JTextField();
         JLabel teacherIDLabel = new JLabel("Enter your ID:");
         JTextField teacherIDField = new JTextField();
         JButton OKButton = new JButton("OK");
@@ -1058,8 +1056,6 @@ public class graphic {
         removingAssignment.add(courseField);
         removingAssignment.add(assignmentLabel);
         removingAssignment.add(assignmentField);
-        removingAssignment.add(deadlineLabel);
-        removingAssignment.add(deadlineField);
         removingAssignment.add(teacherIDLabel);
         removingAssignment.add(teacherIDField);
         removingAssignment.add(OKButton);
@@ -1068,11 +1064,10 @@ public class graphic {
         OKButton.addActionListener(e -> {
             String course = courseField.getText();
             String assignment = assignmentField.getText();
-            String deadline = deadlineField.getText();
             String teacher = teacherIDField.getText();
             try {
                 if (Database.getInstance().isTeacher(teacher, course)) {
-                    Database.getInstance().removeAssignment(new Assignment(assignment, Integer.parseInt(deadline)), course);
+                    Database.getInstance().removeAssignment(assignment, course);
                     JOptionPane.showMessageDialog(removingAssignment, "in progress...");
                 }
                 else
