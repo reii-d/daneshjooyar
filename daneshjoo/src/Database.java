@@ -465,7 +465,6 @@ public class Database {
         }
 
         if (updated) {
-            // Write the updated content back to the original file
             try (PrintWriter writer = new PrintWriter(new FileWriter(courseFileName))) {
                 writer.print(updatedContent.toString());
             }
@@ -474,9 +473,9 @@ public class Database {
             System.err.println("Oops! Course not found.");
         }
 
-        // Clean up the temp file, if it exists
         new PrintWriter(tempFileName).close();
     }
+
 
 
     //To change assignments of a course
