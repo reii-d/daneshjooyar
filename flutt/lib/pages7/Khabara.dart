@@ -173,7 +173,7 @@ class _KhabaraState extends State<Khabara> {
 
   Future<void> Khabara() async {
     try {
-      Socket socket = await Socket.connect("192.168.1.112", 8080);
+      Socket socket = await Socket.connect("172.20.116.103", 8080);
       socket.write('GET: KhabaraInfo\u0000');
       socket.flush();
 

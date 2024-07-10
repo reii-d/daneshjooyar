@@ -28,7 +28,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
 
   Future<void> deleteAccount(BuildContext context) async {
     try {
-      Socket socket = await Socket.connect("192.168.1.112", 8080);
+      Socket socket = await Socket.connect("172.20.116.103", 8080);
 
       // Sending delete account data
       socket.write('GET: DeleteAccount,$name,${widget.id}\u0000');
@@ -146,7 +146,7 @@ class _StudentInfoPageState extends State<StudentInfoPage> {
 
   Future<void> buildProfile() async {
     try {
-      Socket socket = await Socket.connect("192.168.1.112", 8080);
+      Socket socket = await Socket.connect("172.20.116.103", 8080);
 
       // Sending profile info request with studentid
       socket.write('GET: ProfileInfo,${widget.id}\u0000');

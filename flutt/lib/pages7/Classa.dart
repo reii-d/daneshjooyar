@@ -229,7 +229,7 @@ class _ClassaState extends State<Classa> {
 
   Future<void> classa() async {
     try {
-      Socket socket = await Socket.connect("192.168.1.112", 8080);
+      Socket socket = await Socket.connect("172.20.116.103", 8080);
 
       // Sending request for classes
       socket.write('GET: Classes,${widget.id}\u0000');
@@ -273,7 +273,7 @@ class _ClassaState extends State<Classa> {
 
   Future<void> addClass(String newClassId) async {
     try {
-      Socket socket = await Socket.connect("192.168.1.112", 8080);
+      Socket socket = await Socket.connect("172.20.116.103", 8080);
 
       // Sending request to add class
       socket.write('GET: AddClassa,${widget.id},$newClassId\u0000');
