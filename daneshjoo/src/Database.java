@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Database {
 
     //Files PATHs
-    String studentFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
+    String studentFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\students.txt";
     String teacherFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\teachers.txt";
     String courseFileName = "C:\\Users\\RSV\\Desktop\\daneshjooyar\\daneshjoo\\src\\data\\courses.txt";
     String taskFileName = "C:\\Users\\mnoro\\Desktop\\main ap\\daneshjooyar\\daneshjoo\\src\\data\\tasks.txt";
@@ -294,7 +294,7 @@ public class Database {
             while ((line = reader.readLine()) != null) {
                 info = line.split(",");
                 if (info[0].equals(student)) {
-                    String[] courses = info[4].split(";");
+                    String[] courses = info[3].split(";");
                     StringBuilder updatedLine = new StringBuilder(info[0] + "," + info[1] + "," + info[2] + "," + info[3] + ",");
                     for (String str : courses) {
                         String[] part = str.split(":");
@@ -443,8 +443,8 @@ public class Database {
 
     //To change information of a course in course file
     public void updateCourse(Course oldCourse, Course newCourse, String teacher) throws IOException {
-        String oldLine = oldCourse.getCourseName() + "," + oldCourse.getCourseUnits() + "," + oldCourse.getExamDate() + "," + teacher + ",";
-        String newLine = oldCourse.getCourseName() + "," + newCourse.getCourseUnits() + "," + newCourse.getExamDate() + "," + teacher + ",";
+        String oldLine = oldCourse.getCourseName() + "," + oldCourse.getCourseID() + "," + oldCourse.getCourseUnits() + "," + oldCourse.getExamDate() + "," + teacher + ",";
+        String newLine = oldCourse.getCourseName() + "," + newCourse.getCourseID() + "," + newCourse.getCourseUnits() + "," + newCourse.getExamDate() + "," + teacher + ",";
 
         boolean updated = false;
 
@@ -453,17 +453,10 @@ public class Database {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
-<<<<<<< Updated upstream
-=======
-            String[] info;
-            boolean updated = false;
-            String oldLine = oldCourse.getCourseName() + "," + oldCourse.getCourseID() + "," + oldCourse.getCourseUnits() + "," + oldCourse.getExamDate() + "," + teacher + ",";
-            String newLine = oldCourse.getCourseName() + "," + newCourse.getCourseID() + "," + newCourse.getCourseUnits() + "," + newCourse.getExamDate() + "," + teacher + ",";
->>>>>>> Stashed changes
             while ((line = reader.readLine()) != null) {
                 if (line.contains(oldLine)) {
                     String[] info = line.split(",");
-                    updatedContent.append(newLine).append(info[4]).append("\n");
+                    updatedContent.append(newLine).append(info[5]).append("\n");
                     updated = true;
                 } else {
                     updatedContent.append(line).append("\n");
