@@ -110,7 +110,7 @@ public class Cli {
                             String examDate = scanner.nextLine();
 
                             Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
-                            System.out.println(database.addCourse(newCourse));
+                            database.addCourse(newCourse);
                         }
 
                         else if (courseChoice.equals("2")){        //Removing a course from course file
@@ -127,7 +127,7 @@ public class Cli {
                             System.out.println("When is the exam date?");
                             String examDate = scanner.nextLine();
                             Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
-                            System.out.println(database.removeCourse(oldCourse));
+                            database.removeCourse(oldCourse);
 
                         } else if (courseChoice.equals("3")) {         //Changing the information of a course
                             //Fixed information about the course
@@ -175,7 +175,7 @@ public class Cli {
                             String courseName = scanner.nextLine();
                             System.out.println("Write the name of student: ");
                             String student = scanner.nextLine();
-                            System.out.println(database.addCourseToStudent(student, courseName));
+                            database.addCourseToStudent(student, courseName);
                         }
 
                         else if (studentChoice.equals("2")){           //Removing a student from a course
@@ -183,7 +183,7 @@ public class Cli {
                             String courseName = scanner.nextLine();
                             System.out.println("Write the name of student: ");
                             String studentName = scanner.nextLine();
-                            System.out.println(database.removeCourseFromStudent(courseName, studentName));
+                            database.removeCourseFromStudent(courseName, studentName);
                         }
 
                         else if (studentChoice.equals("3")) {          //Changing the score of a student's course
@@ -193,7 +193,7 @@ public class Cli {
                             String studentName = scanner.nextLine();
                             System.out.println("Write the score: ");
                             String score = scanner.nextLine();
-                            System.out.println(database.studentScore(studentName, courseName, score));
+                            database.studentScore(studentName, courseName, score);
                         } else
                             System.err.println("Unknown command!");
 
@@ -293,7 +293,7 @@ public class Cli {
                                 String[] teacher = database.teacherName(teacherID).split(" ");
 
                                 Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
-                                System.out.println(database.addCourse(newCourse));
+                                database.addCourse(newCourse);
                             }
 
 
@@ -310,7 +310,7 @@ public class Cli {
 
                                 Course oldCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
                                 if (database.isTeacher(teacherID, courseName))
-                                    System.out.println(database.removeCourse(oldCourse));
+                                    database.removeCourse(oldCourse);
                                 else
                                     System.out.println("Sorry, You have not access to this course!");
 
@@ -359,7 +359,7 @@ public class Cli {
                                 System.out.println("Write the name of student: ");
                                 String student = scanner.nextLine();
                                 if (database.isTeacher(teacherID, courseName)){
-                                    System.out.println(database.addCourseToStudent(student, courseName));}
+                                    database.addCourseToStudent(student, courseName);}
                                 else {
                                     System.out.println("You have not access to this course!");}
                             }
@@ -370,7 +370,7 @@ public class Cli {
                                 System.out.println("Write the name of student: ");
                                 String student = scanner.nextLine();
                                 if (database.isTeacher(teacherID, courseName)){
-                                    System.out.println(database.removeCourseFromStudent(courseName, student));}
+                                    database.removeCourseFromStudent(courseName, student);}
                                 else {
                                     System.out.println("You have not access to this course!");}
                             }

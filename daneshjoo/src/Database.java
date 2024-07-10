@@ -243,7 +243,7 @@ public class Database {
     }
 
     //To add a course to student's courses (student file)
-    public String addCourseToStudent(String student, String course) throws IOException {
+    public void addCourseToStudent(String student, String course) throws IOException {
         boolean courseAlreadyAdded = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
@@ -274,13 +274,13 @@ public class Database {
         }
 
         if (!courseAlreadyAdded)
-            return studentName(student) + "added to the course successfully!";
+            System.out.println(studentName(student) + "added to the course successfully!");
         else
-            return "Unsuccessful!";
+            System.err.println("Unsuccessful!");
     }
 
     //To remove a course from student's courses
-    public String removeCourseFromStudent(String courseName, String student) throws IOException {
+    public void removeCourseFromStudent(String courseName, String student) throws IOException {
         boolean removed = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName));
@@ -301,7 +301,7 @@ public class Database {
                         }
                     }
                     if (!removed) {
-                        return "Course not found.";
+                        System.err.println("Course not found.");
                     }
                     fileWriter.write(updatedLine.toString() + "\n");
                 } else {
@@ -323,13 +323,11 @@ public class Database {
             writer1.close();
         }
         if (removed)
-            return student + "removed from the course successfully!";
-        else
-            return "Unsuccessful!";
+            System.out.println(student + "removed from the course successfully!");
     }
 
     //To change the score of a course (student file)
-    public String studentScore(String student, String courseName, String score) throws IOException {
+    public void studentScore(String student, String courseName, String score) throws IOException {
         boolean found = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFileName))) {
@@ -372,13 +370,13 @@ public class Database {
             writer1.close();
         }
         if (found)
-            return "Score added successfully!";
+            System.out.println("Score added successfully!");
         else
-            return "Course not found!";
+            System.err.println("Course not found!");
     }
 
     //To define a new course to course file(name, units, date of exam, teacher)
-    public String addCourse(Course course) throws IOException {
+    public void addCourse(Course course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String newCourse = course.getCourseName() + "," + course.getCourseID() + "," + course.getCourseUnits() + "," + course.getExamDate() + "," +
                     course.getCourseTeacher().getTeacherName() + " " + course.getCourseTeacher().getTeacherLastName() + ",";
@@ -391,18 +389,18 @@ public class Database {
                     foundInFile = false;
             }
             if (foundInFile) {
-                return "This Course is already exists!";
+                System.err.println("This Course is already exists!");
             } else {
                 FileWriter fileWriter = new FileWriter(courseFileName, true);
                 fileWriter.write(newCourse);
                 fileWriter.close();
-                return "Course added successfully!";
+                System.out.println("Course added successfully!");
             }
         }
     }
 
     //To remove a course from course file
-    public String removeCourse(Course course) throws IOException {
+    public void removeCourse(Course course) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(courseFileName))) {
             String line;
             boolean removed = false;
@@ -429,12 +427,12 @@ public class Database {
                 PrintWriter writer1 = new PrintWriter(tempFileName);
                 writer1.println("");
                 writer1.close();
-                return "Course removed successfully!";
+                System.out.println("Course removed successfully!");
             } else {
                 PrintWriter writer = new PrintWriter(tempFileName);
                 writer.println("");
                 writer.close();
-                return "Oops! Course not found.";
+                System.err.println("Oops! Course not found.");
             }
         }
     }

@@ -326,7 +326,7 @@ public class graphic {
             Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
             try {
                 Database.getInstance().addCourse(newCourse);
-                JOptionPane.showMessageDialog(addCourse, Database.getInstance().addCourse(newCourse));
+                JOptionPane.showMessageDialog(addCourse, "in progress...");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -384,7 +384,7 @@ public class graphic {
             Course course = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(firstName, lastName));
             try {
                 Database.getInstance().removeCourse(course);
-                JOptionPane.showMessageDialog(removeCourse, Database.getInstance().removeCourse(course));
+                JOptionPane.showMessageDialog(removeCourse, "in progress...");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -487,7 +487,7 @@ public class graphic {
             String student = studentField.getText();
             try {
                 Database.getInstance().addCourseToStudent(student, course);
-                JOptionPane.showMessageDialog(addStudent, Database.getInstance().addCourseToStudent(student, course));
+                JOptionPane.showMessageDialog(addStudent, "OK!");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -523,7 +523,7 @@ public class graphic {
             String student = studentField.getText();
             try {
                 Database.getInstance().removeCourseFromStudent(course, student);
-                JOptionPane.showMessageDialog(removeStudent, Database.getInstance().removeCourseFromStudent(course, student));
+                JOptionPane.showMessageDialog(removeStudent, "in progress...");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -564,7 +564,7 @@ public class graphic {
             String score = scoreField.getText();
             try {
                 Database.getInstance().studentScore(student, course, score);
-                JOptionPane.showMessageDialog(updateScores, Database.getInstance().studentScore(student, course, score));
+                JOptionPane.showMessageDialog(updateScores, "in progrss...");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -777,7 +777,7 @@ public class graphic {
                 String[] teacher = Database.getInstance().teacherName(teacherID).split(" ");
                 Course newCourse = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
                 Database.getInstance().addCourse(newCourse);
-                JOptionPane.showMessageDialog(addCourse, Database.getInstance().addCourse(newCourse));
+                JOptionPane.showMessageDialog(addCourse, "in progress...");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -832,7 +832,7 @@ public class graphic {
                 Course course = new Course(courseName, courseID, Integer.parseInt(numUnits), examDate, new Teacher(teacher[0], teacher[1]));
                 if (Database.getInstance().isTeacher(teacherID, courseName)) {
                     Database.getInstance().removeCourse(course);
-                    JOptionPane.showMessageDialog(removeCourse, Database.getInstance().removeCourse(course));
+                    JOptionPane.showMessageDialog(removeCourse, "in progress...");
                 } else {
                     JOptionPane.showMessageDialog(removeCourse, "Sorry, You have not access to this course!");
                 }
@@ -877,7 +877,7 @@ public class graphic {
             try {
                 if (Database.getInstance().isTeacher(teacher, course)) {
                     Database.getInstance().addCourseToStudent(student, course);
-                    JOptionPane.showMessageDialog(addStudent, Database.getInstance().addCourseToStudent(student, course));
+                    JOptionPane.showMessageDialog(addStudent, "OK!");
                 }
                 else
                     JOptionPane.showMessageDialog(addStudent, "Sorry, You have not access to this course!");
@@ -922,7 +922,7 @@ public class graphic {
             try {
                 if (Database.getInstance().isTeacher(teacher, course)) {
                     Database.getInstance().removeCourseFromStudent(course, student);
-                    JOptionPane.showMessageDialog(removeStudent, Database.getInstance().removeCourseFromStudent(course, student));
+                    JOptionPane.showMessageDialog(removeStudent, "in progress...");
                 }
                 else
                     JOptionPane.showMessageDialog(removeStudent, "Sorry, You have not access to this course!");
@@ -972,7 +972,7 @@ public class graphic {
             try {
                 if (Database.getInstance().isTeacher(teacher, course)) {
                     Database.getInstance().studentScore(student, course, score);
-                    JOptionPane.showMessageDialog(updateScores, Database.getInstance().studentScore(student, course, score));
+                    JOptionPane.showMessageDialog(updateScores, "in progress...");
                 }
                 else {
                     JOptionPane.showMessageDialog(updateScores, "Sorry, You have not access to this course!");
