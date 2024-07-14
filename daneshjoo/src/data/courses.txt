@@ -1,5 +1,4 @@
 Az,0112143,1,1403.04.09,Rahil Ramezani,
 English,0023657,2,1403.04.12,Ahmad Alavai,assignment2:5;assignment3:8;
 AP,0981221,3,1403.04.08,Iman Eslami,assignment1:7;
-Farsi,5809765,2,1403.02.31,Shima Salami,
 Math2,92103820,4,1403.03.31,Iman Eslami,assignment5:13;

@@ -10,16 +10,30 @@ public class graphic {
 
     //Page for Main menu
     private static void createMainFrame() {
+        Color bgColor = Color.decode("#B1DBDD");
         JFrame frame = new JFrame("Main Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       //Exit
         frame.setSize(800, 600);        //length and width
         frame.setLayout(new GridLayout(4, 1));
 
         //Buttons
-        JLabel label = new JLabel("Main Menu:", SwingConstants.CENTER);
+        JLabel label = new JLabel("<<Main Menu>>", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
+
         JButton adminButton = new JButton("Admin");
+        adminButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 18));
+        adminButton.setBackground(bgColor);
+
         JButton teacherButton = new JButton("Teacher");
+        teacherButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 18));
+        teacherButton.setBackground(bgColor);
+
         JButton exitButton = new JButton("Exit");
+        exitButton.setBackground(bgColor);
+        exitButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 18));
 
         frame.add(label);
         frame.add(adminButton);
@@ -37,17 +51,38 @@ public class graphic {
     //ADMIN
     //Page for Admin Access
     private static void createAdminFrame() {
+        Color bgColor = Color.decode("#B1DBDD");
+
         JFrame adminFrame = new JFrame("Admin Access");
         adminFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         adminFrame.setSize(800, 600);
         adminFrame.setLayout(new GridLayout(6, 1));
 
-        JLabel label = new JLabel("Admin Access:", SwingConstants.CENTER);
+        JLabel label = new JLabel("<<Admin Access>>", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
+
         JButton teachersButton = new JButton("Teachers");
+        teachersButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        teachersButton.setBackground(bgColor);
+
         JButton coursesButton = new JButton("Courses");
+        coursesButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        coursesButton.setBackground(bgColor);
+
         JButton studentsButton = new JButton("Students");
+        studentsButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        studentsButton.setBackground(bgColor);
+
         JButton newsButton = new JButton("News");
+        newsButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        newsButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        backButton.setBackground(bgColor);
 
         adminFrame.add(label);
         adminFrame.add(teachersButton);
@@ -67,15 +102,30 @@ public class graphic {
 
     //Admin: Access to teachers
     private static void adminTeacherFrame(){
+        Color bgColor = Color.decode("#B1DBDD");
+
         JFrame adminTeacherFrame = new JFrame("Access to Teachers");
         adminTeacherFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         adminTeacherFrame.setSize(800, 600);
         adminTeacherFrame.setLayout(new GridLayout(4, 1));
 
         JLabel label = new JLabel("Access to TEACHERS:", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
+
         JButton addingButton = new JButton("Add Teacher");
+        addingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        addingButton.setBackground(bgColor);
+
         JButton removingButton = new JButton("Remove Teacher");
+        removingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        removingButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        backButton.setBackground(bgColor);
 
         adminTeacherFrame.add(label);
         adminTeacherFrame.add(addingButton);
@@ -91,15 +141,29 @@ public class graphic {
 
     //Admin: Access to courses
     private static void adminCourseFrame(){
+        Color bgColor = Color.decode("#B1DBDD");
         JFrame adminCourseFrame = new JFrame("Access to Courses");
         adminCourseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         adminCourseFrame.setSize(800, 600);
         adminCourseFrame.setLayout(new GridLayout(4, 1));
 
         JLabel label = new JLabel("Access to COURSES:", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
+
         JButton addingButton = new JButton("Add Course");
+        addingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        addingButton.setBackground(bgColor);
+
         JButton removingButton = new JButton("Remove Course");
+        removingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        removingButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        backButton.setBackground(bgColor);
 
         adminCourseFrame.add(label);
         adminCourseFrame.add(addingButton);
@@ -115,16 +179,34 @@ public class graphic {
 
     //Admin: Access to students
     private static void adminStudentFrame(){
+        Color bgColor = Color.decode("#B1DBDD");
+
         JFrame adminStudentFrame = new JFrame("Access to Students");
         adminStudentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         adminStudentFrame.setSize(800, 600);
         adminStudentFrame.setLayout(new GridLayout(5, 1));
 
         JLabel label = new JLabel("Access to STUDENTS:", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
+
         JButton addingButton = new JButton("Add a Student to a Course");
+        addingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        addingButton.setBackground(bgColor);
+
         JButton removingButton = new JButton("Remove a Student from a Course");
+        removingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        removingButton.setBackground(bgColor);
+
         JButton scoresButton = new JButton("Update scores of a Student");
+        scoresButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        scoresButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        backButton.setBackground(bgColor);
 
         adminStudentFrame.add(label);
         adminStudentFrame.add(addingButton);
@@ -142,15 +224,30 @@ public class graphic {
 
     //Admin: Access to news
     private static void adminNewsFrame(){
+        Color bgColor = Color.decode("#B1DBDD");
+
         JFrame adminNewsFrame = new JFrame("Access to News");
         adminNewsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         adminNewsFrame.setSize(800, 600);
         adminNewsFrame.setLayout(new GridLayout(4, 1));
 
         JLabel label = new JLabel("Access to NEWS:", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
+
         JButton addingButton = new JButton("Add News");
+        addingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        addingButton.setBackground(bgColor);
+
         JButton removingButton = new JButton("Remove News");
+        removingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        removingButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        backButton.setBackground(bgColor);
 
         adminNewsFrame.add(label);
         adminNewsFrame.add(addingButton);
@@ -579,14 +676,26 @@ public class graphic {
     //TEACHER
     //Teacher's login (with teacher id)
     private static void teacherLogin(JFrame parentFrame) {
+        Color bgColor = Color.decode("#B1DBDD");
+
         JDialog loginDialog = new JDialog(parentFrame, "Teacher Login", true);
         loginDialog.setLayout(new GridLayout(2, 2));
-        loginDialog.setSize(600, 300);
+        loginDialog.setSize(800, 600);
 
         JLabel idLabel = new JLabel("Enter your teacher ID: ");
+        idLabel.setFont(new Font("Cambria", Font.BOLD, 32));
+        idLabel.setOpaque(true);
+        idLabel.setForeground(Color.darkGray);
+        idLabel.setBackground(Color.LIGHT_GRAY);
         JTextField idField = new JTextField();
+
         JButton loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 24));
+        loginButton.setBackground(bgColor);
+
         JButton cancelButton = new JButton("Cancel");
+        cancelButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 24));
+        cancelButton.setBackground(bgColor);
 
         loginDialog.add(idLabel);
         loginDialog.add(idField);
@@ -633,16 +742,34 @@ public class graphic {
 
     //Page for Teacher access
     private static void createTeacherFrame() {
+        Color bgColor = Color.decode("#B1DBDD");
+
         JFrame teacherFrame = new JFrame("Teacher Access");
         teacherFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         teacherFrame.setSize(800, 600);
         teacherFrame.setLayout(new GridLayout(5, 1));
 
         JLabel label = new JLabel("Teacher Access:", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
+
         JButton coursesButton = new JButton("Courses");
+        coursesButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 18));
+        coursesButton.setBackground(bgColor);
+
         JButton studentsButton = new JButton("Students");
+        studentsButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 18));
+        studentsButton.setBackground(bgColor);
+
         JButton assignmentsButton = new JButton("Assignments");
+        assignmentsButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 18));
+        assignmentsButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 18));
+        backButton.setBackground(bgColor);
 
         teacherFrame.add(label);
         teacherFrame.add(coursesButton);
@@ -660,15 +787,30 @@ public class graphic {
 
     //Teacher: Access to courses
     private static void teacherCourseFrame(){
+        Color bgColor = Color.decode("#B1DBDD");
+
         JFrame teacherCourseFrame = new JFrame("Access to Courses");
         teacherCourseFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         teacherCourseFrame.setSize(800, 600);
         teacherCourseFrame.setLayout(new GridLayout(4, 1));
 
         JLabel label = new JLabel("Access to COURSES:", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
+
         JButton addingButton = new JButton("Add Course");
+        addingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        addingButton.setBackground(bgColor);
+
         JButton removingButton = new JButton("Remove Course");
+        removingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        removingButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        backButton.setBackground(bgColor);
 
         teacherCourseFrame.add(label);
         teacherCourseFrame.add(addingButton);
@@ -684,15 +826,29 @@ public class graphic {
 
     //Teacher: Access to students
     private static void teacherAssignmentFrame(){
+        Color bgColor = Color.decode("#B1DBDD");
+
         JFrame teacherStudentFrame = new JFrame("Access to Assignments");
         teacherStudentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         teacherStudentFrame.setSize(800, 600);
         teacherStudentFrame.setLayout(new GridLayout(4, 1));
 
         JLabel label = new JLabel("Access to ASSIGNMENTS:", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
         JButton addingButton = new JButton("Add an Assignment to a course");
+        addingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        addingButton.setBackground(bgColor);
+
         JButton removingButton = new JButton("Remove an Assignment from a Course");
+        removingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        removingButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        backButton.setBackground(bgColor);
 
         teacherStudentFrame.add(label);
         teacherStudentFrame.add(addingButton);
@@ -708,16 +864,33 @@ public class graphic {
 
     //Teacher: Access to assignments
     private static void teacherStudentFrame(){
+        Color bgColor = Color.decode("#B1DBDD");
+
         JFrame teacherStudentFrame = new JFrame("Access to Students");
         teacherStudentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         teacherStudentFrame.setSize(800, 600);
         teacherStudentFrame.setLayout(new GridLayout(5, 1));
 
         JLabel label = new JLabel("Access to STUDENTS:", SwingConstants.CENTER);
+        label.setFont(new Font("Cambria", Font.BOLD, 32));
+        label.setOpaque(true);
+        label.setForeground(Color.darkGray);
+        label.setBackground(Color.LIGHT_GRAY);
         JButton addingButton = new JButton("Add a Student to a Course");
+        addingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        addingButton.setBackground(bgColor);
+
         JButton removingButton = new JButton("Remove a Student from a Course");
+        removingButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        removingButton.setBackground(bgColor);
+
         JButton scoresButton = new JButton("Update scores of a Student");
+        scoresButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        scoresButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+        backButton.setBackground(bgColor);
 
         teacherStudentFrame.add(label);
         teacherStudentFrame.add(addingButton);
@@ -735,6 +908,8 @@ public class graphic {
 
     //Teacher: Access to courses: Adding
     private static void teacherAddCourseFrame() {
+        Color bgColor = Color.decode("#B1DBDD");
+
         JFrame addCourse = new JFrame("Add Course");
         addCourse.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addCourse.setSize(800, 600);
@@ -742,16 +917,46 @@ public class graphic {
 
         JLabel courseNameLabel = new JLabel("Course Name:");
         JTextField courseNameField = new JTextField();
+        courseNameLabel.setFont(new Font("Cambria", Font.BOLD, 28));
+        courseNameLabel.setOpaque(true);
+        courseNameLabel.setForeground(Color.darkGray);
+        courseNameLabel.setBackground(Color.LIGHT_GRAY);
+
         JLabel courseIDLabel = new JLabel("Course ID:");
         JTextField courseIDField = new JTextField();
+        courseIDLabel.setFont(new Font("Cambria", Font.BOLD, 28));
+        courseIDLabel.setOpaque(true);
+        courseIDLabel.setForeground(Color.darkGray);
+        courseIDLabel.setBackground(Color.LIGHT_GRAY);
+
         JLabel teacherIDLabel = new JLabel("Enter your ID:");
         JTextField teacherIDField = new JTextField();
+        teacherIDLabel.setFont(new Font("Cambria", Font.BOLD, 28));
+        teacherIDLabel.setOpaque(true);
+        teacherIDLabel.setForeground(Color.darkGray);
+        teacherIDLabel.setBackground(Color.LIGHT_GRAY);
+
         JLabel numUnitsLabel = new JLabel("Number of Units:");
         JTextField numUnitsField = new JTextField();
+        numUnitsLabel.setFont(new Font("Cambria", Font.BOLD, 28));
+        numUnitsLabel.setOpaque(true);
+        numUnitsLabel.setForeground(Color.darkGray);
+        numUnitsLabel.setBackground(Color.LIGHT_GRAY);
+
         JLabel examLabel = new JLabel("Date of Exam:");
         JTextField examField = new JTextField();
+        examLabel.setFont(new Font("Cambria", Font.BOLD, 28));
+        examLabel.setOpaque(true);
+        examLabel.setForeground(Color.darkGray);
+        examLabel.setBackground(Color.LIGHT_GRAY);
+
         JButton OKButton = new JButton("OK");
+        OKButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 22));
+        OKButton.setBackground(bgColor);
+
         JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.CENTER_BASELINE, 22));
+        backButton.setBackground(bgColor);
 
         addCourse.add(courseNameLabel);
         addCourse.add(courseNameField);
