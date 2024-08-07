@@ -232,7 +232,7 @@ class _KaraState extends State<Kara> {
   }
 
   Future<void> fetchTasks() async {
-    Socket socket = await Socket.connect("172.20.116.103", 8080);
+    Socket socket = await Socket.connect("192.168.1.112", 8080);
     socket.write('GET: KaraInfo,${widget.id}\u0000');
     await socket.flush();
 
@@ -260,7 +260,7 @@ class _KaraState extends State<Kara> {
     setState(() {
       dailyTasks.add(newTask);
     });
-    Socket socket = await Socket.connect("172.20.116.103", 8080);
+    Socket socket = await Socket.connect("192.168.1.112", 8080);
     socket.write('GET: AddKaraInfo,${widget.id},$taskName\u0000');
     await socket.flush();
     socket.destroy();
@@ -270,7 +270,7 @@ class _KaraState extends State<Kara> {
     setState(() {
       dailyTasks.remove(task);
     });
-    Socket socket = await Socket.connect("172.20.116.103", 8080);
+    Socket socket = await Socket.connect("192.168.1.112", 8080);
     socket.write('GET: RemoveKaraInfo,${widget.id},${task.name}\u0000');
     await socket.flush();
     socket.destroy();

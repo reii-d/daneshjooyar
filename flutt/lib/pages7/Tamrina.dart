@@ -167,7 +167,7 @@ class _TamrinaState extends State<Tamrina> {
 
   Future<void> TamrinaInfo() async {
     try {
-      Socket socket = await Socket.connect("172.20.116.103", 8080);
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending request for TamrinaInfo
       socket.write('GET: TamrinaInfo,${widget.id}\u0000');

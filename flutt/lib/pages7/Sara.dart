@@ -205,7 +205,7 @@ class _SaraState extends State<Sara> {
 
   Future<void> SaraInfo() async {
     try {
-      Socket socket = await Socket.connect("172.20.116.103", 8080);
+      Socket socket = await Socket.connect("192.168.1.112", 8080);
 
       // Sending request for SaraInfo
       socket.write('GET: SaraInfo,${widget.id}\u0000');
