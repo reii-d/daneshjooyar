@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 import 'package:test1/pages/login_page.dart';
 import 'package:test1/pages/signup_page.dart';
 import 'package:test1/pages/welcome_page.dart';
 import 'package:test1/pages7/Classa.dart';
 import 'package:test1/pages7/Sara.dart';
 
-import 'pages7/Tamrina.dart';
 
 void main() {
   runApp(const MyApp());

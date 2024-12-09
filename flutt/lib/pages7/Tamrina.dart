@@ -144,13 +144,11 @@ class _TamrinaState extends State<Tamrina> {
                             firstDate: DateTime.now(),
                             lastDate: DateTime.now().add(Duration(days: 365)),
                           );
-                          if (newDueDate != null) {
-                            setState(() {
-                              Duration difference = newDueDate.difference(DateTime.now());
-                              assignment['daysLeft'] = difference.inDays;
-                            });
-                          }
-                          Navigator.pop(context);
+                          setState(() {
+                            Duration difference = newDueDate.difference(DateTime.now());
+                            assignment['daysLeft'] = difference.inDays;
+                          });
+                                                  Navigator.pop(context);
                         },
                         child: Text('Change Due Date'),
                       ),
